@@ -29,7 +29,10 @@ Vue.component('main-app', require('./App.vue').default);
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
-    el: '#app',
-    router,
+store.dispatch('auth/user').then(() => {
+    const app = new Vue({
+        el: '#app',
+        router,
+        store
+    });
 });

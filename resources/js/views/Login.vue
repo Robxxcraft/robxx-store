@@ -20,7 +20,7 @@
   import { mapActions } from 'vuex'
 
   export default {
-    name: 'SignIn',
+    name: 'Login',
 
     data () {
       return {
@@ -33,13 +33,13 @@
 
     methods: {
       ...mapActions({
-        signIn: 'auth/signIn'
+        signIn: 'auth/login'
       }),
 
       async submit () {
         await this.signIn(this.form)
 
-        this.$router.replace({ name: 'home' })
+        this.$router.replace({ name: 'Home' })
       }
     }
   }
