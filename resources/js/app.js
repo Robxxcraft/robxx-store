@@ -10,6 +10,18 @@ import Vue from 'vue'
 import router from './router'
 import store from './store'
 
+import '@mdi/font/css/materialdesignicons.css'
+import Vuetify from 'vuetify'
+import 'vuetify/dist/vuetify.min.css'
+
+Vue.use(Vuetify)
+
+const opts = {
+    icons: {
+        iconfont: 'mdi'
+    }
+}
+
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue
@@ -33,6 +45,7 @@ store.dispatch('auth/user').then(() => {
     const app = new Vue({
         el: '#app',
         router,
-        store
+        store,
+        vuetify: new Vuetify(opts)
     });
 });

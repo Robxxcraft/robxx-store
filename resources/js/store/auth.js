@@ -37,7 +37,6 @@ export default {
         },
 
         async logout({ commit }) {
-            await axios.post("http://localhost:8000/logout");
             commit("SET_AUTHENTICATED", false);
             commit("SET_USER", null);
         },
@@ -53,6 +52,11 @@ export default {
                     commit("SET_AUTHENTICATED", false);
                     commit("SET_USER", null);
                 });
+        },
+
+        logout({commit}){
+            commit("SET_AUTHENTICATED", false);
+            commit("SET_USER", null);
         }
     }
 };

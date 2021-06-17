@@ -3,7 +3,13 @@ import axios from 'axios'
 export default {
   namespaced: true,
   state: {
-    categories: []
+    categories: [],
+    category: {}
+  },
+  getters: {
+    get_categories(state){
+      return state.categories;
+    }
   },
   mutations: {
     SET_CATEGORIES(state, data){
