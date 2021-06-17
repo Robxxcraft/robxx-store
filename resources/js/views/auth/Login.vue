@@ -9,14 +9,14 @@
                <v-img src="/assets/images/logo.png" alt="Fedoration Education Log" contain height="200"></v-img>
              </a>
              <v-card-text>
-               <v-form >
-                 <v-text-field label="Enter your email" color="lightgray" name="email" prepend-inner-icon="mail" type="email" class="rounded-0" outlined></v-text-field>
-                 <v-text-field label="Enter your password" color="lightgray" name="password" prepend-inner-icon="fisheye" :type="showPassword ? 'text' : 'password'" append-icon="cart" class="rounded-0" outlined></v-text-field>
-                <v-btn class="rounded-0" color="#000000" x-large block dark>Login</v-btn>
+               <v-form @submit.prevent="login">
+                 <v-text-field label="Enter your email" color="lightgray" v-model="form.email" name="email" prepend-inner-icon="mdi-mail" type="email" class="rounded-0" outlined></v-text-field>
+                 <v-text-field label="Enter your password" color="lightgray" v-model="form.password" name="password" prepend-inner-icon="mdi-lock" :type="showPassword ? 'text' : 'password'" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'" @click:append="handleClick" class="rounded-0" outlined></v-text-field>
+                <v-btn type="submit" class="rounded-0" color="#000000" x-large block dark>Login</v-btn>
                 <v-card-actions class="text--secondary">
                   <v-checkbox color="#000000" label="Remember me"></v-checkbox>
                   <v-spacer></v-spacer>
-                  No Account? <a href="#" class="pl-2" style="color: #000000;"> Sign Up</a>
+                  No Account? <router-link :to="{name: 'Register'}" class="pl-2" style="color: #000000;"> Sign Up</router-link>
                 </v-card-actions>
                </v-form>
              </v-card-text>
@@ -32,16 +32,29 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "Login",
   data(){
     return {
       showPassword: false,
+      form: {
+        email: '',
+        password: ''
+      }
     }
   },
   methods: {
     handleClick(){
       this.showPassword = !this.showPassword;
+    },
+    ...mapActions({
+      doLogin: 'auth/login'
+    }),
+    async login(){
+      await this.doLogin(this.form);
+
+      await this.$router.replace({name: 'Admin'})
     }
   }
 };

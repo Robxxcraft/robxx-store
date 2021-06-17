@@ -11,7 +11,6 @@
         <a href="#" @click.prevent="logout">Sign out</a>
       </template>
     </div> -->
-        <Navigation />
         <router-view />
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="container">
       <div class="card">
         <div class="card-header">Hello, <b>{{user.name}}</b></div>
         <div class="card-body">

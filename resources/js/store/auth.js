@@ -18,16 +18,6 @@ export default {
         }
     },
 
-    mutations: {
-        SET_AUTHENTICATED(state, value) {
-            state.authenticated = value;
-        },
-
-        SET_USER(state, value) {
-            state.user = value;
-        }
-    },
-
     actions: {
         async login({ dispatch }, credentials) {
             await axios.get("/sanctum/csrf-cookie");
@@ -58,5 +48,15 @@ export default {
             commit("SET_AUTHENTICATED", false);
             commit("SET_USER", null);
         }
-    }
+    },
+
+    mutations: {
+        SET_AUTHENTICATED(state, value) {
+            state.authenticated = value;
+        },
+
+        SET_USER(state, value) {
+            state.user = value;
+        }
+    },
 };
