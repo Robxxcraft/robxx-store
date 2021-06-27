@@ -12,14 +12,14 @@
                <v-form @submit.prevent="register">
                  <v-row>
                    <v-col cols="12" lg="6" md="6" sm="12">
-                    <v-text-field label="Your First Name" color="lightgray" v-model="form.first_name" name="first_name" prepend-inner-icon="mdi-mail" type="email" class="rounded-0" outlined></v-text-field>
+                    <v-text-field label="Your First Name" color="lightgray" v-model="form.first_name" name="first_name" prepend-inner-icon="mdi-mail" type="text" class="rounded-0" outlined></v-text-field>
                    </v-col>
                    <v-col cols="12" lg="6" md="6" sm="12">
-                    <v-text-field label="Your Last Name" color="lightgray" v-model="form.last_name" name="last_name" prepend-inner-icon="mdi-mail" type="email" class="rounded-0" outlined></v-text-field>
+                    <v-text-field label="Your Last Name" color="lightgray" v-model="form.last_name" name="last_name" prepend-inner-icon="mdi-mail" type="text" class="rounded-0" outlined></v-text-field>
                    </v-col>
                  </v-row>
-                 <v-text-field label="Enter your email" color="lightgray" v-model="form.email" name="email" prepend-inner-icon="mdi-mail" type="email" class="rounded-0" outlined></v-text-field>
-                 <v-text-field label="Enter your password" color="lightgray" v-model="form.password" name="password" prepend-inner-icon="mdi-lock" :type="showPassword ? 'text' : 'password'" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'" @click:append="handleClick" class="rounded-0" outlined></v-text-field>
+                 <v-text-field label="Your Email" color="lightgray" v-model="form.email" name="email" prepend-inner-icon="mdi-mail" type="email" class="rounded-0" outlined></v-text-field>
+                 <v-text-field label="Your Password" color="lightgray" v-model="form.password" name="password" prepend-inner-icon="mdi-lock" :type="showPassword ? 'text' : 'password'" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'" @click:append="handleClick" class="rounded-0" outlined></v-text-field>
                  <v-btn type="submit" class="rounded-0" color="#000000" x-large block dark>Register</v-btn>
                 <v-card-actions class="text--secondary">
                   <v-checkbox color="#000000" label="Remember me"></v-checkbox>
@@ -47,7 +47,8 @@ export default {
     return {
       showPassword: false,
       form: {
-        name: "",
+        first_name: "",
+        last_name: "",
         email: "",
         password: "",
       },
@@ -63,16 +64,17 @@ export default {
 
     async register() {
 
-      axios.get("/sanctum/csrf-cookie").then(() => {
+      await axios.get("/sanctum/csrf-cookie").then(() => {
         axios
         .post("/api/register", this.form)
         .then(response => {
-          console.log(response.data)
+          if (response.data.status) {
+            this.$router.push({name: 'Login'})
+          }
         }).catch(errors => { 
           console.log(errors.response.data.errors) 
         })
       })
-      
     },
   },
 };

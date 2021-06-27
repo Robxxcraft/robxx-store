@@ -1,0 +1,49 @@
+<template>
+  <div>
+      <div class="card">
+          <div class="card-header">Add Category</div>
+          <div class="card-body">
+              <div class="container">
+                  <form @submit.prevent="updateCategory">
+                      <div class="form-group">
+                          <label for="name">Name</label>
+                          <input type="text" name="name" v-model="form.name" class="form-control">
+                      </div>
+                      <button type="submit" class="btn btn-primary">Save</button>
+                  </form>
+              </div>
+          </div>
+      </div>
+  </div>
+</template>
+
+<script>
+export default {
+    data(){
+        return {
+            form: {
+                name: ''
+            }
+        }
+    },
+    mounted(){
+       axios.get(`/api/category/${this.$route.params.id}`).then(res => {
+           this.form.name = res.data.name
+       })
+    },
+    methods: {
+        async updateCategory(){
+            await axios.put(`/api/category/${this.$route.params.id}`, this.form).then(() => {
+                this.$router.replace({name: 'Categories'})
+            }).catch((error) => {
+                console.log(error)
+            })
+        }
+    }
+
+}
+</script>
+
+<style>
+
+</style>

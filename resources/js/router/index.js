@@ -7,9 +7,9 @@ import Register from "../views/auth/Register.vue";
 
 import AdminDashboard from "../views/admin/AdminDashboard.vue";
 
-import ManageCategories from "../views/admin/category/Manages.vue";
-import CreateCategory from "../views/admin/category/Create.vue";
-import EditCategory from "../views/admin/category/Edit.vue";
+import ManageCategories from "../views/admin/category/ManageCategories.vue";
+import CreateCategory from "../views/admin/category/CreateCategory.vue";
+import EditCategory from "../views/admin/category/EditCategory.vue";
 
 import ManageProducts from "../views/admin/product/ManageProducts.vue";
 import CreateProduct from "../views/admin/product/CreateProduct.vue";
@@ -39,49 +39,46 @@ const routes = [
     {
         path: "/admin",
         name: "Admin",
-        component: AdminDashboard,
         meta: { requiresAuth: true },
+        component: AdminDashboard,
         children: [
             {
                 path: "category",
                 name: "Categories",
-                components: ManageCategories,
+                component: ManageCategories,
                 meta: { requiresAuth: true },
-                children: [
-                    {
-                        path: "create",
-                        name: "CreateCategory",
-                        components: CreateCategory,
-                        meta: { requiresAuth: true },
-                    },
-                    {
-                        path: "edit",
-                        name: "EditCategory",
-                        components: EditCategory,
-                        meta: { requiresAuth: true }
-                    }
-                ]
             },
             {
-                path: "/product",
-                name: "Products",
-                components: ManageProducts,
+                path: "category/create",
+                name: "CreateCategory",
+                component: CreateCategory,
                 meta: { requiresAuth: true },
-                children: [
-                    {
-                        path: "create",
-                        name: "CreateProduct",
-                        components: CreateProduct,
-                        meta: { requiresAuth: true },
-                    },
-                    {
-                        path: "edit",
-                        name: "EditProduct",
-                        components: EditProduct,
-                        meta: { requiresAuth: true },
-                    }
-                ]
-            }
+            },
+            {
+                path: "category/:id/edit",
+                name: "EditCategory",
+                component: EditCategory,
+                meta: { requiresAuth: true },
+            },
+            {
+                path: "product",
+                name: "Products",
+                component: ManageProducts,
+                meta: { requiresAuth: true },
+            },
+            {
+                path: "product/create",
+                name: "CreateProduct",
+                component: CreateProduct,
+                meta: { requiresAuth: true },
+            },
+            {
+                path: "product/:id/edit",
+                name: "EditProduct",
+                component: EditProduct,
+                meta: { requiresAuth: true },
+            },
+
         ]
     }
     // route level code-splitting
