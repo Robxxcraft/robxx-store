@@ -28,8 +28,8 @@ export default {
     },
     methods: {
         async saveCategory(){
-            await axios.post('/api/category/add', this.form).then(() => {
-                this.$router.replace({name: 'Categories'})
+            await axios.post('/api/category/add', this.form).then(response => {
+                this.$router.replace({name: 'Categories', props: {success: response.data.success}})
             }).catch((error) => {
                 console.log(error)
             })

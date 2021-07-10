@@ -6,6 +6,7 @@ import Login from "../views/auth/Login.vue";
 import Register from "../views/auth/Register.vue";
 
 import AdminDashboard from "../views/admin/AdminDashboard.vue";
+import IndexDashboard from "../views/admin/IndexDashboard.vue";
 
 import ManageCategories from "../views/admin/category/ManageCategories.vue";
 import CreateCategory from "../views/admin/category/CreateCategory.vue";
@@ -14,8 +15,11 @@ import EditCategory from "../views/admin/category/EditCategory.vue";
 import ManageProducts from "../views/admin/product/ManageProducts.vue";
 import CreateProduct from "../views/admin/product/CreateProduct.vue";
 import EditProduct from "../views/admin/product/EditProduct.vue";
+import Test from "../views/admin/product/tes.vue";
 
 import store from '../store';
+
+import PublicDashboard from "../views/public/PublicDashboard.vue";
 
 Vue.use(VueRouter);
 
@@ -43,10 +47,17 @@ const routes = [
         component: AdminDashboard,
         children: [
             {
+                path: "dashboard",
+                name: "DashboardAdmin",
+                meta: { requiresAuth: true },
+                component: IndexDashboard,
+            },
+            {
                 path: "category",
                 name: "Categories",
                 component: ManageCategories,
                 meta: { requiresAuth: true },
+                props: true
             },
             {
                 path: "category/create",
@@ -73,6 +84,11 @@ const routes = [
                 meta: { requiresAuth: true },
             },
             {
+                path: "product/test",
+                component: Test,
+                meta: { requiresAuth: true },
+            },
+            {
                 path: "product/:id/edit",
                 name: "EditProduct",
                 component: EditProduct,
@@ -80,6 +96,11 @@ const routes = [
             },
 
         ]
+    },
+    {
+        path: "/dashboard",
+        name: "PublicDashboard",
+        component: PublicDashboard,
     }
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route

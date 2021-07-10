@@ -30,9 +30,6 @@
                               <div class="col-8">
                                   <input type="file" name="photo" id="photo" class="form-control-file" @change="upload">
                               </div>
-                              <div class="col-4">
-                                  <img :src="previewImage" width="200" height="200">
-                              </div>
                           </div>
                           
                       </div>
@@ -52,15 +49,16 @@
 export default {
     data(){
         return {
-            previewImage: null,
+            previewImage: '',
             form: {
                 title: '',
                 description: '',
                 category_id: 0,
                 price: '',
+                photo: null,
                 stok: '',
             },
-            photo: null,
+            photo: ''
         }
     },
     mounted(){
@@ -70,7 +68,6 @@ export default {
            this.form.description = res.data.description;
            this.form.category_id = res.data.category_id;
            this.form.price = res.data.price;
-           this.photo = res.data.photo;
            this.form.stok= res.data.stok;
        })
     },
@@ -91,14 +88,9 @@ export default {
             }
 
             let formData = new FormData();
-            formData.append('title', this.form.title)
-            formData.append('description', this.form.description)
-            formData.append('category_id', this.form.category_id)
-            formData.append('price', this.form.price)
             formData.append('photo', this.photo)
-            formData.append('stok', this.form.stok)
 
-            axios.put(`/api/product/${this.$route.params.id}`, formData, config).then(() => {
+            axios.put(`/api/product/${this.$route.params.id}`, this.form, formData).then(() => {
                 this.$router.replace({name: 'Products'})
             }).catch((error) => {
                 console.log(error)

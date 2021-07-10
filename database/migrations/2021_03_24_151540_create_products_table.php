@@ -20,7 +20,7 @@ class CreateProductsTable extends Migration
             $table->string('description');
             $table->foreignId('category_id')->index()->constrained()->onDelete('cascade');
             $table->string('price');
-            $table->text('photo');
+            $table->text('photo')->nullable();
             $table->integer('stok')->default(0);
             $table->timestamps();
 

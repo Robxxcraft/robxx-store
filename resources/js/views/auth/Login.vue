@@ -54,7 +54,7 @@ export default {
     async login(){
       await this.doLogin(this.form);
 
-      await this.$router.replace({name: 'Admin'})
+      await this.$router.replace({name: 'DashboardAdmin'})
     }
   }
 };

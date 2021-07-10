@@ -1,51 +1,64 @@
 <template>
-  <div>
-      <table class="table table-bordered">
-        <thead class="text-center">
-          <th>No</th>
-          <th>Title</th>
-          <th>Slug</th>
-          <th>Description</th>
-          <th>Category</th>
-          <th>Price</th>
-          <th>Photo</th>
-          <th>Created</th>
-          <th>User</th>
-          <th colspan="2">Action</th>
-        </thead>
-        <tbody>
-          <tr v-for="product in getProducts" :key="product.id">
-            <td>{{product.id}}</td>
-            <td>{{product.title}}</td>
-            <td>{{product.slug}}</td>
-            <td>{{product.description}}</td>
-            <td>{{product.category.name}}
-            <td>{{product.price}}</td>
-            <td><img :src="'/images/'+product.photo" :alt="product.title" width="100" height="100"></td>
-            <td>{{product.created_at}}</td>
-            <td>{{product.user.first_name}}</td>
-            <td><router-link :to="{name: 'EditProduct', params: {id: product.id}}">Edit</router-link></td>
-            <td><a href="#" @click.prevent="deleteProduct(product.id)">Delete</a></td>
-          </tr>
-        </tbody>
-      </table>
-  </div>
+  <v-card>
+    <v-card-title>
+      Products
+      <v-spacer></v-spacer>
+      <v-text-field
+        v-model="search"
+        append-icon="mdi-magnify"
+        label="Search"
+        single-line
+        hide-details
+      ></v-text-field>
+    </v-card-title>
+    <v-data-table
+      :headers="headers"
+      :items="getProducts"
+      :search="search"
+    >
+    <template v-slot:[`item.tags`]="{item}">
+        <li v-for="tg in item.tag">
+            {{tg.name}}
+        </li>
+    </template>
+    <template v-slot:[`item.action`]="{item}">
+        <router-link :to="{name: 'EditProduct', params: {id: item.id}}">Edit</router-link>
+        <a href="#" @click.prevent="deleteProduct(item.id)">Delete</a>
+    </template>
+    </v-data-table>
+  </v-card>
 </template>
 
 <script>
-export default {
-  mounted(){
-    this.$store.dispatch('product/getProducts')
-  },
-  computed: {
+  export default {
+    data () {
+      return {
+        search: '',
+        headers: [
+          { text: '#', align: 'start', value: 'id'},
+          { text: 'Title', value: 'title' },
+          { text: 'Description', value: 'description' },
+          { text: 'Category', value: 'category.name' },
+          { text: 'Price', value: 'price' },
+          { text: 'Photo', value: 'photo' },
+          { text: 'User', value: 'user.first_name' },
+          { text: 'Tag', value: "tags" },
+          { text: 'Action', value: "action" },
+        ]
+      }
+    },
+    mounted(){
+        this.$store.dispatch('product/getProducts')
+    },
+    computed: {
       getProducts(){
         return this.$store.state.product.products
       }
-  },
-  methods: {
-    deleteProduct(id){
-      this.$store.dispatch('product/deleteProduct', id)
-    }
+    },
+    methods: {
+        deleteProduct(id){
+        this.$store.dispatch('product/deleteProduct', id)
+        }
   }
-}
+  }
 </script>
