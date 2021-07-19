@@ -4,7 +4,7 @@ import auth from "./auth";
 import category from "./category";
 import product from "./product";
 import tag from "./tag";
-
+import cart from "./cart"
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -12,6 +12,7 @@ export default new Vuex.Store({
         auth,
         category,
         product,
-        tag
+        tag,
+        cart
     }
 });

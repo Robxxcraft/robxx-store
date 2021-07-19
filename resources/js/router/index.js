@@ -15,11 +15,19 @@ import EditCategory from "../views/admin/category/EditCategory.vue";
 import ManageProducts from "../views/admin/product/ManageProducts.vue";
 import CreateProduct from "../views/admin/product/CreateProduct.vue";
 import EditProduct from "../views/admin/product/EditProduct.vue";
-import Test from "../views/admin/product/tes.vue";
-
-import store from '../store';
 
 import PublicDashboard from "../views/public/PublicDashboard.vue";
+import ProductDetails from "../views/public/ProductDetails.vue";
+import Products from "../views/public/AllProducts.vue";
+import Categories from "../views/public/AllCategories.vue";
+import CategoryProducts from "../views/public/CategoryProducts.vue";
+import Profile from "../views/public/Profile.vue";
+import About from "../views/public/About.vue";
+
+import Cart from "../views/public/cart.vue";
+import Checkout from "../views/public/Checkout.vue";
+
+import store from '../store';
 
 Vue.use(VueRouter);
 
@@ -84,11 +92,6 @@ const routes = [
                 meta: { requiresAuth: true },
             },
             {
-                path: "product/test",
-                component: Test,
-                meta: { requiresAuth: true },
-            },
-            {
                 path: "product/:id/edit",
                 name: "EditProduct",
                 component: EditProduct,
@@ -101,7 +104,51 @@ const routes = [
         path: "/dashboard",
         name: "PublicDashboard",
         component: PublicDashboard,
-    }
+    },
+    {
+        path: "/product/:id/details",
+        name: "ProductDetails",
+        component: ProductDetails,
+    },
+    {
+        path: "/products",
+        name: "AllProducts",
+        component: Products,
+    },
+    {
+        path: "/categories",
+        name: "AllCategories",
+        component: Categories
+    },
+    {
+        path: "/categories/:slug",
+        name: "CategoryProducts",
+        component: CategoryProducts,
+    },
+    {
+        path: "/profile",
+        name: "Profile",
+        component: Profile,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: "/about",
+        name: "About",
+        component: About,
+    },
+    {
+        path: "/cart",
+        name: "Cart",
+        component: Cart,
+        meta: { requiresAuth: true },
+    },
+    {
+        path: "/checkout",
+        name: "Checkout",
+        component: Checkout,
+        meta: { requiresAuth: true },
+    },
+
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
     // which is lazy-loaded when the route is visited.

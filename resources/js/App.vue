@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div>
     <!-- <div id="nav">
       <router-link to="/admin">Home</router-link> |
       <template v-if="!authenticated">
@@ -11,7 +11,7 @@
         <a href="#" @click.prevent="logout">Sign out</a>
       </template>
     </div> -->
-        <router-view />
+      <router-view />
   </div>
 </template>
 

@@ -93,10 +93,10 @@ export default {
       this.drawer = !this.drawer
     },
     async logout() {
-      await axios.post("/logout").then(({ data }) => {
-        this.signOut();
-        this.$router.push({ name: "Login" });
+      await axios.post("/logout").then(() => {
       });
+
+      this.$router.replace({ name: "Home" });
     },
   }
     // computed: {

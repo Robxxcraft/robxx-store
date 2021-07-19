@@ -14,15 +14,22 @@ class CartController extends Controller
         return response()->json($cart, 200);
     }
 
+    public function cart_page()
+    {
+        $cart = Cart::with(['product'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(5);
+        return response()->json($cart, 200);
+    }
+
     public function store(Request $request)
     {
-        $item = Cart::where('product_id', $request->product_id);
+        $item = Cart::where('user_id', Auth::user()->id)->where('product_id', $request->product_id);
 
         if ($item->count()) {
             $item->increment('quantity');
             $item = $item->first();
         } else {
-            $item = Cart::forceCreate([
+            $item = Cart::create([
+                'user_id' => Auth::user()->id,
                 'product_id' => $request->product_id,
                 'quantity' => 1,
             ]);

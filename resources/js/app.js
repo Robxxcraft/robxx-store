@@ -13,13 +13,19 @@ import store from './store'
 import '@mdi/font/css/materialdesignicons.css'
 import Vuetify from 'vuetify'
 import 'vuetify/dist/vuetify.min.css'
+import colors from 'vuetify/lib/util/colors'
 
 Vue.use(Vuetify)
 
 const opts = {
-    icons: {
-        iconfont: 'mdi'
+    theme: {
+        themes: {
+            light: {
+                background: colors.grey.lighten4,
+            }
+        }
     }
+    
 }
 
 /**

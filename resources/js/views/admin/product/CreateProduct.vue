@@ -52,7 +52,7 @@
       </div>
   </div> -->
   <div>
-      <v-form @submit.prevent="saveProduct">
+        <v-form @submit.prevent="saveProduct">
                 <v-container>
                     <v-row>
                         <v-col cols="12" md="4">
@@ -94,9 +94,9 @@
                             <v-chip-group><v-chip color="brown" style="color: white;" v-for="(tag, index) in form.tags" :key="tag" close @click:close="deleteTag(index)"><v-icon left>mdi-tag</v-icon> {{tag}}</v-chip></v-chip-group>
                         </v-col>
                     </v-row>
-                    <v-btn type="submit" color="teal">Save</v-btn>
+                    <v-btn type="submit" color="teal" style="color: white;">Save</v-btn>
                 </v-container>
-               </v-form>
+        </v-form>
   </div>
 </template>
 
@@ -131,18 +131,17 @@ export default {
             this.image = files
         },
         addTag(){
-            this.form.tags.push(this.tag)
-            this.tag = ''
+            if (this.form.tags.indexOf(this.tag) === -1) {
+                this.form.tags.push(this.tag)
+                this.tag = ''
+            } else {
+                this.tag = ''
+            }
         },
         deleteTag(id){
             let tags = this.form.tags
             tags.splice(id, 1)
         },
-        upload(event){
-            let files = event.target.files[0]
-            this.previewImage = URL.createObjectURL(files)
-            this.image = files
-            },
         saveProduct(){
             const config = {
                 headers: { 'content-type' : 'multipart/form-data'}
