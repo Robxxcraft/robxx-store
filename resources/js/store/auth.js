@@ -31,6 +31,8 @@ export default {
             commit("SET_USER", null);
         },
 
+
+
         user({ commit }) {
             return axios
                 .get("/api/user")
@@ -57,6 +59,6 @@ export default {
 
         SET_USER(state, value) {
             state.user = value;
-        }
+        },
     },
 };

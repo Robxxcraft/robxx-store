@@ -15,6 +15,16 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('user_id')->index()->constrained()->onDelete('cascade');
+            $table->text('address');
+            $table->string('city');
+            $table->string('province');
+            $table->string('zipcode');
+            $table->integer('phone_number');
+            $table->bigInteger('total_quantity');
+            $table->bigInteger('total_amount');
+            $table->enum('payment', ['COD','Midtrans']);
+            $table->enum('order_status', ['Pending','Accepted','Cancelled']);
             $table->timestamps();
         });
     }

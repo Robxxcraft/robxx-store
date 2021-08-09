@@ -1,62 +1,54 @@
 <template>
-  <v-app :style="{ background: $vuetify.theme.themes.light.background }">
-    <v-main>
-      <Navigation />
-      <v-row>
-        <v-col cols="3">
-          <v-card flat>
-            <v-card-title>
-              <p class="subheading">Categories</p>
-            </v-card-title>
-            <v-card-text>
-              <v-list>
-                <v-list-item router v-for="(category, index) in getCategories" :key="index">
-                  <v-icon left>mdi-format-list-text</v-icon>
-                  <div class="mx-2" @click="getCP"><router-link class="grey--text" style="text-decoration: none;"  :to="{name: 'CategoryProducts', params: {slug: category.slug}}"><div>{{category.name}}</div></router-link></div>
-                </v-list-item>
-              </v-list>
-            </v-card-text>
-          </v-card>
-        </v-col>
-        <v-col cols="9">
-          {{getCategoryProducts}}
-        </v-col>
-      </v-row>
-      <Footer />
-    </v-main>
-  </v-app>
+    
+    <section>
+        <v-card flat class="rounded-lg">
+          <v-layout class="justify-center" row wrap>
+                  <v-flex class="mx-4 my-2" xs5 sm5 md6 lg3 v-for="(product, index) in getCategoryProducts" :key="index">
+                    <v-card :style="{ background: $vuetify.theme.themes.light.background2 }" max-width="400" elevation="10">
+                      <v-img height="150" class="white--text align-end" :src="'/images/'+product.photo">
+                      </v-img>
+
+                      <v-card-title class="my-2">
+                        <router-link style="text-decoration: none;" :to="{
+                          name: 'ProductDetails',
+                          params: { slug: product.slug }
+                        }">
+                          <h6 class="black--text">{{product.title}}</h6>
+                        </router-link>
+                        </v-card-title>
+
+                      <v-card-subtitle class="pb-1 grey--text">{{product.category.name}}</v-card-subtitle>
+
+                      <v-card-text>
+                        <div><b>${{product.price}}</b></div>
+                      </v-card-text>
+
+                      <v-card-actions class="justify-end">
+                        <v-icon>mdi-heart</v-icon>
+                        <v-spacer></v-spacer>
+                        <v-btn color="orange" outlined class="caption white--text" depressed @click="addToCart(product)">Add To Cart</v-btn>
+                      </v-card-actions>
+                    </v-card>
+                  </v-flex>
+          </v-layout>
+    </v-card>
+    </section>
 </template>
 
 <script>
-import Navigation from "./include/Navigation.vue";
-import Footer from "./include/Footer.vue";
 export default {
-  components: {
-    Navigation,
-    Footer,
-  },
-    created(){
-      this.$store.dispatch('category/getCategories');
+    mounted(){
       this.getCP()
     },
-    watch: {
-      getCP(newVal){
-        console.log(newVal)
-      }
-    },
     computed: {
-      getCategories(){
-        return this.$store.state.category.categories
-      },
       getCategoryProducts(){
         return this.$store.state.product.category_products
       }
-      },
-  methods: {
-
-    getCP(){
-      this.$store.dispatch('product/getCategoryProducts', this.$route.params.slug);
+    },
+    methods: {
+      getCP(){
+        this.$store.dispatch('product/getCategoryProducts', this.$route.params.slug);
+      }
     }
-  }
 }
 </script>

@@ -17,12 +17,18 @@ class ProductController extends Controller
         return response()->json($products, 200);
     }
 
-    public function home()
+    public function recent()
     {
-        $products = Product::with(['category'])->orderBy('created_at', 'DESC')->take(8)->get();
+        $products = Product::with(['category', 'favourite'])->orderBy('created_at', 'DESC')->take(5)->get();
         return response()->json($products, 200);
     }
 
+    public function related($slug)
+    {
+        $id = Product::where('slug', $slug)->pluck('category_id')->first();
+        $products = Product::with('category')->orderBy('created_at', 'DESC')->where('category_id', $id)->take(5)->get();
+        return response()->json($products, 200);
+    }
 
     public function category_products($slug)
     {
@@ -64,7 +70,7 @@ class ProductController extends Controller
                     'slug' => Str::slug($tag)
                 ]);
 
-                $tag_id = Tag::where('name', $tag)->get(['id']);
+                $tag_id = Tag::where('name', $tag)->get()->pluck('id');
                 
                 $product_tag->tag()->attach($tag_id);
             }
@@ -73,10 +79,10 @@ class ProductController extends Controller
         return response()->json(['success' => 'product created successfully', 201]);
     }
 
-    public function show($id)
+    public function show($slug)
     {
-        $product = Product::with(['category', 'user', 'tag'])->findOrFail($id);
-
+        $product = Product::with(['category','tag'])->withCount('favourite','favourited')->where('slug', $slug)->first();
+        
         return response()->json($product, 200);
     }
 
@@ -106,18 +112,18 @@ class ProductController extends Controller
             'user_id' => Auth::user()->id,
         ]);
 
-        $tags = $request->tags;
-        
         if ($request->has('tags')) {
+            $tags = $request->tags;
+            $product->tag()->detach();
             foreach($tags as $tag){
                 Tag::firstOrCreate([
                     'name' => strtolower($tag),
                     'slug' => Str::slug($tag)
                 ]);
 
-                $tag_id = Tag::where('name', $tag)->get(['id']);
+                $tag_id = Tag::where('name', $tag)->get()->pluck('id');
                 $product->tag()->attach($tag_id);
-        }
+            }
         }
 
         return response()->json(['success' => 'product updated successfully']);

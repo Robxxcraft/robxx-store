@@ -6,20 +6,40 @@
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
     <v-main>
       <Navigation />
-        <v-row wrap class="mx-1 my-4">
+
+      <section class="mx-4">
+        <v-carousel continuous cycle :show-arrows="false" hide-delimiter-background delimiter-icon="mdi-minus" height="300">
+          <v-carousel-item>
+            <v-img max-width="100%" height="100%" src="/assets/images/b-bg1.png"></v-img>
+          </v-carousel-item>
+          <v-carousel-item src="/assets/images/b-bg2.jpg">
+            
+          </v-carousel-item>
+          <v-carousel-item src="/assets/images/b-bg3.jpg">
+            
+          </v-carousel-item>
+        </v-carousel>
+      </section>
+        <section>
+          <v-row wrap class="mx-1 my-4">
           <v-col cols="12" sm="3">
-            <v-card class="rounded-xl" flat>
+            <v-card class="rounded-lg" flat>
               <v-list three-line>
                 <template>
-                  <v-subheader>qqqqqqqq</v-subheader>
-                  <v-list-item>
+                  <v-subheader class="title">Recent Product</v-subheader>
+                  <v-list-item v-for="(recent, index) in getRecentProducts" :key="index">
                     <v-list-item-avatar color="#EFF4F1" size="70" rounded>
-                      <img />
+                      <img :src="'/images/'+recent.photo" />
                     </v-list-item-avatar>
                     <v-list-item-content>
-                      <v-list-item-title>ssssssssssss</v-list-item-title>
-                      <v-list-item-subtitle>sssss</v-list-item-subtitle>
-                      <v-list-item-title>sssssss</v-list-item-title>
+                      <v-list-item-title><router-link style="text-decoration: none;"  :to="{
+                          name: 'ProductDetails',
+                          params: { slug: recent.slug }
+                        }">
+                          <h6 class="black--text">{{recent.title}}</h6>
+                        </router-link></v-list-item-title>
+                      <v-list-item-subtitle class="pb-2">{{recent.category.name}}</v-list-item-subtitle>
+                      <div class="font-weight-bold">${{recent.price}}</div>
                     </v-list-item-content>
                   </v-list-item>
                 </template>
@@ -27,7 +47,7 @@
             </v-card>
           </v-col>
           <v-col cols="12" sm="6">
-            <v-card class="rounded-xl" flat>
+            <v-card class="rounded-lg" flat>
               <v-row>
                 <v-col cols="12" sm="4" align="center">
                   <v-avatar size="300" tile>
@@ -99,89 +119,28 @@
             </v-card>
           </v-col>
           <v-col cols="12" sm="3">
-            <v-card class="rounded-xl" flat>
+            <v-card class="rounded-lg" flat>
               <v-card-title>
                 <v-text-field
                     label="Search"
-                    prepend-inner-icon="fas fa-search"
+                    append-icon="mdi-shopping-outline"
                     filled
                     rounded
-                    color="#4FC694"
+                    color="orange"
                   ></v-text-field>
               </v-card-title>
-              <v-list three-line class="mt-n4">
-                
-                <v-list-item-group> </v-list-item-group>
-              </v-list>
-              <v-toolbar flat class="mt-n5">
-                <v-toolbar-title>Recomdation Friend</v-toolbar-title>
-              </v-toolbar>
-              <v-app-bar flat color="rgba(0,0,0,0)">
-                <v-avatar rounded size="40" class="mr-2">
-                  <v-img
-                    src="https://cdn.vuetifyjs.com/images/lists/1.jpg"
-                  ></v-img>
-                </v-avatar>
-                <strong>Kel Varnesan</strong>
-                <v-spacer></v-spacer>
-                <v-btn text color="orange">Add</v-btn>
-              </v-app-bar>
-              <v-app-bar flat color="rgba(0,0,0,0)">
-                <v-avatar rounded size="40" class="mr-2">
-                  <v-img
-                    src="https://cdn.vuetifyjs.com/images/lists/2.jpg"
-                  ></v-img>
-                </v-avatar>
-                <strong>Russel D</strong>
-                <v-spacer></v-spacer>
-                <v-btn text color="orange">Add</v-btn>
-              </v-app-bar>
+              <v-card-text>
+                <div class="title"> 
+                  Tags
+                </div>
+                <v-divider></v-divider>
+                <div class="caption">
+                  <v-chip class="mx-1 my-1" v-for="(tag, index) in getTags" :key="index">{{tag.name}}</v-chip>
+                </div>
+              </v-card-text>
             </v-card>
           </v-col>
         </v-row>
-        <h3>Latest Product</h3>
-        <v-layout row wrap>
-          <v-flex
-            xs12
-            sm6
-            md4
-            lg3
-            v-for="(homeProduct, index) in getProductsHomes"
-            :key="index"
-          >
-            <v-card flat class="text-xs-center ma-3">
-              <v-card-title
-                ><router-link
-                  class="orange--text lighten-5"
-                  style="text-decoration: none"
-                  :to="{
-                    name: 'ProductDetails',
-                    params: { id: homeProduct.id },
-                  }"
-                  >{{ homeProduct.title }}</router-link
-                ></v-card-title
-              >
-              <v-card-text>
-                <v-divider></v-divider>
-                <div v-if="homeProduct.stok == 0">
-                  <h5 class="red--text font-weight-bold">HABIS</h5>
-                </div>
-                <div class="amber--text">${{ homeProduct.price }}</div>
-              </v-card-text>
-              <v-card-actions>
-                <v-icon left class="red--text">mdi-heart-outline</v-icon>
-                <v-spacer></v-spacer>
-                <v-btn
-                  depressed
-                  class="white--text"
-                  color="amber lighten-3"
-                  @click="addToCart(homeProduct)"
-                  >Add To Cart</v-btn
-                >
-              </v-card-actions>
-            </v-card>
-          </v-flex>
-        </v-layout>
       <div class="my-16">
         <section class="my-16">
           <v-parallax src="/assets/images/bg1.jpg">
@@ -194,25 +153,26 @@
           </v-parallax>
         </section>
       </div>
+        </section>
 
       <section class="pb-8">
-        <v-container class="rounded-a-lg">
-          <v-card class="rounded-a-lg" flat>
+        <v-container>
+          <v-card class="rounded-lg" flat>
             <v-row align="center" justify="center">
               <v-col cols="10">
                 <v-row justify="center">
                   <v-col cols="12" sm="5">
-                    <h1 class="font-weight-light display-1">Contact</h1>
-                    <h3 class="grey--text font-weight-light mt-3">
+                    <h2 class="font-weight-light display-1">Contact</h2>
+                    <h4 class="grey--text font-weight-light mt-3">
                       Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                       Reiciendis, ducimus nam. Illo laudantium dolores sunt
                       architecto dolorem ipsam sed repudiandae sit aliquid iusto
                       ad commodi, natus cumque impedit dolore libero.
-                    </h3>
-                    <h3 class="font-weight-light mt-3">
+                    </h4>
+                    <h4 class="font-weight-light mt-3">
                       Telephone: +62 xxx xxx xxx
-                    </h3>
-                    <h3 class="font-weight-light">Email: email@gmail.com</h3>
+                    </h4>
+                    <h4 class="font-weight-light">Email: email@gmail.com</h4>
                   </v-col>
                   <v-col cols="12" sm="7">
                     <v-form ref="form" v-model="valid">
@@ -238,8 +198,7 @@
                         class="mt-3"
                         depressed
                         :disabled="!valid"
-                        tile
-                        color="amber lighten-3 white--text"
+                        color="orange lighten-2 white--text"
                         block
                         @click="submit"
                         >Send</v-btn
@@ -288,12 +247,16 @@ export default {
     };
   },
   mounted() {
-    this.$store.dispatch("product/getProductsHome");
+    this.$store.dispatch("product/getRecentProducts");
+    this.$store.dispatch("tag/getTags");
   },
   computed: {
-    getProductsHomes() {
-      return this.$store.getters["product/get_products_home"];
+    getRecentProducts() {
+      return this.$store.getters["product/get_recent_products"];
     },
+    getTags(){
+      return this.$store.state.tag.tags;
+    }
   },
   methods: {
     submit() {},

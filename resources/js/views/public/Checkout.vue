@@ -6,28 +6,10 @@
           <v-card class="mx-4 my-5 rounded-lg" flat>
             <v-container>
               <v-card-title>
-                <h4>Checkout</h4>
+                <h3 class="title">Checkout</h3>
               </v-card-title>
               <v-card-text>
                 <div class="text-center"><h4>${{cartTotalPrice}}</h4></div>
-                <v-row wrap>
-                  <v-col md="6" sm="12">
-                    <v-text-field
-                    label="First Name"
-                    filled
-                    rounded
-                    color="orange"
-                    v-model="form.first_name"
-                  ></v-text-field>
-                  </v-col>
-                  <v-col md="6" sm="12"><v-text-field
-                    label="Last Name"
-                    filled
-                    rounded
-                    color="orange"
-                    v-model="form.last_name"
-                  ></v-text-field></v-col>
-                </v-row>
                 <v-row>
                   <v-col>
                     <v-textarea filled rounded label="Address" color="orange" v-model="form.address">
@@ -62,8 +44,34 @@
                   ></v-text-field>
                   </v-col>
                 </v-row>
+                <v-radio-group v-model="form.payment" column>
+                  <template v-slot:label>
+                    <div class="title">Payment With</div>
+                  </template>
+                  <v-row>
+                    <v-col cols="6">
+                      <v-sheet outlined class="mx-auto rounded-lg">
+                        <v-container>
+                          <v-radio value="COD" color="orange" v-slot:label>
+                          <div><v-icon>mdi-cart</v-icon> COD</div>
+                        </v-radio>
+                        </v-container>
+                      </v-sheet>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-sheet outlined class="mx-auto rounded-lg">
+                        <v-container>
+                          <v-radio value="Midtrans" color="orange" v-slot:label>
+                          <div><v-icon>mdi-cart</v-icon> Midtrans</div>
+                        </v-radio>
+                        </v-container>
+                      </v-sheet>
+                    </v-col>
+                  </v-row>
+                </v-radio-group>
               </v-card-text>
               <v-card-actions>
+                
                 <v-row class="text-right">
                   <v-spacer></v-spacer>
                   <v-col md="2" sm="9"> 
@@ -94,34 +102,51 @@ export default {
   data(){
     return {
       form: {
-        first_name: '',
-        last_name: '',
-        address: '',
-        city: '',
-        province: '',
-        zipcode: '',
-        phone_number: '',
+        address: this.$store.state.auth.user.details.address,
+
+        city: this.$store.state.auth.user.details.city,
+
+        province: this.$store.state.auth.user.details.province,
+
+        zipcode: this.$store.state.auth.user.details.zipcode,
+        
+        phone_number: this.$store.state.auth.user.details.phone_number,
+
+        payment: 'COD',
       }
     }
   },
-  mounted() {
-    this.$store.dispatch("cart/getCartItems");
-  },
   computed: {
+    getUser() {
+      return this.$store.getters['auth/user']
+    },
     getCart() {
       return this.$store.state.cart.cart;
     },
-    getCartPage() {
-      return this.$store.state.cart.cart_page;
+    cartTotalQuantity(){
+      return this.$store.getters['cart/cartTotalQuantity']
     },
     cartTotalPrice() {
       return this.$store.getters['cart/cartTotalPrice']
     },
   },
   methods: {
+    
     order(){
+      let formData = new FormData();
+            formData.append('address', this.form.address)
+            formData.append('city', this.form.city)
+            formData.append('province', this.form.province)
+            formData.append('zipcode', this.form.zipcode)
+            formData.append('phone_number', this.form.phone_number)
+            formData.append('total_quantity', this.cartTotalQuantity)
+            formData.append('total_amount', this.cartTotalPrice)
+            formData.append('payment', this.form.payment)
 
-    }
+            axios.post('/api/orders/add', formData).then(() =>{
+              this.$router.replace({name: 'Orders'})
+            })
+    },
   }
 };
 </script>

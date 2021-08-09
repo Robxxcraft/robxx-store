@@ -22,6 +22,7 @@ class User extends Authenticatable
         'last_name',
         'email',
         'password',
+        'role',
     ];
 
     /**
@@ -44,11 +45,15 @@ class User extends Authenticatable
     ];
 
 
+    public function details(){
+        return $this->hasOne(UserDetail::class);
+    }
+
     public function product(){
-        return $this->hasMany(Product::class, "id");
+        return $this->hasMany(Product::class);
     }
 
     public function cart(){
-        return $this->hasMany(Cart::class, "id");
+        return $this->hasMany(Cart::class);
     }
 }

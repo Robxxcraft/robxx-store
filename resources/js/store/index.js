@@ -3,8 +3,9 @@ import Vuex from "vuex";
 import auth from "./auth";
 import category from "./category";
 import product from "./product";
+import cart from "./cart";
+import order from "./order";
 import tag from "./tag";
-import cart from "./cart"
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -12,7 +13,8 @@ export default new Vuex.Store({
         auth,
         category,
         product,
-        tag,
-        cart
+        cart,
+        order,
+        tag
     }
 });

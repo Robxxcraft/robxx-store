@@ -6,7 +6,8 @@ export default {
     product: [],
     products: [],
     category_products: [],
-    homeProducts: []
+    recentProducts: [],
+    relatedProducts: [],
   },
   getters: {
     get_product(state){
@@ -15,8 +16,11 @@ export default {
     get_products(state){
       return state.products;
     },
-    get_products_home(state){
-      return state.homeProducts;
+    get_recent_products(state){
+      return state.recentProducts;
+    },
+    get_related_products(state){
+      return state.relatedProducts;
     }
   },
   mutations: {
@@ -29,8 +33,21 @@ export default {
     SET_CATEGORY_PRODUCTS(state, data){
       state.category_products = data
     },
-    SET_PRODUCTS_HOME(state, data){
-      state.homeProducts = data
+    SET_RECENT_PRODUCTS(state, data){
+      state.recentProducts = data
+    },
+    SET_RELATED_PRODUCTS(state, data){
+      state.relatedProducts = data
+    },
+    FAVOURITE(state, id){
+      if(state.product.id == id){
+        state.product.favourited_count = true
+      }
+    },
+    UNFAVOURITE(state, id){
+      if(state.product.id == id){
+        state.product.favourited_count = false
+      }
     },
     DELETE_PRODUCT(state, id){
       let index = state.products.findIndex(pro => pro.id == id)
@@ -53,9 +70,14 @@ export default {
             commit('SET_CATEGORY_PRODUCTS', res.data)
         }).catch(error => console.log(error))
       },
-      getProductsHome({commit}){
-        axios.get('/api/homeproducts').then( res => {
-            commit('SET_PRODUCTS_HOME', res.data)
+      getRecentProducts({commit}){
+        axios.get('/api/recentproducts').then( res => {
+            commit('SET_RECENT_PRODUCTS', res.data)
+        }).catch(error => console.log(error))
+      },
+      getRelatedProducts({commit}, id){
+        axios.get(`api/relatedproducts/${id}`).then( res => {
+            commit('SET_RELATED_PRODUCTS', res.data)
         }).catch(error => console.log(error))
       },
       deleteProduct({commit}, id){

@@ -1,9 +1,13 @@
 <?php
 
+
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\TagController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\FavouriteController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -18,8 +22,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::middleware('auth:sanctum')->get('/user', function (Request $request)  {
+    return $request->user()->load('details');
 });
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
@@ -35,12 +39,13 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::delete('/product/{id}', [ProductController::class, 'delete']);
 
 
-    Route::get('/tag', [TagController::class, 'index']);
+    Route::get('/tags', [TagController::class, 'index']);
     Route::post('/tag/add', [TagController::class, 'create']);
     Route::get('/tag/{id}', [TagController::class, 'show']);
     Route::put('/tag/{id}', [TagController::class, 'update']);
     Route::delete('/tag/{id}', [TagController::class, 'delete']);
 
+    Route::put('/update-user', [AuthController::class, 'update']);
 });
 
 Route::get('/cart', [CartController::class,'index']);
@@ -53,9 +58,18 @@ Route::delete('/cart', [CartController::class,'destroyAll']);
 //     return Tag::with('product')->get();
 // });
 
-Route::get('/homeproducts', [ProductController::class, 'home']);
+Route::get('/recentproducts', [ProductController::class, 'recent']);
+Route::get('/relatedproducts/{slug}', [ProductController::class, 'related']);
 Route::get('/category_products/{slug}', [ProductController::class, 'category_products']);
 Route::get('/category', [CategoryController::class, 'index']);
-Route::get('/product/{id}', [ProductController::class, 'show']);
+Route::get('/product/{slug}', [ProductController::class, 'show']);
 
-Route::post('/register', [\App\Http\Controllers\AuthController::class, 'register']);
+Route::post('/favourite/{id}', [FavouriteController::class, 'add']);
+Route::delete('/favourite/{id}', [FavouriteController::class, 'remove']);
+
+Route::get('/orders', [OrderController::class, 'index']);
+Route::post('/orders/add', [OrderController::class, 'create']);
+Route::post('/orders/payment/{id}', [OrderController::class, 'payment']);
+Route::put('/orders/{id}/add', [OrderController::class, 'update']);
+
+Route::post('/register', [AuthController::class, 'register']);

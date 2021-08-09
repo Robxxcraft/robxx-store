@@ -17,7 +17,8 @@ class CartController extends Controller
     public function cart_page()
     {
         $cart = Cart::with(['product'])->where('user_id', Auth::user()->id)->orderBy('created_at', 'desc')->paginate(5);
-        return response()->json($cart, 200);
+        $index = $cart->firstItem();
+        return response()->json(['cart' => $cart, 'index' => $index], 200);
     }
 
     public function store(Request $request)
@@ -25,27 +26,24 @@ class CartController extends Controller
         $item = Cart::where('user_id', Auth::user()->id)->where('product_id', $request->product_id);
 
         if ($item->count()) {
-            $item->increment('quantity');
-            $item = $item->first();
+            $item->increment('quantity', $request->quantity);
         } else {
             $item = Cart::create([
                 'user_id' => Auth::user()->id,
                 'product_id' => $request->product_id,
-                'quantity' => 1,
+                'quantity' => $request->quantity,
             ]);
         }
 
-        return response()->json([
-            'quantity' => $item->quantity,
-            'product' => $item->product
-        ]);
+        return response()->json(['message' => 'Cart added'],201);
     }
 
     public function destroy($productId)
     {
-    	$item = Cart::where('product_id', $productId)->delete();
-
-        return response(null, 200);
+    	$item = Cart::findOrFail($productId);
+        $item->delete();
+       
+        return response()->json($item, 200);
     }
 
     public function destroyAll()

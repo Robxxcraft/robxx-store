@@ -52,6 +52,33 @@
                     <v-list-item-title>Manage Products</v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
+
+            <v-list-item router :to="{name: 'AdminOrders'}">
+                <v-list-item-action>
+                    <v-icon small>mdi-cart</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                    <v-list-item-title>Manage Orders</v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item router :to="{name: 'Transactions'}">
+                <v-list-item-action>
+                    <v-icon small>mdi-cart</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                    <v-list-item-title>Manage Transaction</v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
+
+            <v-list-item router :to="{name: 'ManageUsers'}">
+                <v-list-item-action>
+                    <v-icon small>mdi-email</v-icon>
+                </v-list-item-action>
+                <v-list-item-content>
+                    <v-list-item-title>Manage Users</v-list-item-title>
+                </v-list-item-content>
+            </v-list-item>
         </v-list>
         <v-layout row style="position: absolute; bottom: 2%; right: 10%;" align-center>
             <v-flex class="md-10">
@@ -85,7 +112,7 @@
 export default {
   data(){
        return {
-           drawer: true
+           drawer: false
        }
   },
   methods: {

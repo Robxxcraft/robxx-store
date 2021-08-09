@@ -21,7 +21,8 @@ const opts = {
     theme: {
         themes: {
             light: {
-                background: colors.grey.lighten4,
+                background: colors.grey.lighten3,
+                background2: colors.grey.lighten4,
             }
         }
     }

@@ -1,0 +1,107 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\Http\Request;
+use App\Models\Cart;
+use App\Models\Order;
+use App\Models\OrderDetails;
+use App\Models\UserDetail;
+use App\Models\Transaction;
+use Illuminate\Support\Facades\Auth;
+
+class OrderController extends Controller
+{
+    public function index()
+    {
+        $orders = Order::where('user_id', Auth::user()->id)->with('orderdetails')->get();
+        
+        return response()->json($orders, 200);
+    }
+
+    public function create(Request $request)
+    {
+        $order = Order::create([
+            'user_id' => Auth::user()->id,
+            'address' => $request->address,
+            'city' => $request->city,
+            'province' => $request->province,
+            'zipcode' => $request->zipcode,
+            'phone_number' => $request->phone_number,
+            'total_quantity' => $request->total_quantity,
+            'total_amount' => $request->total_amount,
+            'payment' => $request->payment,
+            'order_status' => 'Pending',
+        ]);
+
+        $carts = Cart::where('user_id', Auth::user()->id)->get();
+
+        if (isset($order)) {
+            foreach ($carts as $cart) {
+                OrderDetails::create([
+                    'order_id' => $order->id,
+                    'product_id' => $cart->product_id,
+                    'quantity' => $cart->quantity,
+                ]);
+            }
+        }
+
+        // if ($order->payment == 'Midtrans') {
+        //    
+        // }
+        
+        return response()->json(['message' => 'Order Created Successfully'], 200);
+    }
+
+    public function payment($id)
+    {
+            $order = Order::findOrFail($id);
+            $userDetails = UserDetail::where('user_id', Auth::user()->id)->first();
+            \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
+            \Midtrans\Config::$isProduction = false;
+            \Midtrans\Config::$isSanitized = true;
+            \Midtrans\Config::$is3ds = true;
+            
+            $params = [
+                'transaction_details' => [
+                    'order_id' => rand(),
+                    'gross_amount' => $order->total_amount
+                ],
+                'customer_details' => [
+                    'first_name' => Auth::user()->first_name,
+                    'last_name' => Auth::user()->last_name,
+                    'email' => Auth::user()->email,
+                    'phone' => $userDetails->phone_number,
+                ],
+            ];
+
+            $snapToken = \Midtrans\Snap::getSnapToken($params);
+            return response()->json($snapToken,201);
+    }
+
+    public function paymentSuccess($id)
+    {
+
+        $order = Order::findOrFail($id);
+        $order->update([
+            'order_status' => 'Shipped'
+        ]);
+
+        Transaction::create([
+            'order_token' => 1, 
+            'total_amount' => 1, 
+            'total_quantity' => 1, 
+            'email' => 1, 
+            'username' => 1, 
+            'phone_number' => 1, 
+            'address' => 1
+        ]);
+
+        return response()->json('Payment Successfully', 201);
+    }
+
+    public function destroy($id)
+    {
+        # code...
+    }
+}

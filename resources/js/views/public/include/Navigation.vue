@@ -27,7 +27,7 @@
         <span class="font-weight-light ml-2">Robxx</span>
         <span class="orange--text">Store</span>
         <v-spacer></v-spacer>
-        <v-btn depressed router :to="{name: 'Cart'}">
+        <v-btn depressed color="grey lighten-3" router :to="{name: 'Cart'}">
           <template v-if="authenticated">
             <v-badge :content="cartItemCount != 0 ? cartItemCount : '0'" color="orange lighten-2">
             <v-icon>mdi-cart</v-icon>
@@ -39,7 +39,7 @@
         </v-btn>
           <v-menu rounded="lg" offset-y>
             <template v-slot:activator="{attrs, on}">
-              <v-btn depressed slot="activator" v-bind="attrs" v-on="on">
+              <v-btn depressed slot="activator" color="grey lighten-3" v-bind="attrs" v-on="on">
               <v-icon>mdi-dots-vertical</v-icon>
             </v-btn>
             </template>
@@ -86,7 +86,10 @@
           Categories
         </v-tab>
         <v-tab router to="/products" style="text-decoration: none">
-          Product
+          Products
+        </v-tab>
+        <v-tab router to="/orders" style="text-decoration: none">
+          Orders
         </v-tab>
         <v-tab router to="/profile" style="text-decoration: none">
           Profile
@@ -119,17 +122,18 @@ export default {
     },
     ...mapGetters({
       authenticated: "auth/authenticated",
-      user: 'auth/user',
     }),
   },
   methods: {
     ...mapActions({
       signOut: "auth/logout",
     }),
-    logout() {
-      axios.post("/logout").then(() => {
+    async logout() {
+      await axios.post("/logout").then(() => {
         this.signOut();
       });
+
+      this.$router.replace({name: 'Login'})
     },
   }
 };
