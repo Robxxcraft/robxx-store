@@ -43,11 +43,16 @@ class CartController extends Controller
     	$item = Cart::findOrFail($productId);
         $item->delete();
        
-        return response()->json($item, 200);
+        return response()->json('Cart Removed', 200);
     }
 
-    public function destroyAll()
+    public function cartClear()
     {
-        Cart::truncate();
+        $carts = Auth::user()->cart;
+        foreach ($carts as $cart) {
+            $cart = Cart::find($cart->id);
+            $cart->delete();
+        }
+        return response()->json('Cart Cleared', 200);
     }
 }

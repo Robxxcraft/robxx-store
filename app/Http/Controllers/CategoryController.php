@@ -16,12 +16,17 @@ class CategoryController extends Controller
 
     public function create(Request $request)
     {
+
+        $request->validate([
+            'name' => 'required|min:3|unique:categories,name'
+        ]);
+
         Category::create([
             'name' => $request->name,
             'slug' => Str::slug($request->name)
         ]);
             
-        return response()->json(['success' => 'category added successfully', 201]);
+        return response()->json(['success' => 'category added successfully'],201);
     }
 
     public function edit($id)
@@ -33,6 +38,10 @@ class CategoryController extends Controller
 
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name' => 'required|min:3|unique:categories,name,'.$id
+        ]);
+
         $category = Category::findOrFail($id);
 
         $category->update([
@@ -48,7 +57,7 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $category->delete();
 
-        return response()->json(['success' => 'category deleted sucessfullfy']);
+        return response()->json('category deleted sucessfullfy');
     }
     
 }

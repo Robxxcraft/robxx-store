@@ -1,35 +1,16 @@
 <template>
   <nav>
-    <!-- <v-toolbar flat class="rounded-b-lg" color="orange lighten-2">
-      <v-app-bar-nav-icon class="white--text"></v-app-bar-nav-icon>
-      <v-toolbar-title class="white--text">
-        <span class="font-weight-light">Robxx</span>
-        <span class="orange--text">Store</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-toolbar-items>
-        <v-btn depressed color="amber lighten-3">
-          <v-icon class="white--text">mdi-cart</v-icon>
-          <div class="white--text">{{cartItemCount}}</div>
-        </v-btn>
-        <v-btn
-          depressed
-          color="amber lighten-5"
-          router
-          :to="{ name: 'Admin' }"
-          style="text-decoration: none"
-          ><p class="my-auto amber--text">Admin</p></v-btn
-        >
-      </v-toolbar-items>
-    </v-toolbar> -->
     <v-card flat :style="{ background: $vuetify.theme.themes.light.background }">
       <v-card-title>
         <span class="font-weight-light ml-2">Robxx</span>
         <span class="orange--text">Store</span>
         <v-spacer></v-spacer>
-        <v-btn depressed color="grey lighten-3" router :to="{name: 'Cart'}">
+        <v-btn fab depressed color="grey lighten-3" class="mr-1" :to="{name: 'Favourited'}" style="text-decoration: none;">
+           <v-icon>mdi-heart</v-icon>
+        </v-btn>
+        <v-btn depressed color="grey lighten-3" class="mr-1" :to="{name: 'Cart'}" style="text-decoration: none;">
           <template v-if="authenticated">
-            <v-badge :content="cartItemCount != 0 ? cartItemCount : '0'" color="orange lighten-2">
+            <v-badge :content="cartItemCount != 0 ? cartItemCount : '0'" color="orange darken-2">
             <v-icon>mdi-cart</v-icon>
             </v-badge>
           </template>
@@ -53,13 +34,13 @@
                 </v-list-item>
               </template>
               <template v-else>
-                <v-list-item>
-                  <v-list-item-title class="grey--text">Profile</v-list-item-title>
+                <v-list-item router :to="{name: 'DashboardAdmin'}" style="text-decoration: none;">
+                  <v-chip class="rounded-0 white" style="cursor: pointer;"><v-list-item-title class="grey--text" >Admin</v-list-item-title></v-chip>
                 </v-list-item>
                 <v-list-item>
                   <v-dialog v-model="dialog" width="500">
                     <template v-slot:activator="{on, attrs}">
-                       <v-list-item-title class="red--text" v-bind="attrs" v-on="on" depressed>Logout</v-list-item-title>
+                       <v-chip class="rounded-0 white"><v-list-item-title class="red--text" v-bind="attrs" v-on="on" depressed>Logout</v-list-item-title></v-chip>
                     </template>
                     <v-card>
                       <v-card-title class="text-h5 font-weight-bold grey red--text lighten-3">Sign Out</v-card-title>
@@ -80,21 +61,21 @@
           </v-menu>
       </v-card-title>
       <v-card-text>
-        <v-tabs color="amber" class="rounded-lg">
-        <v-tab to="/" style="text-decoration: none"><v-icon>mdi-home</v-icon></v-tab>
-        <v-tab router to="/categories" style="text-decoration: none">
+        <v-tabs color="orange" class="rounded-lg" light>
+        <v-tab to="/" style="text-decoration: none; text-transform: none;"><v-icon>mdi-home</v-icon></v-tab>
+        <v-tab router :to="{name: 'AllCategories'}" style="text-decoration: none; text-transform: none;">
           Categories
         </v-tab>
-        <v-tab router to="/products" style="text-decoration: none">
+        <v-tab router :to="{name: 'AllProducts'}" style="text-decoration: none; text-transform: none;">
           Products
         </v-tab>
-        <v-tab router to="/orders" style="text-decoration: none">
+        <v-tab router :to="{name: 'Orders'}" style="text-decoration: none; text-transform: none;">
           Orders
         </v-tab>
-        <v-tab router to="/profile" style="text-decoration: none">
+        <v-tab router :to="{name: 'Profile'}" style="text-decoration: none; text-transform: none;">
           Profile
         </v-tab>
-        <v-tab router to="/about" style="text-decoration: none">
+        <v-tab router :to="{name: 'About'}" style="text-decoration: none; text-transform: none;">
           About
         </v-tab>
       </v-tabs>
@@ -104,11 +85,10 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from "vuex";
 export default {
   data(){
     return {
-      dialog: false
+      dialog: false,
     }
   },
   mounted() {
@@ -120,20 +100,16 @@ export default {
     cartItemCount() {
       return this.$store.getters["cart/cartItemCount"];
     },
-    ...mapGetters({
-      authenticated: "auth/authenticated",
-    }),
+    authenticated(){
+      return this.$store.getters["auth/authenticated"];
+    },
   },
   methods: {
-    ...mapActions({
-      signOut: "auth/logout",
-    }),
     async logout() {
-      await axios.post("/logout").then(() => {
-        this.signOut();
+      await this.$store.dispatch("auth/logout").then(() => {
+          location.reload()
+          this.$router.replace({name: 'Login'})
       });
-
-      this.$router.replace({name: 'Login'})
     },
   }
 };

@@ -34,7 +34,9 @@
                         :rules="nameRules"
                         label="Name"
                         filled
+                        rounded
                         color="orange"
+                        class="rounded-0"
                         required
                       ></v-text-field>
                       <v-text-field
@@ -42,14 +44,18 @@
                         :rules="emailRules"
                         label="Email"
                         filled
+                        rounded
                         color="orange"
+                        class="rounded-0"
                         required
                       ></v-text-field>
+                      <ckeditor />
                       <v-textarea
                         v-model="textArea"
                         :rules="textAreaRules"
                         label="Message"
                         filled
+                        rounded
                         color="orange"
                         required
                       ></v-textarea>
@@ -95,17 +101,17 @@ export default {
       name: "",
       nameRules: [
         (v) => !!v || "Name required",
-        (v) => (v && v.length >= 6) || "Name min 6",
+        (v) => (v && v.length >= 3) || "Name min 6 characters",
       ],
       email: "",
       emailRules: [
         (v) => !!v || "Email required",
-        (v) => /.+@.+\..+/.test(v) || "Email not valid",
+        (v) => /.+@.+\..+/.test(v) || "Email must be valid",
       ],
       textArea: "",
       textAreaRules: [
         (v) => !!v || "Text required",
-        (v) => (v && v.length >= 10) || "Text min 10",
+        (v) => (v && v.length >= 10) || "Text min 10 characters",
       ],
       lazy: false,
     };

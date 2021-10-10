@@ -1,50 +1,4 @@
-<template>
-  <!-- <div>
-      <div class="card">
-          <div class="card-header">Edit Product</div>
-          <div class="card-body">
-              <div class="container">
-                  <form @submit.prevent="updateProduct" enctype="multipart/form-data">
-                      <div class="form-group">
-                          <label for="title">Title</label>
-                          <input type="text" name="title" v-model="form.title" class="form-control">
-                      </div>
-                      <div class="form-group">
-                          <label for="description">Description</label>
-                          <textarea type="text" name="description" v-model="form.description" class="form-control"></textarea>
-                      </div>
-                      <div class="form-group">
-                          <label for="description">Category</label>
-                          <select name="category_id" v-model="form.category_id" class="form-control">
-                              <option value="0" disabled>Choose Category</option>
-                              <option v-for="(category, index) in getCategories" :key="index" :value="category.id">{{category.name}}</option>
-                          </select>
-                      </div>
-                       <div class="form-group">
-                          <label for="price">Price</label>
-                          <input type="number" name="price" v-model="form.price" class="form-control">
-                      </div>
-                       <div class="form-group">
-                          <label for="photo">Photo</label>
-                          <div class="row">
-                              <div class="col-8">
-                                  <input type="file" name="photo" id="photo" class="form-control-file" @change="upload">
-                              </div>
-                          </div>
-                          
-                      </div>
-                       <div class="form-group">
-                          <label for="stok">Stok</label>
-                          <input type="number" name="stok" v-model="form.stok" class="form-control">
-                      </div>
-                      <button type="submit" class="btn btn-primary">Update</button>
-                  </form>
-              </div>
-          </div>
-      </div>
-  </div> -->
-
-
+<template> 
             <v-form @submit.prevent="updateProduct">
                 <v-container>
                     <h3>Update Product</h3>
@@ -112,7 +66,7 @@ export default {
     },
     mounted(){
         this.$store.dispatch('category/getCategories')
-        axios.get(`/api/product/${this.$route.params.id}`).then(res => {
+        axios.get(`/api/product/${this.$route.params.id}/edit`).then(res => {
            this.form.title = res.data.title;
            this.form.description = res.data.description;
            this.form.category_id = res.data.category_id;

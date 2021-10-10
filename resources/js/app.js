@@ -9,13 +9,19 @@ require('./bootstrap')
 import Vue from 'vue'
 import router from './router'
 import store from './store'
+import moment from "moment";
+import CKEditor from "ckeditor4-vue";
 
-import '@mdi/font/css/materialdesignicons.css'
-import Vuetify from 'vuetify'
-import 'vuetify/dist/vuetify.min.css'
-import colors from 'vuetify/lib/util/colors'
+import '@mdi/font/css/materialdesignicons.css';
+import Vuetify from 'vuetify';
+import 'vuetify/dist/vuetify.min.css';
+import colors from 'vuetify/lib/util/colors';
 
-Vue.use(Vuetify)
+import Toasted from "vue-toasted";
+
+Vue.use(Vuetify);
+Vue.use(CKEditor);
+Vue.use(Toasted);
 
 const opts = {
     theme: {
@@ -26,9 +32,32 @@ const opts = {
             }
         }
     }
-    
 }
 
+Vue.filter('timeformat', (arg) => {
+    return moment(arg).format('MMMM Do, YYYY');
+});
+
+Vue.filter('sortlength', (text, length, suffix) => {
+    if(text.length >= 50){
+        return text.substring(0, length)+suffix;
+    }
+    return text
+});
+
+Vue.filter('sortlength', (text, suffix) => {
+    if(text.length >= 50){
+        return text.substring(0, 50)+suffix;
+    }
+    return text
+});
+
+Vue.filter('titlelength', (text, suffix) => {
+    if(text.length >= 25){
+        return text.substring(0, 25)+suffix;
+    }
+    return text
+});
 /**
  * The following block of code may be used to automatically register your
  * Vue components. It will recursively scan this directory for the Vue

@@ -14,9 +14,10 @@ class TagController extends Controller
         return response()->json($tags, 200);
     }
 
-    public function tagProducts()
+    public function tagProducts($slug)
     {
-        $tags = Tag::all();
+        $tagProducts = Tag::with('product')->where('slug', $slug)->first();
+        $tags = $tagProducts->product;
         return response()->json($tags, 200);
     }
 

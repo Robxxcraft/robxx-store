@@ -9,9 +9,6 @@ export default {
     get_categories(state){
       return state.categories;
     },
-    get_categories_products(state){
-      return state.categories.product;
-    },
   },
   mutations: {
     SET_CATEGORIES(state, data){
@@ -30,6 +27,7 @@ export default {
       },
       deleteCategory({commit}, id){
         axios.delete(`/api/category/${id}`).then(() =>{
+          
           commit('DELETE_CATEGORY', id)
         })
       }

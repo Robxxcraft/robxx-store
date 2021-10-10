@@ -2,28 +2,41 @@
   <v-card>
     <v-card-title>
       Products
+    </v-card-title>
+    <v-card-actions class="mb-3">
       <v-spacer></v-spacer>
-      <v-text-field
+      <v-text-field filled rounded
         v-model="search"
         append-icon="mdi-magnify"
         label="Search"
         single-line
         hide-details
+        class="mx-2 rounded-0"
+        color="orange"
       ></v-text-field>
-    </v-card-title>
+      <v-btn :to="{name:'CreateProduct'}" text style="text-decoration: none"><v-icon class="mx-4">mdi-plus-circle-outline</v-icon></v-btn>
+      <v-btn fab text><v-icon  class="mx-2">mdi-dots-vertical</v-icon></v-btn>
+    </v-card-actions>
     <v-data-table
       :headers="headers"
       :items="getProducts"
       :search="search"
     >
-    <template v-slot:[`item.tags`]="{item}">
-        <li v-for="tg in item.tag">
+    
+    <template v-slot:[`item.description`]="{item}" width="1000px;">
+        {{item.description | sortlength("...")}}
+    </template>
+    <template v-slot:[`item.tags`]="{item}" width="20px;">
+        <v-chip small class="ma-1" v-for="(tg, index) in item.tag" :key="index">
             {{tg.name}}
-        </li>
+        </v-chip>
+    </template>
+    <template v-slot:[`item.date`]="{item}">
+        {{item.created_at | timeformat}}
     </template>
     <template v-slot:[`item.action`]="{item}">
-        <router-link :to="{name: 'EditProduct', params: {id: item.id}}">Edit</router-link>
-        <a href="#" @click.prevent="deleteProduct(item.id)">Delete</a>
+        <v-btn small depressed class="blue accent-2 white--text ma-1" router :to="{name: 'EditProduct', params: {id: item.id}}" style="text-decoration: none;" title="Edit"><v-icon>mdi-pencil</v-icon></v-btn>
+        <v-btn small depressed class="red accent-2 white--text ma-1" @click.prevent="deleteProduct(item.id)" title="Delete"><v-icon>mdi-delete</v-icon></v-btn>
     </template>
     </v-data-table>
   </v-card>
@@ -36,14 +49,15 @@
         search: '',
         headers: [
           { text: '#', align: 'start', value: 'id'},
-          { text: 'Title', value: 'title' },
+          { text: 'Title', value: 'title'},
           { text: 'Description', value: 'description' },
           { text: 'Category', value: 'category.name' },
           { text: 'Price', value: 'price' },
-          { text: 'Photo', value: 'photo' },
+          { text: 'Photo', value: 'photo', sortable: false },
           { text: 'User', value: 'user.first_name' },
-          { text: 'Tag', value: "tags" },
-          { text: 'Action', value: "action" },
+          { text: 'Tag', value: "tags", sortable: false },
+          { text: 'Date', value: 'date', sortable: false },
+          { text: 'Action', value: "action", sortable: false },
         ]
       }
     },
@@ -57,7 +71,12 @@
     },
     methods: {
         deleteProduct(id){
-        this.$store.dispatch('product/deleteProduct', id)
+        this.$store.dispatch('product/deleteProduct', id).finally(()=>{
+          this.$toasted.show("Product Deleted Successfully", {
+            type: 'success',
+            duration: '2000'
+          })
+        })
         }
   }
   }

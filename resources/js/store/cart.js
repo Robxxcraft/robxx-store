@@ -40,7 +40,7 @@ export default {
         let cartExitst = state.cart.find(item => {
             return item.product.id === product.id;
         });
-    
+
         if(cartExitst){
             cartExitst.quantity += quantity;
             return;
@@ -64,12 +64,11 @@ export default {
         let index_page = state.cart_page.findIndex(pro => pro.id == product.id)
         state.cart_page.splice(index_page, 1);
 
-
         let index = state.cart.findIndex(pro => pro.id == product.id)
         state.cart.splice(index, 1)
     },
     
-    CLEAR_CART_ITEM(state){
+    CLEAR_CART(state){
         state.cart = [];
     }
   },
@@ -100,10 +99,10 @@ export default {
         axios.delete(`/api/cart/${product.id}`)
     },
     
-    clearCartItem({commit}){
-        commit('CLEAR_CART_ITEM');
+    clearCart({commit}){
+        commit('CLEAR_CART');
     
-        axios.delete('/api/cart/');
+        axios.delete('/api/cart-clear/');
     }
   }
 }

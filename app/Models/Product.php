@@ -14,7 +14,7 @@ class Product extends Model
 
     protected $fillable = ['title', 'slug', 'description', 'category_id', 'price', 'stok', 'user_id', 'photo'];
 
-    // protected $casts = ['favourited_count' => 'boolean'];
+    protected $casts = ['favourited_count' => 'boolean'];
     
     public function category(){
         return $this->belongsTo(Category::class);
@@ -33,6 +33,6 @@ class Product extends Model
     }
 
     public function favourited(){
-        return $this->hasOne(Favourite::class)->where('user_id', Auth::user()->id);
+        return $this->hasOne(Favourite::class)->where('user_id', isset(Auth::user()->id) ? Auth::user()->id : 0);
     }
 }

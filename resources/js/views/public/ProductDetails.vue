@@ -2,69 +2,76 @@
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
     <v-main>
       <Navigation />
-      <v-row>
+      <section class="mx-4">
+        <v-row>
         <v-col md="9">
-          <v-container>
-            <v-card height="100%" class="rounded-lg mt-3" flat>
-              <v-btn @click="$router.go(-1)" class="rounded-br-xl" depressed><v-icon>mdi-arrow-left-thick</v-icon> Back</v-btn>
+            <v-card height="100%" class="rounded-lg" flat>
+              <v-btn @click="$router.go(-1)" class="rounded-br-xl" depressed><v-icon>mdi-arrow-left-thick</v-icon></v-btn>
               <v-row>
                 <v-col cols="12" sm="4">
                     <v-container>
-                      <v-img width="100%" height="350" :src="'/images/' + getProduct.photo" class="rounded-lg mx-auto my-auto"></v-img>
+                      <v-img :src="'/images/' + getProduct.photo" class="rounded-lg mx-auto my-auto fill-height" width="100px"></v-img>
                     </v-container>
                 </v-col>
                 <v-col cols="12" sm="8" class="px-10">
                   <v-card-text>
-                    <v-app-bar class="justify-end"  flat color="rgba(0,0,0,0)">
+                    <v-app-bar class="justify-end" flat color="white">
                       <v-spacer></v-spacer>
                           <template v-if="getProduct.favourited_count == true">
-                          <v-icon color="red" @click="unFavourite(getProduct.id)">mdi-heart</v-icon>
+                          <v-icon color="red" @click="unFavourite(getProduct.id)" :disabled="disable">mdi-heart</v-icon>
+                          
                         </template>
                         <template v-else>
-                          <v-icon color="red" @click="addFavourite(getProduct.id)">mdi-heart-outline</v-icon>
+                          <v-icon color="red" @click="addFavourite(getProduct.id)" :disabled="disable">mdi-heart-outline</v-icon>
                         </template>
+                        <div class="ml-2 font-weight-bold grey--text">
+                            {{getProduct.favourite_count}}
+                        </div>
                     </v-app-bar>
                     <h3>{{ getProduct.title }}</h3>
-                    <h5 class="subheading" v-if="getProduct.category">{{getProduct.category.name}}</h5>
-                    <p class="grey--text my-2">
+                    <h5 class="subtitle-1 grey--text grey--darken-4" v-if="getProduct.category">{{getProduct.category.name}}</h5>
+                    <p class="grey--text my-5">
                       {{ getProduct.description }}
                     </p>
                   <v-row>
-                    <v-col md="3">
-                      <div class="title">Price</div>
-                      <div class="caption"><b>${{getProduct.price}}</b></div>
+                    <v-col md="4">
+                      <div class="title">Price
+                      <p class="caption grey--text text--accent-4"><b>${{getProduct.price}}</b></p></div>
                     </v-col>
-                    <v-col md="3">
-                      <div class="title">Stock</div>
-                      <div class="caption"><b>{{getProduct.stok}}</b></div>
+                    <v-col md="4">
+                      <div class="title">Stock
+                      <template v-if="getProduct.stok >= 0"><p class="caption grey--text text--accent-4"><b>{{getProduct.stok}}</b></p></template>
+                      <template v-else><p class="caption "><v-chip class="rounded-0 red--text" outlined>Out Of Stock</v-chip></p></template></div>
+                    </v-col>
+                    <v-col md="4">
+                      <div class="title">Date
+                      <p class="caption grey--text text--accent-4"><b>{{getProduct.created_at|timeformat}}</b></p></div>
                     </v-col>
                   </v-row>
                   <v-chip-group class="my-2">
-                    <v-chip v-for="(tag, index) in getProduct.tag" :key="index">{{tag.name}}</v-chip>
+                    <v-chip outlined color="orange accent-2" v-for="(tag, index) in getProduct.tag" :key="index" @click="tagProducts(tag.slug)">{{tag.name}}</v-chip>
                   </v-chip-group>
                   </v-card-text>
                   <v-card-actions>
-                     <v-text-field label="Quantity" shaped flat color="orange" filled v-model="quantity"></v-text-field>
+                     <v-text-field label="Quantity" shaped flat color="orange accent-2" :counter="getProduct.stok >= 0" filled v-model="quantity"></v-text-field>
                     <v-spacer></v-spacer>
-                   <v-btn depressed class="mx-2 white--text orange" right @click="addToCart(getProduct)">
+                   <v-btn depressed class="mx-2 white--text orange accent-2" :disabled="getProduct.stok <= 0" right @click="addToCart(getProduct)">
                       <v-icon>mdi-cart-plus</v-icon> <b>Add to cart</b>
                     </v-btn>
                   </v-card-actions>
                 </v-col>
               </v-row>
             </v-card>
-          </v-container>
         </v-col>
         <v-col md="3">
-          <v-container>
            <v-card class="rounded-lg" flat>
-                  <v-card-title>
+                  <v-card-subtitle>
                     <v-subheader>Recent Product</v-subheader>
-                  </v-card-title>
+                    <v-divider></v-divider>
+                  </v-card-subtitle>
                   <v-card-text>
-                    <div  v-for="(recent, index) in getRecentProducts" :key="index">
-                      <v-divider></v-divider>
-                      <v-list-item>
+                    <div  v-for="(recent, index) in getRecentProducts" :key="index" class="my-n4 my-auto">
+                      <v-list-item >
                       <v-list-item-avatar>
                         <v-img :src="'/images/'+recent.photo"></v-img>
                       </v-list-item-avatar>
@@ -74,12 +81,13 @@
                         <v-list-item-subtitle>{{recent.description}}</v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
+                    <v-divider></v-divider>
                     </div>
                   </v-card-text>
             </v-card>
-          </v-container>
         </v-col>
       </v-row>
+      </section>
       <Footer />
     </v-main>
   </v-app>
@@ -91,7 +99,8 @@ import Footer from "./include/Footer.vue";
 export default {
   data(){
     return {
-      quantity: 1
+      quantity: 1,
+      disable: false
     }
   },
   components: {
@@ -115,15 +124,30 @@ export default {
     favs(){
       this.fav = this.$store.getters["product/isFavourite"];
     },
-    addFavourite(id){
-      axios.post(`/api/favourite/${id}`).then(()=>{
+    async addFavourite(id){
+      if (this.$store.getters["auth/authenticated"] == false) {
+        return this.$router.replace({ name: "Login" });
+      }
+
+      this.disable = true
+      
+      await axios.post(`/api/favourite/${id}`).then(()=> {
         this.$store.commit('product/FAVOURITE', id)
+      }).finally(() => {
+        this.disable = false
       })
     },
-    unFavourite(id){
-      axios.delete(`/api/favourite/${id}`).then(()=>{
+    async unFavourite(id){
+      if (this.$store.getters["auth/authenticated"] == false) {
+        return this.$router.replace({ name: "Login" });
+      }
+      
+      this.disable = true
+      await axios.delete(`/api/favourite/${id}`).then(() => {
         this.$store.commit('product/UNFAVOURITE', id)
-      })
+        }).finally(()=> { 
+          this.disable = false 
+        })
     },
     addToCart(product) {
       if (this.$store.getters["auth/authenticated"] == false) {
@@ -134,6 +158,9 @@ export default {
           quantity: this.quantity,
         });
 
+    },
+    tagProducts(slug){
+      this.$router.replace({name: 'TagProducts', params: slug})
     }
   }
 };

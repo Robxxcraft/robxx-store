@@ -19,7 +19,7 @@ class ProductController extends Controller
 
     public function recent()
     {
-        $products = Product::with(['category', 'favourite'])->orderBy('created_at', 'DESC')->take(5)->get();
+        $products = Product::with(['category'])->orderBy('created_at', 'DESC')->take(5)->get();
         return response()->json($products, 200);
     }
 
@@ -30,7 +30,13 @@ class ProductController extends Controller
         return response()->json($products, 200);
     }
 
-    public function category_products($slug)
+    public function allproducts()
+    {
+        $products = Product::with(['category','tag'])->withCount('favourite','favourited')->get();
+        return response()->json($products, 200);
+    }
+
+    public function products_by_category($slug)
     {
         $category_id = Category::where('slug', $slug)->first(['id']);
         $products = Product::with('category')->where('category_id', $category_id->id)->get();
@@ -39,6 +45,14 @@ class ProductController extends Controller
 
     public function create(Request $request)
     {
+
+        $request->validate([
+            'title' => 'required|min:3|unique:products,title',
+            'description' => 'min:3|max:500',
+            'category_id' => 'required',
+            'price' => 'required|numeric',
+            'stok' => 'required|numeric',
+        ]);
 
         $product = Product::create([
             'title' => $request->title,
@@ -86,15 +100,29 @@ class ProductController extends Controller
         return response()->json($product, 200);
     }
 
+    public function edit($id)
+    {
+        $product = Product::with(['category','tag'])->findOrFail($id);
+        
+        return response()->json($product, 200);
+    }
+
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'title' => 'required|min:3|unique:products,title,'.$id,
+            'category_id' => 'required',
+            'price' => 'required|numeric',
+            'stok' => 'required|numeric',
+        ]);
+
         $product = Product::findOrFail($id);
 
-        // if (!empty('$product->photo')) {
-        //         unlink(public_path('images').'/'.$product->photo);
-        // } 
-
         if ($request->hasFile('photo')) {
+            if (isset($product->photo) && file_exists(public_path('images/').$product->photo)) {
+                unlink(public_path('images/').$product->photo);
+            }
+            
             $imageName = time().'.'.$request->photo->extension();
             $path = public_path('images');
             $product->photo = $imageName;
@@ -141,13 +169,12 @@ class ProductController extends Controller
         return response()->json(['success' => 'product deleted sucessfullfy']);
     }
 
-
-    public function deleteTag(Request $request, $id)
+    public function deleteTags($id)
     {
         $product = Product::findOrFail($id);
-        $product->tag()->detach($request->tag);
+        $product->tag()->detach();
 
-        return response()->json(['success' => 'tag deleted sucessfullfy']);
+        return response()->json(['success' => 'Tag deleted sucessfullfy']);
     }
     
 }

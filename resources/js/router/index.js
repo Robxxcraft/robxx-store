@@ -1,10 +1,12 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
+
 import Home from "../views/Home.vue";
 
 import Login from "../views/auth/Login.vue";
 import Register from "../views/auth/Register.vue";
 import ForgotPassword from "../views/auth/ForgotPassword.vue";
+import ResetPassword from "../views/auth/ResetPassword.vue";
 
 import AdminDashboard from "../views/admin/AdminDashboard.vue";
 import IndexDashboard from "../views/admin/IndexDashboard.vue";
@@ -22,24 +24,38 @@ import ShowOrder from "../views/admin/order/ShowOrder.vue";
 import Transactions from "../views/admin/order/Transactions.vue";
 import ManageUsers from "../views/admin/order/ManageUsers.vue";
 
+import AdminProfile from "../views/admin/AdminProfile.vue";
+import Settings from "../views/admin/Settings.vue";
+import ChangeBanner from "../views/admin/ChangeBanner.vue";
+
 import PublicDashboard from "../views/public/PublicDashboard.vue";
 import ProductDetails from "../views/public/ProductDetails.vue";
 import Products from "../views/public/AllProducts.vue";
 import Categories from "../views/public/AllCategories.vue";
-import CategoryProducts from "../views/public/CategoryProducts.vue";
-import Profile from "../views/public/Profile.vue";
-import EditProfile from "../views/public/EditProfile.vue";
+import ProductsByCategory from "../views/public/ProductsByCategory.vue";
+
+import Profile from "../views/public/profile/Profile.vue";
+import ChangePassword from "../views/public/profile/ChangePassword.vue";
+import ProfileSettings from "../views/public/profile/ProfileSettings.vue";
+
 import About from "../views/public/About.vue";
 
 import Cart from "../views/public/cart.vue";
+import Favourited from "../views/public/Favourited.vue";
 import Checkout from "../views/public/Checkout.vue";
 import Orders from "../views/public/Orders.vue";
 import OrderDetails from "../views/public/OrderDetails.vue";
 
-import store from '../store';
+import Finished from "../views/public/payment/Finished.vue";
+import Unfinished from "../views/public/payment/Unfinished.vue";
+import Errors from "../views/public/payment/Errors.vue";
+
+import Search from "../views/public/Search.vue";
+import TagProducts from "../views/public/Tag.vue";
+
+import store from '../store/';
 
 Vue.use(VueRouter);
-
 const routes = [
     {
         path: "/",
@@ -47,9 +63,15 @@ const routes = [
         component: Home
     },
     {
+        path: "/about",
+        name: "About",
+        component: About,
+    },
+    {
       path: "/register",
       name: "Register",
-      component: Register
+      component: Register,
+      meta: { guest: true },
     },
     {
         path: "/login",
@@ -61,6 +83,12 @@ const routes = [
         path: "/forgot",
         name: "ForgotPassword",
         component: ForgotPassword,
+        meta: { guest: true },
+    },
+    {
+        path: "/reset-password/:token",
+        name: "ResetPassword",
+        component: ResetPassword,
         meta: { guest: true },
     },
     {
@@ -136,6 +164,24 @@ const routes = [
                 component: ManageUsers,
                 meta: { requiresAuth: true },
             },
+            {
+                path: "settings",
+                name: "Settings",
+                component: Settings,
+                meta: { requiresAuth: true },
+            },
+            {
+                path: "settings/banner/:id",
+                name: "ChangeBanner",
+                component: ChangeBanner,
+                meta: { requiresAuth: true },
+            },
+            {
+                path: "profile",
+                name: "AdminProfile",
+                component: AdminProfile,
+                meta: { requiresAuth: true },
+            },
         ]
     },
     {
@@ -160,23 +206,26 @@ const routes = [
         children: [
             {
                 path: ":slug",
-                name: "CategoryProducts",
-                component: CategoryProducts,
+                name: "ProductsByCategory",
+                component: ProductsByCategory,
             } 
         ]
     },
+
     {
         path: "/orders",
         name: "Orders",
         component: Orders,
         meta: { requiresAuth: true },
     },
+
     {
         path: "/orders/:id/details",
         name: "OrderDetails",
         component: OrderDetails,
         meta: { requiresAuth: true },
     },
+
     {
         path: "/profile",
         name: "Profile",
@@ -185,27 +234,69 @@ const routes = [
     },
 
     {
-        path: "/profile/edit",
-        name: "EditProfile",
-        component: EditProfile,
+        path: "/change-password",
+        name: "ChangePassword",
+        component: ChangePassword,
         meta: { requiresAuth: true },
     },
+
     {
-        path: "/about",
-        name: "About",
-        component: About,
+        path: "/profile-settings",
+        name: "ProfileSettings",
+        component: ProfileSettings,
+        meta: { requiresAuth: true },
     },
+
+    {
+        path: "/orders/finished",
+        name: "Finished",
+        component: Finished,
+        meta: { requiresAuth: true },
+    },
+
+    {
+        path: "/orders/unfinished",
+        name: "Unfinished",
+        component: Unfinished,
+        meta: { requiresAuth: true },
+    },
+
+    {
+        path: "/orders/error",
+        name: "Errors",
+        component: Errors,
+        meta: { requiresAuth: true },
+    },
+
     {
         path: "/cart",
         name: "Cart",
         component: Cart,
         meta: { requiresAuth: true },
     },
+    
+    {
+        path: "/favourited",
+        name: "Favourited",
+        component: Favourited,
+        meta: { requiresAuth: true },
+    },
+
     {
         path: "/checkout",
         name: "Checkout",
         component: Checkout,
         meta: { requiresAuth: true },
+    },
+    {
+        path: "/search/:slug",
+        name: "Search",
+        component: Search,
+    },
+    {
+        path: "/tag/:slug",
+        name: "TagProducts",
+        component: TagProducts,
     },
 
     // route level code-splitting
@@ -215,35 +306,31 @@ const routes = [
 ];
 
 
-
-
 const router = new VueRouter({
     mode: "history",
     routes
 });
 
+
 function loggedIn() {
   return store.getters['auth/authenticated']
 }
 
+
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
-        //this router require auth, check if logged in
-        //if not, redirect to login page
         if (!loggedIn()) {
             next({
                 path: "/login",
-                query: { redirect: to.fullPath }
+                query: { redirect: to.fullPath }  
             });
         } else {
             next();
         }
     } else if (to.matched.some(record => record.meta.guest)) {
         if (loggedIn()) {
-            //so if user loggedIn true -> redirect to dashboard
             next({
-                path: "/admin",
-                query: { redirect: to.fullPath }
+                path: "/admin/dashboard",
             });
         } else {
             next();

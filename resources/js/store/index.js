@@ -6,6 +6,10 @@ import product from "./product";
 import cart from "./cart";
 import order from "./order";
 import tag from "./tag";
+import search from "./search";
+import user from "./user";
+import transaction from "./transaction";
+
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -15,6 +19,9 @@ export default new Vuex.Store({
         product,
         cart,
         order,
-        tag
+        tag,
+        search,
+        user,
+        transaction
     }
 });

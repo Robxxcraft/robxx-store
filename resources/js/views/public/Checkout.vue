@@ -9,7 +9,7 @@
                 <h3 class="title">Checkout</h3>
               </v-card-title>
               <v-card-text>
-                <div class="text-center"><h4>${{cartTotalPrice}}</h4></div>
+                <div class="text-center"><h5 class="font-weight-bold grey--text text-accent-4 mb-4">${{cartTotalPrice}}</h5><h4>Shipping Information</h4><v-divider></v-divider></div>
                 <v-row>
                   <v-col>
                     <v-textarea filled rounded label="Address" color="orange" v-model="form.address">

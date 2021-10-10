@@ -1,6 +1,6 @@
 <template>
     <v-footer dark padless>
-        <v-card flat tile class="orange lighten-2 white--text text-center">
+        <v-card flat tile class="orange darken-2 white--text text-center">
           <v-card-text>
             <v-btn class="mx-4 white--text" icon><v-icon size="24px">mdi-facebook</v-icon></v-btn>
             <v-btn class="mx-4 white--text" icon><v-icon size="24px">mdi-twitter</v-icon></v-btn>

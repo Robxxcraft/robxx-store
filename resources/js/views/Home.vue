@@ -8,21 +8,11 @@
       <Navigation />
 
       <section class="mx-4">
-        <v-carousel continuous cycle :show-arrows="false" hide-delimiter-background delimiter-icon="mdi-minus" height="300">
-          <v-carousel-item>
-            <v-img max-width="100%" height="100%" src="/assets/images/b-bg1.png"></v-img>
-          </v-carousel-item>
-          <v-carousel-item src="/assets/images/b-bg2.jpg">
-            
-          </v-carousel-item>
-          <v-carousel-item src="/assets/images/b-bg3.jpg">
-            
-          </v-carousel-item>
-        </v-carousel>
+        
       </section>
         <section>
           <v-row wrap class="mx-1 my-4">
-          <v-col cols="12" sm="3">
+          <v-col cols="12" md="3">
             <v-card class="rounded-lg" flat>
               <v-list three-line>
                 <template>
@@ -46,18 +36,32 @@
               </v-list>
             </v-card>
           </v-col>
-          <v-col cols="12" sm="6">
-            <v-card class="rounded-lg" flat>
+          <v-col cols="12" md="6">
+            <v-carousel height="150px" continuous cycle :show-arrows="false" hide-delimiter-background delimiter-icon="mdi-minus" class="rounded-lg">
+          <v-carousel-item>
+            <v-img style=" width: 100%; max-height:auto;"  src="/assets/images/b-bg1.png"></v-img>
+          </v-carousel-item>
+          <v-carousel-item>
+            <v-img style=" width: 100%; max-height:auto;"  src="/assets/images/b-bg2.jpg"></v-img>
+          </v-carousel-item>
+          <v-carousel-item>
+            <v-img style=" width: 100%; max-height:auto;"  src="/assets/images/b-bg3.jpg"></v-img>
+          </v-carousel-item>
+        </v-carousel>
+            <v-card class="rounded-lg mt-5" flat>
+              <!-- <v-card-title>
+                Most Bought
+              </v-card-title>
               <v-row>
                 <v-col cols="12" sm="4" align="center">
                   <v-avatar size="300" tile>
                     <v-img src="5.png"></v-img>
                   </v-avatar>
                   <v-btn fab icon class="ml-14"
-                    ><v-icon>fas fa-minus</v-icon></v-btn
+                    ><v-icon>mdi-minus</v-icon></v-btn
                   >
                   1
-                  <v-btn fab icon><v-icon>fas fa-plus</v-icon></v-btn>
+                  <v-btn fab icon><v-icon>mdi-plus</v-icon></v-btn>
                 </v-col>
                 <v-col cols="12" sm="8" class="px-10">
                   <v-app-bar flat color="rgba(0,0,0,0)">
@@ -115,18 +119,24 @@
                   >
                   <strong class="ml-2">$234</strong>
                 </v-col>
-              </v-row>
+              </v-row> -->
+              <v-card-title>
+                On Sale <span></span>
+              </v-card-title>
+
             </v-card>
           </v-col>
-          <v-col cols="12" sm="3">
+          <v-col cols="12" md="3">
             <v-card class="rounded-lg" flat>
               <v-card-title>
                 <v-text-field
+                v-model="searchtext"
                     label="Search"
-                    append-icon="mdi-shopping-outline"
+                    append-icon="mdi-magnify"
                     filled
                     rounded
                     color="orange"
+                    @click:append="search"
                   ></v-text-field>
               </v-card-title>
               <v-card-text>
@@ -135,7 +145,7 @@
                 </div>
                 <v-divider></v-divider>
                 <div class="caption">
-                  <v-chip class="mx-1 my-1" v-for="(tag, index) in getTags" :key="index">{{tag.name}}</v-chip>
+                  <v-chip class="mx-1 my-1" outlined color="orange accent-2" v-for="(tag, index) in getTags" :key="index" @click="tagProducts(tag.slug)">{{tag.name}}</v-chip>
                 </div>
               </v-card-text>
             </v-card>
@@ -213,6 +223,27 @@
       </section>
       <Footer />
     </v-main>
+    <v-bottom-navigation  value="1" color="orange" fixed>
+      <v-btn router :to="{name: 'Home'}" class="text-decoration-none">
+        <span>Home</span>
+        <v-icon>mdi-home</v-icon>
+      </v-btn>
+
+      <v-btn depressed>
+        <span>Categories</span>
+        <v-icon>mdi-list</v-icon>
+      </v-btn>
+
+      <v-btn  depressed>
+        <span>Products</span>
+        <v-icon>mdi-list</v-icon>
+      </v-btn>
+
+      <v-btn>
+        <span>Profile</span>
+        <v-icon>mdi-account</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
   </v-app>
 </template>
 
@@ -244,6 +275,7 @@ export default {
         (v) => (v && v.length >= 10) || "Text min 10",
       ],
       lazy: false,
+      searchtext: null
     };
   },
   mounted() {
@@ -256,13 +288,23 @@ export default {
     },
     getTags(){
       return this.$store.state.tag.tags;
-    }
+    },
   },
   methods: {
     submit() {},
+    search(){
+      var title = this.searchtext
+      var slug = title.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+/, '-').replace(/-+$/, '')
+      this.$router.replace({name: 'Search', params:{ slug: slug}})
+
+      var s = slug.replace(/[-]/gi, ' ')
+      var w = s.charAt(0).toUpperCase() + s.slice(1);
+      console.log(w)
+      
+    },
     addToCart(product) {
       if (this.$store.getters["auth/authenticated"] == false) {
-        this.$router.replace({ name: "Login" });
+        this.$router.replace({ name: "Login" });     
       } else {
         this.$store.dispatch("cart/addProductToCart", {
           product: product,
@@ -270,6 +312,9 @@ export default {
         });
       }
     },
+    tagProducts(slug){
+      this.$router.push({name: 'TagProducts', params: slug})
+    }
   },
 };
 </script>

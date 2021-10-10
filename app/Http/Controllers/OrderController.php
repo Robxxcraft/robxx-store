@@ -21,6 +21,19 @@ class OrderController extends Controller
 
     public function create(Request $request)
     {
+        $request->validate([
+            'user_id' => 'required',
+            'address' => 'required|unique:products',
+            'city' => 'required',
+            'province' => 'required|numeric',
+            'zipcode' => 'required|numeric',
+            'phone_number' => 'required|numeric',
+            'total_quantity' => 'required|numeric',
+            'total_amount' => 'required|numeric',
+            'payment' => 'required|numeric',
+            'order_status' => 'required|numeric'
+        ]);
+
         $order = Order::create([
             'user_id' => Auth::user()->id,
             'address' => $request->address,
@@ -81,7 +94,6 @@ class OrderController extends Controller
 
     public function paymentSuccess($id)
     {
-
         $order = Order::findOrFail($id);
         $order->update([
             'order_status' => 'Shipped'
