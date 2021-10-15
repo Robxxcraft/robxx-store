@@ -26,7 +26,7 @@ class CategoryController extends Controller
             'slug' => Str::slug($request->name)
         ]);
             
-        return response()->json(['success' => 'category added successfully'],201);
+        return response()->json('Category added successfully', 201);
     }
 
     public function edit($id)
@@ -49,7 +49,7 @@ class CategoryController extends Controller
             'slug' => Str::slug($request->name)
         ]);
 
-        return response()->json(['success' => 'category updated successfully']);
+        return response()->json('Category updated successfully', 201);
     }
 
     public function delete($id)
@@ -57,7 +57,7 @@ class CategoryController extends Controller
         $category = Category::findOrFail($id);
         $category->delete();
 
-        return response()->json('category deleted sucessfullfy');
+        return response()->json('Category deleted sucessfullfy', 200);
     }
     
 }

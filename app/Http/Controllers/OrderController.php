@@ -14,7 +14,14 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::where('user_id', Auth::user()->id)->with('orderdetails')->get();
+        $orders = Order::where('user_id', Auth::user()->id)->with('orderdetails.product')->get();
+        
+        return response()->json($orders, 200);
+    }
+
+    public function adminOrders()
+    {
+        $orders = Order::with('user')->get();
         
         return response()->json($orders, 200);
     }
@@ -22,18 +29,22 @@ class OrderController extends Controller
     public function create(Request $request)
     {
         $request->validate([
-            'user_id' => 'required',
-            'address' => 'required|unique:products',
+            'address' => 'required',
             'city' => 'required',
-            'province' => 'required|numeric',
+            'province' => 'required',
             'zipcode' => 'required|numeric',
             'phone_number' => 'required|numeric',
             'total_quantity' => 'required|numeric',
             'total_amount' => 'required|numeric',
-            'payment' => 'required|numeric',
-            'order_status' => 'required|numeric'
+            'payment' => 'required',
         ]);
 
+        if ($request->payment == 'Midtrans') {
+            $order_stts = 'Pending';
+        } else {
+            $order_stts = 'Accepted';
+        }
+        
         $order = Order::create([
             'user_id' => Auth::user()->id,
             'address' => $request->address,
@@ -44,7 +55,7 @@ class OrderController extends Controller
             'total_quantity' => $request->total_quantity,
             'total_amount' => $request->total_amount,
             'payment' => $request->payment,
-            'order_status' => 'Pending',
+            'order_status' => $order_stts,
         ]);
 
         $carts = Cart::where('user_id', Auth::user()->id)->get();
@@ -57,13 +68,19 @@ class OrderController extends Controller
                     'quantity' => $cart->quantity,
                 ]);
             }
+
+            $carts = Auth::user()->cart;
+            foreach ($carts as $cart) {
+                $cart = Cart::find($cart->id);
+                $cart->delete();
+            }
+
+
+            return response()->json('Order Created Successfully', 201);
         }
 
-        // if ($order->payment == 'Midtrans') {
-        //    
-        // }
-        
-        return response()->json(['message' => 'Order Created Successfully'], 200);
+        return response()->json('Some Error Occured',500);
+
     }
 
     public function payment($id)
@@ -114,6 +131,21 @@ class OrderController extends Controller
 
     public function destroy($id)
     {
-        # code...
+        $order = Order::find($id);
+        $order->delete();
+
+        return response()->json('Order Deleted Successfully', 201);
     }
+
+
+    public function cancel($id)
+    {
+        $order = Order::find($id);
+        $order->order_status = 'Cancelled';
+        $order->update();
+
+        return response()->json('Order Cancelled', 201);
+    }
+
+
 }

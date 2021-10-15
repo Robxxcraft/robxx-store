@@ -1,8 +1,4 @@
 <template>
-  <!-- <div>
-    Selamat Datang di robxx store
-    <router-link :to="{name: 'Admin'}">Admin</router-link>
-  </div> -->
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
     <v-main>
       <Navigation />
@@ -12,32 +8,36 @@
       </section>
         <section>
           <v-row wrap class="mx-1 my-4">
-          <v-col cols="12" md="3">
-            <v-card class="rounded-lg" flat>
-              <v-list three-line>
+          <v-col cols="12" md="3" :hidden="$vuetify.breakpoint.smAndDown">
+            <v-card class="rounded-lg" height="420" flat>
+              <v-list>
                 <template>
-                  <v-subheader class="title">Recent Product</v-subheader>
-                  <v-list-item v-for="(recent, index) in getRecentProducts" :key="index">
-                    <v-list-item-avatar color="#EFF4F1" size="70" rounded>
-                      <img :src="'/images/'+recent.photo" />
-                    </v-list-item-avatar>
-                    <v-list-item-content>
-                      <v-list-item-title><router-link style="text-decoration: none;"  :to="{
+                  
+                  <v-card-title class="text-h6 grey--text text--darken-2">Recent Products</v-card-title>
+                  <div>
+
+                  <v-list-item v-for="(recent, index) in getRecentProducts" :key="index" style="text-decoration: none;"  :to="{
                           name: 'ProductDetails',
                           params: { slug: recent.slug }
-                        }">
+                        }" three-line>
+                    <v-list-item-avatar color="#EFF4F1" size="70" rounded>
+                      <v-img :src="recent.photo ? `/images/${recent.photo}` : 'assets/images/blank.png'" style=" width: 100%; max-height:auto;"></v-img>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                      <v-list-item-title>
                           <h6 class="black--text">{{recent.title}}</h6>
-                        </router-link></v-list-item-title>
+                      </v-list-item-title>
                       <v-list-item-subtitle class="pb-2">{{recent.category.name}}</v-list-item-subtitle>
                       <div class="font-weight-bold">${{recent.price}}</div>
                     </v-list-item-content>
                   </v-list-item>
+                  </div>
                 </template>
               </v-list>
             </v-card>
           </v-col>
           <v-col cols="12" md="6">
-            <v-carousel height="150px" continuous cycle :show-arrows="false" hide-delimiter-background delimiter-icon="mdi-minus" class="rounded-lg">
+            <v-carousel :height="$vuetify.breakpoint.smAndDown ? 'auto' : '150px;'" continuous cycle :show-arrows="false" hide-delimiter-background delimiter-icon="mdi-minus" class="rounded-lg">
           <v-carousel-item>
             <v-img style=" width: 100%; max-height:auto;"  src="/assets/images/b-bg1.png"></v-img>
           </v-carousel-item>
@@ -47,87 +47,60 @@
           <v-carousel-item>
             <v-img style=" width: 100%; max-height:auto;"  src="/assets/images/b-bg3.jpg"></v-img>
           </v-carousel-item>
-        </v-carousel>
-            <v-card class="rounded-lg mt-5" flat>
-              <!-- <v-card-title>
-                Most Bought
-              </v-card-title>
-              <v-row>
-                <v-col cols="12" sm="4" align="center">
-                  <v-avatar size="300" tile>
-                    <v-img src="5.png"></v-img>
-                  </v-avatar>
-                  <v-btn fab icon class="ml-14"
-                    ><v-icon>mdi-minus</v-icon></v-btn
-                  >
-                  1
-                  <v-btn fab icon><v-icon>mdi-plus</v-icon></v-btn>
-                </v-col>
-                <v-col cols="12" sm="8" class="px-10">
-                  <v-app-bar flat color="rgba(0,0,0,0)">
-                    <v-spacer></v-spacer>
-                    <v-icon color="grey lighten-1">fas fa-heart</v-icon>
-                  </v-app-bar>
-                  <h3 class="grey--text">Lidah Buaya</h3>
-                  <p class="grey--text">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Reiciendis consequuntur dolorum, quibusdam eum pariatur,
-                    laboriosam quia provident placeat corrupti repellat odio at.
-                    Hic commodi .
-                  </p>
-                  <h5 class="grey--text">Overview</h5>
+            </v-carousel>
+            <v-card class="rounded-lg mt-5" flat height="420">
+              <v-app-bar flat color="rgba(0,0,0,0)">
+                <v-row class="pa-3 mt-2">
+                    <span class="font-weight-medium ma-3">On Sale</span>
+                 <v-card color="blue darken-3 mx-1" elevation="3" class="pa-2">
+                  <span class="white--text font-weight-bold text-h6">{{days}}</span>
+                  <span class="white--text font-weight-bold subtitle-2 ml-n1">d</span>
+              </v-card>
+
+              <v-card color="blue darken-3 mx-1" elevation="3" class="pa-2">
+                  <span class="white--text font-weight-bold text-h6">{{hours}}</span>
+                  <span class="white--text font-weight-bold subtitle-2 ml-n1">h</span>
+              </v-card>
+              <v-card color="blue darken-3 mx-1" elevation="3" class="pa-2">
+                  <span class="white--text font-weight-bold text-h6">{{minutes}}</span>
+                  <span class="white--text font-weight-bold subtitle-2 ml-n1">m</span>
+              </v-card>
+              <v-card color="blue darken-3 mx-1" elevation="3" class="pa-2">
+                  <span class="white--text font-weight-bold text-h6">{{seconds}}</span>
+                  <span class="white--text font-weight-bold subtitle-2 ml-n1">s</span>
+              </v-card>
+                </v-row>
+              </v-app-bar>
+              <v-card-text>
+                <v-list-item three-line>
+                  <v-list-item-avatar rounded size="120" color="grey lighten-4">
+                    <v-icon>mdi-account</v-icon>
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-hover>
+
+                    <v-list-item-title class="text-h5">
+                      <router-link :to="{name : 'ProductDetails', params: {slug: 'oooo'}}" class="black--text" style="text-decoration: none;"><span>Caramel Capuchino</span></router-link>
+                    </v-list-item-title>
+                    </v-hover>
+                    <v-list-item-subtitle class="mt-1">Caramel with syrupsawdbiwbkjbwfkbqw</v-list-item-subtitle>
+                    <div>Stock<span class="font-weight-bold ml-3">100</span></div>
+                    <div>Price<span class="font-weight-bold ml-3">$90.00</span></div>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-card-actions>
                   <v-row>
-                    <v-col cols="12" sm="6">
-                      <v-app-bar flat color="rgba(0,0,0,0)">
-                        <v-avatar color="#FDD3E9" size="30" class="mr-3">
-                          <v-icon small color="grey darken-1"
-                            >far fa-calendar-alt</v-icon
-                          >
-                        </v-avatar>
-                        30 Days
-                      </v-app-bar>
-                      <v-app-bar flat color="rgba(0,0,0,0)">
-                        <v-avatar color="#FDD3E9" size="30" class="mr-3">
-                          <v-icon small color="grey darken-1"
-                            >fas fa-compress-alt</v-icon
-                          >
-                        </v-avatar>
-                        4.7 Diameter
-                      </v-app-bar>
-                    </v-col>
-                    <v-col cols="12" sm="6">
-                      <v-app-bar flat color="rgba(0,0,0,0)">
-                        <v-avatar color="#FDD3E9" size="30" class="mr-3">
-                          <v-icon small color="grey darken-1"
-                            >fas fa-temperature-low</v-icon
-                          >
-                        </v-avatar>
-                        70% Humidity
-                      </v-app-bar>
-                      <v-app-bar flat color="rgba(0,0,0,0)">
-                        <v-avatar color="#FDD3E9" size="30" class="mr-3">
-                          <v-icon small color="grey darken-1"
-                            >fas fa-tint</v-icon
-                          >
-                        </v-avatar>
-                        4.2° Height
-                      </v-app-bar>
+                    <v-spacer></v-spacer>
+                    <v-col class="text-right">
+                      <v-btn plain color="orange darken-3" depressed style="text-transform: none;">Add To Cart</v-btn>
                     </v-col>
                   </v-row>
-                  <v-btn rounded color="warning"
-                    ><v-icon left>fas fa-plus</v-icon>Add to cart</v-btn
-                  >
-                  <strong class="ml-2">$234</strong>
-                </v-col>
-              </v-row> -->
-              <v-card-title>
-                On Sale <span></span>
-              </v-card-title>
-
+                </v-card-actions>
+              </v-card-text>
             </v-card>
           </v-col>
           <v-col cols="12" md="3">
-            <v-card class="rounded-lg" flat>
+            <v-card class="rounded-lg" height="590" flat>
               <v-card-title>
                 <v-text-field
                 v-model="searchtext"
@@ -137,15 +110,16 @@
                     rounded
                     color="orange"
                     @click:append="search"
+                    @keyup.enter="search"
                   ></v-text-field>
               </v-card-title>
               <v-card-text>
-                <div class="title"> 
+                <div class="text-h6"> 
                   Tags
                 </div>
                 <v-divider></v-divider>
                 <div class="caption">
-                  <v-chip class="mx-1 my-1" outlined color="orange accent-2" v-for="(tag, index) in getTags" :key="index" @click="tagProducts(tag.slug)">{{tag.name}}</v-chip>
+                  <v-chip class="mx-1 my-1" outlined color="orange accent-2" v-for="(tag, index) in getTags" :key="index" @click="tagProducts(tag.slug)" v-text="tag.name"></v-chip>
                 </div>
               </v-card-text>
             </v-card>
@@ -223,36 +197,18 @@
       </section>
       <Footer />
     </v-main>
-    <v-bottom-navigation  value="1" color="orange" fixed>
-      <v-btn router :to="{name: 'Home'}" class="text-decoration-none">
-        <span>Home</span>
-        <v-icon>mdi-home</v-icon>
-      </v-btn>
-
-      <v-btn depressed>
-        <span>Categories</span>
-        <v-icon>mdi-list</v-icon>
-      </v-btn>
-
-      <v-btn  depressed>
-        <span>Products</span>
-        <v-icon>mdi-list</v-icon>
-      </v-btn>
-
-      <v-btn>
-        <span>Profile</span>
-        <v-icon>mdi-account</v-icon>
-      </v-btn>
-    </v-bottom-navigation>
+    <BottomNavigation :hidden="!$vuetify.breakpoint.smAndDown"/>
   </v-app>
 </template>
 
 <script>
 import Navigation from "./public/include/Navigation.vue";
+import BottomNavigation from "./public/include/BottomNavigation.vue";
 import Footer from "./public/include/Footer.vue";
 export default {
   components: {
     Navigation,
+    BottomNavigation,
     Footer,
   },
   name: "Home",
@@ -275,12 +231,19 @@ export default {
         (v) => (v && v.length >= 10) || "Text min 10",
       ],
       lazy: false,
-      searchtext: null
+      searchtext: null,
+      days: '00',
+      hours: '00',
+      minutes: '00',
+      seconds: '00',
     };
   },
   mounted() {
     this.$store.dispatch("product/getRecentProducts");
     this.$store.dispatch("tag/getTags");
+  },
+  created(){
+      setInterval(this.updateTimer, 1000)
   },
   computed: {
     getRecentProducts() {
@@ -296,11 +259,6 @@ export default {
       var title = this.searchtext
       var slug = title.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+/, '-').replace(/-+$/, '')
       this.$router.replace({name: 'Search', params:{ slug: slug}})
-
-      var s = slug.replace(/[-]/gi, ' ')
-      var w = s.charAt(0).toUpperCase() + s.slice(1);
-      console.log(w)
-      
     },
     addToCart(product) {
       if (this.$store.getters["auth/authenticated"] == false) {
@@ -313,7 +271,27 @@ export default {
       }
     },
     tagProducts(slug){
-      this.$router.push({name: 'TagProducts', params: slug})
+      this.$router.push({name: 'TagProducts', params: {slug : slug}})
+    },
+    updateTimer(){
+      let future = Date.parse("January 1, 2022 00:00:00");
+      let now = new Date();
+      let diff = future - now;
+      
+      var secs = Math.floor(diff / 1000)
+      var mins = Math.floor(diff / (1000 * 60 ))
+      var hours = Math.floor(diff / (1000*60*60))
+      var days = Math.floor(diff / (1000*60*60*24))
+      
+      var d = days;
+      var h = hours - days * 24
+      var m = mins - hours * 60
+      var s = secs - mins * 60
+
+      this.days = d
+      this.hours = h
+      this.minutes = m
+      this.seconds = s
     }
   },
 };

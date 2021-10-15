@@ -27,6 +27,7 @@ import ManageUsers from "../views/admin/order/ManageUsers.vue";
 import AdminProfile from "../views/admin/AdminProfile.vue";
 import Settings from "../views/admin/Settings.vue";
 import ChangeBanner from "../views/admin/ChangeBanner.vue";
+import Sale from "../views/admin/Sale.vue";
 
 import PublicDashboard from "../views/public/PublicDashboard.vue";
 import ProductDetails from "../views/public/ProductDetails.vue";
@@ -174,6 +175,12 @@ const routes = [
                 path: "settings/banner/:id",
                 name: "ChangeBanner",
                 component: ChangeBanner,
+                meta: { requiresAuth: true },
+            },
+            {
+                path: "sale/:id",
+                name: "Sale",
+                component: Sale,
                 meta: { requiresAuth: true },
             },
             {

@@ -56,21 +56,20 @@ export default {
     },
     methods: {
         saveCategory(){
-            this.loading = true
             axios.post('/api/category/add', this.form).then(response => {
                 this.loading = false
-                this.$toasted.show(response.data, {
-                        type: 'success',
-                        duration: '2000'
-                    })
-                this.$router.replace({name: 'Categories', props: {success: response.data.success}})
+                this.$toasted.show(response.data.success, {
+                    type: 'success',
+                    duration: '2000'
+                })
+                this.$router.replace({name: 'Categories'})
             }).catch(errors => { 
                 this.loading = false
                 this.errors = errors.response.data.errors
                 this.$toasted.show("Some Error Occurred", {
-                        type: 'error',
-                        duration: '2000'
-                    })})
+                    type: 'error',
+                    duration: '2000'
+                })})
         }
     }
 

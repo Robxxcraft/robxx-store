@@ -43,18 +43,18 @@ export default {
           { text: 'Total Quantity', value: 'total_quantity' },
           { text: 'Total Amount', value: 'total_amount' },
           { text: 'Payment', value: 'payment' },
-          { text: 'User', value: 'user_id' },
+          { text: 'User', value: 'user.first_name' },
           { text: 'Date', value: 'date' , sortable: false},
           { text: 'Actions', value: 'action', sortable: false},
         ]
     }
   },
   mounted(){
-    this.$store.dispatch('order/getOrders');
+    this.$store.dispatch('order/getAdminOrders');
   },
   computed: {
       getOrders(){
-        return this.$store.state.order.orders
+        return this.$store.state.order.admin_orders
       }
   },
   methods: {

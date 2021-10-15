@@ -14,31 +14,26 @@ class SettingController extends Controller
         return response()->json($categories, 200);
     }
 
-    public function create(Request $request)
-    {
-        $setting = new Setting();
 
-        if ($request->hasFile('banner')) {
-            $imageName = time().'.'.$request->banner->extension();
-            $path = public_path('admin/banner');
-            $setting->banner = $imageName;
-            $setting->save();
-            $request->banner->move($path, $imageName);
+    public function changeBanner(Request $request,$id)
+    {
+        $banner = Setting::find($id);
+        
+        if ($request->hasFile('photo')) {
+
+            $imageName = time().'.'.$request->photo->extension();
+            $path = public_path('user/photo');
+            $userDetail->photo = $imageName;
+            $userDetail->save();
+            $request->photo->move($path, $imageName);
         }
-            
-        return response()->json(['success' => 'banner added/changed successfully', 201]);
+
+        return response()->json('Banner Changed', 201);
     }
 
-    public function edit($id)
+    public function changeLogo(Request $request, $id)
     {
-        $category = Category::findOrFail($id);
-
-        return response()->json($category, 200);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $category = Category::findOrFail($id);
+        $category = Setting::findOrFail($id);
 
         $category->update([
             'name' => $request->name,
@@ -46,14 +41,6 @@ class SettingController extends Controller
         ]);
 
         return response()->json(['success' => 'category updated successfully']);
-    }
-
-    public function delete($id)
-    {
-        $category = Category::findOrFail($id);
-        $category->delete();
-
-        return response()->json(['success' => 'category deleted sucessfullfy']);
     }
     
 }

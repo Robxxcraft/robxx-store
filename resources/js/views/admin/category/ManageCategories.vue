@@ -16,15 +16,11 @@
       ></v-text-field>
       <v-btn :to="{name:'CreateCategory'}" text style="text-decoration: none"><v-icon class="mx-4">mdi-plus-circle-outline</v-icon></v-btn>
       <v-btn fab text><v-icon  class="mx-2">mdi-dots-vertical</v-icon></v-btn>
-      <v-btn @click="check = true">Pilih</v-btn>
     </v-card-actions>
     <v-data-table
       :headers="headers"
       :items="getCategories"
       :search="search">
-    <template style="width: 2px" v-slot:[`item.select`]="{item}">
-      <v-checkbox color="orange"></v-checkbox>
-    </template>
     <template v-slot:[`item.date`]="{item}">
       {{item.created_at | timeformat}}
     </template>
@@ -42,8 +38,7 @@ export default {
     return {
       search: '',
       headers: [
-          { text: '#', align: 'start', value: 'select'},
-          { text: 'Id',  value: 'id'},
+          { text: '#',  value: 'id'},
           { text: 'Name', value: 'name' },
           { text: 'Slug', value: 'slug' },
           { text: 'Date', value: 'date' },

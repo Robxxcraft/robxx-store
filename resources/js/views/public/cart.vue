@@ -5,8 +5,10 @@
       <section class="mx-4 my-5">
           <v-card class="rounded-lg" flat>
               <v-app-bar flat color="rgba(0,0,0,0)">
+                <v-card-title>
                 <v-icon large color="orange" class="pa-3 mt-2">mdi-cart-check</v-icon>
                 <div class="font-weight-medium">Cart List</div>
+            </v-card-title>
                 <v-spacer></v-spacer>
                 <v-menu rounded="lg" offset-y>
             <template v-slot:activator="{attrs, on}">
@@ -19,10 +21,10 @@
                 <v-list-item>
                   <v-dialog v-model="dialog" width="500">
                     <template v-slot:activator="{on, attrs}">
-                       <v-btn depressed class="white" style="margin: 0;" v-bind="attrs" v-on="on"><v-icon class="red--text text--accent-2">mdi-cart-remove</v-icon></v-btn>
+                       <v-btn depressed class="red" text v-bind="attrs" v-on="on" style="text-transform: none;">Clear Cart</v-btn>
                     </template>
                     <v-card>
-                      <v-card-title class="text-h5 font-weight-bold grey red--text lighten-3">Clear Cart</v-card-title>
+                      <v-card-title class="text-h5 font-weight-bold red--text">Clear Cart</v-card-title>
                       <v-card-text>
                         <p class="mt-2 subheading">Are you sure clear all products in cart?</p>
                       </v-card-text>
@@ -52,7 +54,7 @@
                     <v-list-item-content>
 
                       <v-list-item-title>
-                          Lorem ipsum dolor sit amet consectetur adipisicing elit. A natus expedita, aliquid eius, accusamus amet aspernatur doloribus soluta, velit perferendis sint officiis commodi totam impedit? Ut dignissimos minima aut? Modi.
+                          {{cart.product.title}}
                       </v-list-item-title>
 
                       <v-list-item-subtitle>
@@ -62,7 +64,7 @@
                       <v-list-item-subtitle>
                           Quantity 
                           <span class="orange--text text--darken-3">
-                            <v-icon class="mx-2 orange--text text--darken-2" @click="decrementQty(cart.id)">mdi-minus-box</v-icon>{{cart.quantity}}<v-icon class="mx-2 orange--text text--darken-2" @click="incrementQty(cart.id)">mdi-plus-box</v-icon>
+                            <v-icon class="mx-2 orange--text text--darken-2" @click="decrementQty(cart.product.id)">mdi-minus-box</v-icon>{{cart.quantity}}<v-icon class="mx-2 orange--text text--darken-2" @click="incrementQty(cart.product.id)">mdi-plus-box</v-icon>
                           </span>
                       </v-list-item-subtitle>
 
@@ -93,13 +95,18 @@
               <v-card-actions>
                 <v-row class="text-right">
                   <v-spacer></v-spacer>
-                  <v-col md="2" sm="9">
-                  <h6 >Total Quantity :  <span>{{cartTotalQuantity}}</span></h6>
-                  <h6 >Total Price :  <span>${{cartTotalPrice}}</span></h6>
+                  <v-col lg="3" xl="3" md="3" cols="9">
+                    <v-row>
+                      <v-col>Total Quantity</v-col>
+                      <v-col><span class="font-weight-bold text-h6">{{cartTotalQuantity}}</span></v-col>
+                    </v-row>
+                    <v-row>
+                      <v-col>Total Price</v-col>
+                      <v-col><span class="font-weight-bold text-h6">${{cartTotalPrice}}</span></v-col>
+                    </v-row>
                   <div class="mt-5">
-                  <v-btn right router :to="{name: 'Checkout'}" style="text-decoration:none;" color="orange darken-2" outlined>
-                  <v-icon class="orange--text">mdi-cart</v-icon>
-                  <div class="orange--text">Checkout</div>
+                  <v-btn right router :to="{name: 'Checkout'}" style="text-decoration:none; text-transform: none;" color="orange darken-1">
+                  <span class="white--text ">Checkout</span>
                   
                 </v-btn>
                 </div>
@@ -157,10 +164,12 @@ export default {
       this.$store.dispatch("cart/getCartPageItems", page);
     },
     incrementQty(id){
-      console.log(id)
+      axios.post(`/api/cart/incr/${id}`)
+      this.$store.commit("cart/INCREMENT_QTY", id);
     },
     decrementQty(id){
-      console.log(id)
+      axios.post(`/api/cart/dcr/${id}`)
+      this.$store.commit("cart/DECREMENT_QTY", id);
     },
     async removeCart(cart){
       await this.$store.dispatch("cart/removeCart", cart);

@@ -39,87 +39,33 @@
                         </v-col>
                         <v-spacer></v-spacer>
                         <v-col class="text-right">
-                          <v-btn depressed dark color="red accent-2" style="text-transform: none;" plain>
+                          <template v-if="order.order_status == 'Cancelled'">
+                            <v-btn depressed dark color="red accent-2" style="text-transform: none;" @click="deletes(order.id)" plain>
                             <v-icon class="mr-1">mdi-delete</v-icon>
                             <span class="caption hidden-sm-and-down">Delete Order</span>
                           </v-btn>
+                          </template>
+                          <template v-else>
+                            <v-btn depressed dark color="red accent-2" style="text-transform: none;" @click="cancels(order.id)" plain>
+                            <v-icon class="mr-1">mdi-cross</v-icon>
+                            <span class="caption hidden-sm-and-down">Cancel Order</span>
+                          </v-btn>
+                          </template>
                         </v-col>
                       </v-row>
                     </v-card-actions>
               </v-card>
               </v-col>
               </v-row>
-                
-                <!-- <v-row wrap>
-                  <v-flex class="mx-2 my-5" md12 v-for="(order, index) in getOrders" :key="index">
-                  <v-card flat>
-                    <v-layout :style="{ background: $vuetify.theme.themes.light.background2 }" row wrap :class="`pa-3 ${order.order_status}`">
-                      <v-row class="text-center">
-                        <v-col md="1">
-                          <div>
-                            Order ID
-                          </div>
-                          <div class="mt-2 grey--text caption">
-                            <b>{{order.id}}</b>
-                          </div>
-                        </v-col>
-                        <v-col md="2">
-                          <div>
-                            Total Amount
-                          </div>
-                          <div class="mt-2 grey--text caption">
-                            <b>${{order.total_amount}}</b>
-                          </div>
-                        </v-col>
-                        <v-col md="2">
-                          <div>
-                            Total Quantity
-                          </div>
-                          <div class="mt-2 grey--text caption">
-                            <b>{{order.total_quantity}}</b>
-                          </div>
-                        </v-col>
-                        <v-col md="1">
-                          <div>
-                            Date
-                          </div>
-                          <div class="mt-2 grey--text caption">
-                            <b>{{order.created_at | timeformat}}</b>
-                          </div>
-                        </v-col>
-                         <v-col md="1">
-                          <div>
-                            Payment
-                          </div>
-                          <div class="mt-2 grey--text caption">
-                            <b>{{order.payment}}</b>
-                          </div>
-                        </v-col>
-                        <v-col md="1">
-                          <div>
-                            Status
-                          </div>
-                          <div class="mt-2 grey--text caption">
-                            <b>{{order.order_status}}</b>
-                          </div>
-                        </v-col>
-                        <v-col md="4">
-                          <div class="orange--text">
-                            Actions
-                          </div>
-                          <div>
-                            <v-btn depressed class="mx-1 my-1" @click="payment(order.id)" :hidden="order.payment == 'COD'">Pay</v-btn>
-                            <v-btn depressed class="mx-1 my-1" router :to="{name: 'OrderDetails', params: {id: order.id}}">Details</v-btn>
-                            <v-btn depressed class="mx-1 my-1" :hidden="order.order_status == 'Shipped'">Delete</v-btn>
-                          </div>
-                        </v-col>
-                      </v-row>
-                    </v-layout>
-                  </v-card>
-                </v-flex>
-                </v-row> -->
-              
-           
+              <template v-if="getOrders <= 0">
+                 <v-card-text>
+                   <v-card height="320" flat>
+                   <v-row align="center" justify="center">
+                   <span class="text-h5 grey--text pa-5 mt-8">Not Found</span>
+                 </v-row>
+                 </v-card>
+                 </v-card-text>
+               </template>
           </v-card>
       </section>
       <Footer />
@@ -138,7 +84,7 @@ export default {
     return {
       pending: 'Pending',
       shipped: 'Shipped',
-      accepted: 'Accepted'
+      accepted: 'Accepted',
     }
   },
   mounted() {
@@ -162,7 +108,41 @@ export default {
     payment(id){
       axios.post(`/api/orders/payment/${id}`).then(res => {
         window.snap.pay(res.data)
+      }).catch(errors => {
+        console.log(errors)
+
       })
+    },
+    cancels(id){
+      this.$store.commit('order/CANCEL_ORDER', id)
+    axios.post(`/api/orders/${id}/cancel`).then(res => {
+      
+            this.$toasted.show(res.data, {
+                    type: 'success',
+                    duration: '2000'
+                });
+          }).catch(() => {
+          this.$toasted.show("Some Error Occured", {
+                              type: 'error',
+                              duration: '2000'
+                          });
+                    })
+    
+              },
+
+    deletes(id){
+      this.$store.commit('order/DELETE_ORDER', id)
+      axios.get(`/api/orders/${id}/delete`).then(res => {
+        this.$toasted.show(res.data, {
+                    type: 'success',
+                    duration: '2000'
+                });
+      }).catch(() => {
+        this.$toasted.show("Some Error Occured", {
+                    type: 'error',
+                    duration: '2000'
+                });
+          })
     }
   }
 }

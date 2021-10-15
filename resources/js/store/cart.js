@@ -48,6 +48,28 @@ export default {
     
         return state.cart.push({product, quantity})
     },
+
+    INCREMENT_QTY(state, id){
+        let cartExitst = state.cart_page.find(item => {
+            return item.product.id === id;
+        });
+
+        if(cartExitst){
+            cartExitst.quantity++;
+            return;
+        }
+    },
+
+    DECREMENT_QTY(state, id){
+        let cartExitst = state.cart_page.find(item => {
+            return item.product.id === id
+        });
+
+        if(cartExitst.quantity > 1){
+            cartExitst.quantity--;
+            return;
+        }
+    },
     
     SET_CART(state, cartItems){
         state.cart = cartItems;

@@ -62,15 +62,18 @@
       
       <Footer />
     </v-main>
+    <BottomNavigation :hidden="!$vuetify.breakpoint.smAndDown"/>
   </v-app>
 </template>
 
 <script>
 import Navigation from "../include/Navigation.vue";
-import Footer from "../include/Footer";
+import BottomNavigation from "../include/BottomNavigation.vue";
+import Footer from "../include/Footer.vue";
 export default {
   components: {
     Navigation,
+    BottomNavigation,
     Footer,
   },
   data(){

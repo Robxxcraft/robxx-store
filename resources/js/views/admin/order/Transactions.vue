@@ -44,7 +44,7 @@ export default {
           { text: 'Total Amount', value: 'total_amount' },
           { text: 'Email', value: 'payment' },
           { text: 'Username', value: 'user_id' },
-          { text: 'Phone_number', value: 'address'},
+          { text: 'Phone number', value: 'phone_number'},
           { text: 'Address', value: 'address'},
           { text: 'Date', value: 'date' , sortable: false},
           { text: 'Actions', value: 'action', sortable: false},

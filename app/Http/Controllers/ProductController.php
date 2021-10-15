@@ -19,27 +19,26 @@ class ProductController extends Controller
 
     public function recent()
     {
-        $products = Product::with(['category'])->orderBy('created_at', 'DESC')->take(5)->get();
+        $products = Product::with('category')->orderBy('created_at', 'DESC')->take(5)->get();
         return response()->json($products, 200);
     }
 
-    public function related($slug)
+    public function related($id)
     {
-        $id = Product::where('slug', $slug)->pluck('category_id')->first();
         $products = Product::with('category')->orderBy('created_at', 'DESC')->where('category_id', $id)->take(5)->get();
         return response()->json($products, 200);
     }
 
     public function allproducts()
     {
-        $products = Product::with(['category','tag'])->withCount('favourite','favourited')->get();
+        $products = Product::with('category')->withCount('favourite','favourited')->get();
         return response()->json($products, 200);
     }
 
     public function products_by_category($slug)
     {
         $category_id = Category::where('slug', $slug)->first(['id']);
-        $products = Product::with('category')->where('category_id', $category_id->id)->get();
+        $products = Product::with('category')->withCount('favourite','favourited')->where('category_id', $category_id->id)->get();
        return response()->json($products, 200);
     }
 
@@ -48,7 +47,7 @@ class ProductController extends Controller
 
         $request->validate([
             'title' => 'required|min:3|unique:products,title',
-            'description' => 'min:3|max:500',
+            'description' => 'min:3|max:500|nullable',
             'category_id' => 'required',
             'price' => 'required|numeric',
             'stok' => 'required|numeric',
@@ -90,7 +89,7 @@ class ProductController extends Controller
             }
         }
         
-        return response()->json(['success' => 'product created successfully', 201]);
+        return response()->json('Product created successfully', 201);
     }
 
     public function show($slug)
@@ -154,7 +153,7 @@ class ProductController extends Controller
             }
         }
 
-        return response()->json(['success' => 'product updated successfully']);
+        return response()->json('Product updated successfully', 201);
     }
 
     public function delete($id)
@@ -166,7 +165,7 @@ class ProductController extends Controller
             unlink(public_path('images').'/'.$product->photo);
         }
 
-        return response()->json(['success' => 'product deleted sucessfullfy']);
+        return response()->json('Product deleted sucessfullfy', 200);
     }
 
     public function deleteTags($id)
@@ -174,7 +173,7 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
         $product->tag()->detach();
 
-        return response()->json(['success' => 'Tag deleted sucessfullfy']);
+        return response()->json('Tag deleted sucessfullfy', 200);
     }
     
 }

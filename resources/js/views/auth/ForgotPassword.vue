@@ -13,11 +13,11 @@
              <v-card-text>
                <v-form @submit.prevent="forgot">
                  <v-text-field label="Enter your email" color="orange" v-model="form.email" prepend-inner-icon="mdi-email" type="email" class="rounded-0" :error-messages="errors.email" outlined></v-text-field>
-                 <v-btn type="submit" class="rounded-0" color="orange darken-2" x-large block dark>Send</v-btn>
+                 <v-btn type="submit" class="text-h6" tile color="orange darken-2" x-large block dark style="text-transform: none;">Send</v-btn>
                </v-form>
              </v-card-text>
              <v-card-actions class="text--secondary pa-5 justify-center text-center">
-                Already have an account? <router-link :to="{name: 'Login'}" class="pl-2" style="color: #000000;"> Sign In</router-link>
+                Already have an account? <router-link :to="{name: 'Login'}" class="pl-2" style="color: #000000; text-decoration:none;"> Sign In</router-link>
              </v-card-actions>
              <v-card-actions class="mx-6 justify-center text-center">
                <p>By continuing, you agree to RobxxStore<br><b><a href="#" style="color: #000000;">Policy</a></b> and <b><a href="#" class="black--text">Term of use</a></b></p>

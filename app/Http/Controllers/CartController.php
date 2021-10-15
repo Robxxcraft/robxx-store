@@ -40,10 +40,31 @@ class CartController extends Controller
 
     public function destroy($productId)
     {
-    	$item = Cart::findOrFail($productId);
+    	$item = Cart::where('user_id', Auth::user()->id)->find($productId);
         $item->delete();
        
         return response()->json('Cart Removed', 200);
+    }
+
+    public function incrqty($id)
+    {
+    	$item = Cart::where('user_id', Auth::user()->id)->where('product_id', $id)->first();
+        $item->quantity++;
+        $item->update();
+       
+        return response()->json('Cart Incremented', 201);
+    }
+
+    public function dcrqty($id)
+    {
+    	$item = Cart::where('user_id', Auth::user()->id)->where('product_id', $id)->first();
+        if ($item->quantity <= 1) {
+            return;
+        }
+        $item->quantity--;
+        $item->update();
+       
+        return response()->json('Cart Decremented', 201);
     }
 
     public function cartClear()

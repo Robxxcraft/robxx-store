@@ -3,7 +3,7 @@
       <v-app v-if="!isLoading">
       <nav>
         <v-app-bar color="orange darken-2" flat dark app class="line" height="60px">
-          <v-app-bar-nav-icon class="hidden-sm-and-up" @click="openClose()"></v-app-bar-nav-icon>
+          <v-app-bar-nav-icon class="hidden-lg-and-up" @click="openClose()"></v-app-bar-nav-icon>
           <v-spacer></v-spacer>
           
           <v-menu rounded="lg" offset-y>

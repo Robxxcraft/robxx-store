@@ -35,8 +35,9 @@
         {{item.created_at | timeformat}}
     </template>
     <template v-slot:[`item.action`]="{item}">
-        <v-btn small depressed class="blue accent-2 white--text ma-1" router :to="{name: 'EditProduct', params: {id: item.id}}" style="text-decoration: none;" title="Edit"><v-icon>mdi-pencil</v-icon></v-btn>
+        <v-btn small depressed class="blue accent-2 white--text ma-1" :to="{name: 'EditProduct', params: {id: item.id}}" style="text-decoration: none;" title="Edit"><v-icon>mdi-pencil</v-icon></v-btn>
         <v-btn small depressed class="red accent-2 white--text ma-1" @click.prevent="deleteProduct(item.id)" title="Delete"><v-icon>mdi-delete</v-icon></v-btn>
+        <v-btn small depressed class="amber darken-1 white--text ma-1" :to="{name: 'Sale', params: {id: item.id}}" title="Sale"><v-icon>mdi-sale</v-icon></v-btn>
     </template>
     </v-data-table>
   </v-card>
@@ -48,17 +49,18 @@
       return {
         search: '',
         headers: [
-          { text: '#', align: 'start', value: 'id'},
-          { text: 'Title', value: 'title'},
-          { text: 'Description', value: 'description' },
-          { text: 'Category', value: 'category.name' },
-          { text: 'Price', value: 'price' },
-          { text: 'Photo', value: 'photo', sortable: false },
-          { text: 'User', value: 'user.first_name' },
-          { text: 'Tag', value: "tags", sortable: false },
-          { text: 'Date', value: 'date', sortable: false },
-          { text: 'Action', value: "action", sortable: false },
-        ]
+          { text: '#', align: 'start', value: 'id', width: "5%"},
+          { text: 'Title', value: 'title',width: "10%"},
+          { text: 'Description', value: 'description', width: "15%" },
+          { text: 'Category', value: 'category.name', width: "10%" },
+          { text: 'Price', value: 'price', width: "10%" },
+          { text: 'Photo', value: 'photo', sortable: false, width: "5%" },
+          { text: 'User', value: 'user.first_name', width: "10%" },
+          { text: 'Tag', value: "tags", sortable: false, width: "10%" },
+          { text: 'Date', value: 'date', sortable: false ,width: "10%"},
+          { text: 'Action', value: "action", sortable: false, width: "15%" },
+        ],
+        dialogs: false,
       }
     },
     mounted(){
@@ -77,6 +79,9 @@
             duration: '2000'
           })
         })
+        },
+        sale(id){
+          axios.post('/')
         }
   }
   }

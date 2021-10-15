@@ -128,7 +128,8 @@ export default {
         }).catch(error => console.log(error))
       },
       getRelatedProducts({commit}, id){
-        axios.get(`api/relatedproducts/${id}`).then( res => {
+        axios.get(`/api/relatedproducts/${id}`).then( res => {
+            console.log(res.data)
             commit('SET_RELATED_PRODUCTS', res.data)
         }).catch(error => console.log(error))
       },

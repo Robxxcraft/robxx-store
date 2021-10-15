@@ -9,6 +9,7 @@ import tag from "./tag";
 import search from "./search";
 import user from "./user";
 import transaction from "./transaction";
+import favourite from "./favourite";
 
 Vue.use(Vuex);
 
@@ -22,6 +23,7 @@ export default new Vuex.Store({
         tag,
         search,
         user,
-        transaction
+        transaction,
+        favourite
     }
 });

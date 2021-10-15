@@ -1,50 +1,86 @@
 <template> 
-            <v-form @submit.prevent="updateProduct">
+        <section class="ma-4">
+         <v-card flat>
+             <v-card-title>
+                 Edit Product - {{this.$route.params.id}}
+             </v-card-title>
+             <v-card-subtitle><v-divider></v-divider></v-card-subtitle>
+             <v-card-text>
                 <v-container>
-                    <h3>Update Product</h3>
                     <v-row>
-                        <v-col cols="12" md="4">
-                            <v-text-field v-model="form.title" :counter="25" label="Title"  hint="Enter Title Product" required></v-text-field>
+                        <v-col>
+                            <v-text-field v-model="form.title" color="orange" :counter="25" label="Title"  filled rounded class="rounded-0" hint="Enter Title Product" :error-messages="errors.title" required></v-text-field>
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="12" md="4">
-                            <v-textarea name="input-7-1" v-model="form.description" :counter="200" label="Description" hint="Enter Description Product"></v-textarea>
+                        <v-col>
+                            <v-textarea name="input-7-1" v-model="form.description" color="orange" :counter="500" label="Description" filled rounded class="rounded-0" hint="Enter Description Product" :error-messages="errors.description"></v-textarea>
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="12" md="4">
-                            <v-select :items="getCategories" item-value="id" item-text="name" v-model="form.category_id" label="Category" hint="Enter Category Product"></v-select>
+                        <v-col>
+                            <v-select :items="getCategories" item-value="id" item-text="name" v-model="form.category_id" color="orange" label="Category" filled rounded class="rounded-0" hint="Enter Category Product" :error-messages="errors.category_id"></v-select>
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="12" md="4">
-                            <v-text-field  v-model="form.price" :counter="10" label="Price" hint="Enter Price Product"></v-text-field>
+                        <v-col>
+                            <v-text-field  v-model="form.price" color="orange" :counter="10" label="Price" filled rounded class="rounded-0" hint="Enter Price Product" :error-messages="errors.price"></v-text-field>
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="12" md="4">
-                            <v-file-input  accept="image/png, image/jpg, image/jpeg"  prepend-icon="mdi-camera" label="Photo" @change="onImageUpload" hint="Enter Photo Product"></v-file-input>
-                            <v-img :src="img"></v-img>
+                        <v-col cols="6">
+                            <v-file-input  accept="image/png, image/jpg, image/jpeg"  prepend-icon="mdi-camera" color="orange" label="Photo" filled rounded class="rounded-0" @change="onImageUpload" hint="Enter Photo Product" :error-messages="errors.photo" style="cursor: pointer;"></v-file-input>
+                        </v-col>
+                        <v-col cols="6">
+                            <v-img :src="img" max-height="auto" contain></v-img>
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="12" md="4">
-                            <v-text-field type="number" v-model="form.stock" :counter="3" label="Stock" hint="Enter Stock Product"></v-text-field>
+                        <v-col>
+                            <v-text-field type="number" v-model="form.stock" color="orange" :counter="3" label="Stock" filled rounded class="rounded-0" hint="Enter Stock Product" :error-messages="errors.stock"></v-text-field>
                         </v-col>
                     </v-row>
                     <v-row>
-                        <v-col cols="12" md="4">
-                            <template>
-                                <v-text-field v-if="this.form.tags.length <= 4" v-model="tag" :counter="25" label="Tag" hint="Enter Tag Product" append-icon="mdi-tag-plus" @click:append="addTag"></v-text-field>
-                                <h3 v-else><v-icon left>mdi-tag-multiple</v-icon> Tags</h3>
+                        <v-col>
+                            <template v-if="this.form.tags.length <= 4">
+                                <v-text-field v-model="tag" color="orange" :counter="25" label="Tag" filled rounded class="rounded-0" hint="Enter Tag Product" append-outer-icon="mdi-tag-plus" @click:append-outer="addTag"></v-text-field>
                             </template>
-                            <v-chip-group><v-chip color="brown" style="color: white;" v-for="(tag, index) in form.tags" :key="tag" close @click:close="deleteTag(index)"><v-icon left>mdi-tag</v-icon> {{tag}}</v-chip></v-chip-group>
+                            <template v-else>
+                                <h3><v-icon left>mdi-tag-multiple</v-icon> Tags</h3>
+                            </template>
+                            <v-chip-group><v-chip color="orange" style="color: white;" v-for="(tag, index) in form.tags" :key="tag" close @click:close="deleteTag(index)"><v-icon left>mdi-tag</v-icon> {{tag}}</v-chip></v-chip-group>
                         </v-col>
                     </v-row>
-                    <v-btn type="submit" color="teal" style="color: white;">Update</v-btn>
+                    <v-card-actions class="my-5">
+                        <v-spacer></v-spacer>
+                        <v-btn right type="submit" :disabled="loading == true" class="mx-2" dark depressed color="orange darken-3" large style="text-transform: none;" @click="updateProduct">Update</v-btn>
+                        <template v-if="loading">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: none; display: block; shape-rendering: auto;" width="50px" height="50px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                        <rect x="19" y="19" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0s" calcMode="discrete"></animate>
+                                        </rect><rect x="40" y="19" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.125s" calcMode="discrete"></animate>
+                                        </rect><rect x="61" y="19" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.25s" calcMode="discrete"></animate>
+                                        </rect><rect x="19" y="40" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.875s" calcMode="discrete"></animate>
+                                        </rect><rect x="61" y="40" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.375s" calcMode="discrete"></animate>
+                                        </rect><rect x="19" y="61" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.75s" calcMode="discrete"></animate>
+                                        </rect><rect x="40" y="61" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.625s" calcMode="discrete"></animate>
+                                        </rect><rect x="61" y="61" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.5s" calcMode="discrete"></animate>
+                                        </rect>
+                                    </svg>
+                                </template>
+                    </v-card-actions>
+                    
                 </v-container>
-        </v-form>
+             </v-card-text>
+              </v-card>
+    </section>
 </template>
 
 <script>
@@ -59,6 +95,8 @@ export default {
                 stock: 1,
                 tags: []
             },
+            errors: {},
+            loading: false,
             image: null,
             img: null,
             tag: '',
@@ -98,6 +136,7 @@ export default {
             tags.splice(id, 1)
         },
         updateProduct(){
+            this.loading = true
             const config = {
                 headers: { 'content-type' : 'multipart/form-data'}
             }
@@ -115,10 +154,20 @@ export default {
                 formData.append('tags[]', this.form.tags[index]);
             }
 
-            axios.post(`/api/product/${this.$route.params.id}`, formData, config).then(() => {
+            axios.post(`/api/product/${this.$route.params.id}`, formData, config).then(response => {
+                this.loading = false
                 this.$router.replace({name: 'Products'})
-            }).catch((error) => {
-                console.log(error)
+                this.$toasted.show(response.data, {
+                    type: 'success',
+                    duration: '2000'
+                })
+            }).catch(errors => {
+                this.errors = errors.response.data.errors;
+                this.$toasted.show("Some Error Occured", {
+                    type: 'error',
+                    duration: '2000'
+                })
+                
             })
         }
     }

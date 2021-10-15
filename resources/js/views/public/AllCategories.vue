@@ -14,19 +14,28 @@
             </v-card-title>
             <v-card-text>
               <v-list>
-                <v-list-item v-for="(category, index) in getCategories" :key="index">
-                  <v-icon left>mdi-format-list-text</v-icon>
-                  <div class="mx-2" @click="getPBC"><router-link class="grey--text" style="text-decoration: none;" :to="{name: 'ProductsByCategory', params: {slug: category.slug}}"><div>{{category.name}}</div></router-link></div>
+                <div v-for="(category, index) in getCategories" :key="index">
+                  <v-list-item :to="{name: 'ProductsByCategory', params: {slug: category.slug}}" style="text-decoration: none;" @click="getPBC">
+                  <v-list-item-icon>
+                    <v-icon left>mdi-format-list-text</v-icon>
+                  </v-list-item-icon>
+                  <v-list-item-content>
+                    <v-list-item-subtitle>
+                      {{category.name}}
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
                 </v-list-item>
+                </div>
               </v-list>
             </v-card-text>
           </v-card>
           <template>
             <v-sheet
-          class="mx-auto hidden-md-and-up"
+          class="mx-auto rounded-lg hidden-md-and-up"
           elevation="0"
           max-width="800"
         >
+        <span class="text-h6 font-weight-medium ml-5">Categories</span>
           <v-slide-group
             v-model="model"
             class="pa-4"
@@ -34,25 +43,32 @@
           >
             <v-slide-item
               v-for="(category, index) in getCategories" :key="index"
-              v-slot="{ active, toggle }"
-              
             >
+            <v-hover>
+
               <v-card
-                :color="active ? 'primary' : 'grey lighten-1'"
-                class="ma-4"
-                flat
+                color="orange"
+                outlined
+                class="my-4 mx-2"
+                elevation="3"
+                router
+                :to="{name: 'ProductsByCategory', params: {slug: category.slug}}"
+                style="text-decoration: none;"
                 height="100"
                 width="100"
                 @click="getPBC"
               >
-                <v-row
-                  class="fill-height"
-                  align="center"
-                  justify="center"
-                >
-                <router-link class="grey--text text--darken-3" style="text-decoration: none;" :to="{name: 'ProductsByCategory', params: {slug: category.slug}}"><div>{{category.name}}</div></router-link>
+                <v-row>
+                  <v-col cols="12" class="text-center mt-3">
+                     <v-icon large class="white--text">mdi-format-list-text</v-icon>
+                  </v-col>
+                  <v-col cols="12" class="text-center mt-n3">
+                    <span class="subtitle-2 font-weight-bold white--text">{{category.name}}</span>
+                  </v-col>
                 </v-row>
+                    
               </v-card>
+            </v-hover>
             </v-slide-item>
           </v-slide-group>
           </v-sheet>
@@ -64,16 +80,19 @@
       </v-row>
       </section>
       <Footer />
+      <BottomNavigation :hidden="!$vuetify.breakpoint.smAndDown"/>
     </v-main>
   </v-app>
 </template>
 
 <script>
 import Navigation from "./include/Navigation.vue";
+import BottomNavigation from "./include/BottomNavigation.vue";
 import Footer from "./include/Footer.vue";
 export default {
   components: {
     Navigation,
+    BottomNavigation,
     Footer,
   },
   data(){

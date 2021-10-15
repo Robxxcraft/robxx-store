@@ -15,24 +15,29 @@
                <v-form @submit.prevent="register">
                  <v-row>
                    <v-col cols="12" xl="6" lg="6" md="6" sm="12">
-                    <v-text-field label="Your First Name" color="orange" v-model="form.first_name" name="first_name" prepend-inner-icon="mdi-email" type="text" class="rounded-0 mb-n5" :error-messages="errors.first_name" outlined></v-text-field>
+                    <v-text-field label="Your First Name" color="orange" v-model="form.first_name" name="first_name" prepend-inner-icon="mdi-account" type="text" class="rounded-0 mb-n5" :error-messages="errors.first_name" outlined></v-text-field>
                    </v-col>
                    <v-col cols="12" xl="6" lg="6" md="6" sm="12">
-                    <v-text-field label="Your Last Name" color="orange" v-model="form.last_name" name="last_name" prepend-inner-icon="mdi-email" type="text" class="rounded-0" :error-messages="errors.last_name" outlined></v-text-field>
+                    <v-text-field label="Your Last Name" color="orange" v-model="form.last_name" name="last_name" prepend-inner-icon="mdi-account" type="text" class="rounded-0" :error-messages="errors.last_name" outlined></v-text-field>
                    </v-col>
                  </v-row>
-                  <v-text-field label="Your Email" color="orange" v-model="form.email" prepend-inner-icon="mdi-mail" type="email" class="rounded-0" :error-messages="errors.email" outlined></v-text-field>
+                  <v-text-field label="Your Email" color="orange" v-model="form.email" prepend-inner-icon="mdi-email" type="email" class="rounded-0" :error-messages="errors.email" outlined></v-text-field>
                  <v-text-field label="Your Password" color="orange" v-model="form.password" prepend-inner-icon="mdi-lock" :type="showPassword ? 'text' : 'password'" :append-icon="showPassword ? 'mdi-eye' : 'mdi-eye-off'" @click:append="showPasswordHandle" class="rounded-0" :error-messages="errors.password" outlined></v-text-field>
                  <v-text-field label="Your Password Confirmation" color="orange" v-model="form.password_confirmation" prepend-inner-icon="mdi-lock" :type="showPasswordConfirmation ? 'text' : 'password'" :append-icon="showPasswordConfirmation ? 'mdi-eye' : 'mdi-eye-off'" @click:append="showPasswordConfirmationHandle" class="rounded-0" :error-messages="errors.password_confirmation" outlined></v-text-field>
-                 <v-btn type="submit" class="rounded-0" color="orange darken-2" x-large block dark>Register</v-btn>
+                 <v-btn type="submit" class="text-h6" tile color="orange darken-3" x-large block dark style="text-transform: none;">Register</v-btn>
                 <v-card-actions class="text--secondary">
-                  <v-checkbox color="black" label="Remember me"></v-checkbox>
-                  <v-spacer></v-spacer>
-                  Already have an account? <router-link :to="{name: 'Login'}" class="pl-2" style="color: #000000; text-decoration: none;" > Sign In</router-link>
-                </v-card-actions>
+                  <v-row align="center" justify="center" class="my-4">
+                    <v-col cols="12" class="mb-n3" lg="6"><v-checkbox  color="black" label="Remember me"></v-checkbox></v-col>
+                    
+                    <v-col cols="12" lg="6" class="text-center">
+                      <span style=" margin: 0; padding: 0;">Already have an account?</span>
+                      <span><v-btn class="black--text subtitle-1" text  style="text-transform: none; text-decoration: none;" :to="{name: 'Login'}">Sign In</v-btn></span>
+                    </v-col>     
+                  </v-row>
+               </v-card-actions>
                </v-form>
              </v-card-text>
-             <v-card-actions class="ml-6 mr-6 text-center">
+             <v-card-actions class="ml-6 mr-6 justify-center text-center">
                <p>By continuing, you agree to Fedorae Education's<br><b><a href="#" style="color: #000000;">Policy</a></b> and <b><a href="#" style="color: #000000;">Term of use</a></b></p>
              </v-card-actions>
            </v-card>
@@ -61,9 +66,6 @@ export default {
         password: "",
         password_confirmation: "",
       },
-      snackbar: false,
-      snackbarColor: null,
-      message: null,
       errors: {},
     };
   },

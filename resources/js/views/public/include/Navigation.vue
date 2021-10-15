@@ -1,7 +1,10 @@
 <template>
   <nav>
     <v-card flat :style="{ background: $vuetify.theme.themes.light.background }">
-      <v-card-title>
+      <v-app-bar flat color="rgba(0,0,0,0)">
+        <v-avatar height="40" width="40">
+          <v-img contain max-width="auto" src="/assets/images/logo2.png"></v-img>
+        </v-avatar>
         <span class="font-weight-light ml-2">Robxx</span>
         <span class="orange--text">Store</span>
         <v-spacer></v-spacer>
@@ -26,11 +29,11 @@
             </template>
             <v-list flat>
               <template v-if="!authenticated">
-                <v-list-item router :to="{name: 'Login'}">
-                  <v-list-item-title class="grey--text">Login</v-list-item-title>
+                <v-list-item router :to="{name: 'Login'}" style="text-decoration: none;">
+                  <v-chip class="rounded-0 white" style="cursor: pointer;"><v-list-item-title class="grey--text">Login</v-list-item-title></v-chip>
                 </v-list-item>
-                <v-list-item router :to="{name: 'Register'}">
-                  <v-list-item-title class="grey--text">Sign Up</v-list-item-title>
+                <v-list-item router :to="{name: 'Register'}" style="text-decoration: none;">
+                  <v-chip class="rounded-0 white" style="cursor: pointer;"><v-list-item-title class="grey--text">Sign Up</v-list-item-title></v-chip>
                 </v-list-item>
               </template>
               <template v-else>
@@ -50,8 +53,8 @@
                       <v-divider></v-divider>
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn class="grey--text" outlined @click.native="dialog = false" depressed>Cancel</v-btn>
-                        <v-btn class="white--text" color="red lighten-1" @click="logout" depressed>Logout</v-btn>
+                        <v-btn class="black--text" outlined @click.native="dialog = false" style="text-transform:none;" depressed>Cancel</v-btn>
+                        <v-btn class="white--text" color="red lighten-1" @click="logout" style="text-transform:none;" depressed>Logout</v-btn>
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
@@ -59,7 +62,7 @@
               </template>
             </v-list>
           </v-menu>
-      </v-card-title>
+      </v-app-bar>
       <v-card-text>
         <v-tabs color="orange" class="rounded-lg" light>
         <v-tab to="/" style="text-decoration: none; text-transform: none;"><v-icon>mdi-home</v-icon></v-tab>
@@ -105,10 +108,11 @@ export default {
     },
   },
   methods: {
-    async logout() {
-      await this.$store.dispatch("auth/logout").then(() => {
-          location.reload()
-          this.$router.replace({name: 'Login'})
+    logout() {
+      this.$store.dispatch("auth/logout").then(() => {
+          location.reload().then(()=>{
+            this.$router.replace({name: 'Login'})
+          })
       });
     },
   }

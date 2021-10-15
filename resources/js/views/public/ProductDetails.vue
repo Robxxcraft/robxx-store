@@ -49,14 +49,14 @@
                     </v-col>
                   </v-row>
                   <v-chip-group class="my-2">
-                    <v-chip outlined color="orange accent-2" v-for="(tag, index) in getProduct.tag" :key="index" @click="tagProducts(tag.slug)">{{tag.name}}</v-chip>
+                    <v-chip outlined color="orange" v-for="(tag, index) in getProduct.tag" :key="index" @click="tagProducts(tag.slug)">{{tag.name}}</v-chip>
                   </v-chip-group>
                   </v-card-text>
                   <v-card-actions>
-                     <v-text-field label="Quantity" shaped flat color="orange accent-2" :counter="getProduct.stok >= 0" filled v-model="quantity"></v-text-field>
+                     <v-text-field label="Quantity" flat color="orange accent-2" :counter="getProduct.stok >= 0" filled rounded v-model="quantity"></v-text-field>
                     <v-spacer></v-spacer>
-                   <v-btn depressed class="mx-2 white--text orange accent-2" :disabled="getProduct.stok <= 0" right @click="addToCart(getProduct)">
-                      <v-icon>mdi-cart-plus</v-icon> <b>Add to cart</b>
+                   <v-btn depressed class="mx-2 white--text orange darken-2" :disabled="getProduct.stok <= 0" right @click="addToCart(getProduct)" style="text-transform: none;">
+                       <b>Add to cart</b>
                     </v-btn>
                   </v-card-actions>
                 </v-col>
@@ -110,7 +110,9 @@ export default {
   mounted() {
     this.$store.dispatch("product/getProduct", this.$route.params.slug);
     this.$store.dispatch("product/getRecentProducts");
-    this.$store.dispatch("product/getRelatedProducts", this.$route.params.slug);
+  },
+  created(){
+    this.$store.dispatch("product/getRelatedProducts", this.$store.state.product.product.category_id);
   },
   computed: {
     getProduct() {
@@ -125,24 +127,23 @@ export default {
       this.fav = this.$store.getters["product/isFavourite"];
     },
     async addFavourite(id){
+      this.disable = true
       if (this.$store.getters["auth/authenticated"] == false) {
         return this.$router.replace({ name: "Login" });
       }
 
-      this.disable = true
-      
       await axios.post(`/api/favourite/${id}`).then(()=> {
         this.$store.commit('product/FAVOURITE', id)
       }).finally(() => {
-        this.disable = false
+      this.disable = false
       })
     },
     async unFavourite(id){
+      this.disable = true
       if (this.$store.getters["auth/authenticated"] == false) {
         return this.$router.replace({ name: "Login" });
       }
       
-      this.disable = true
       await axios.delete(`/api/favourite/${id}`).then(() => {
         this.$store.commit('product/UNFAVOURITE', id)
         }).finally(()=> { 

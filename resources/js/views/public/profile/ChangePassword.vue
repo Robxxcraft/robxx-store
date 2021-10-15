@@ -51,7 +51,7 @@
                             </div>
                      <v-card-actions>
                          <v-spacer></v-spacer>
-                         <v-btn depressed @click.prevent="submit" class="white--text orange darken-2" right>
+                         <v-btn depressed @click.prevent="submit" class="white--text orange darken-3" style="text-transform: none;" right>
                              Update
                          </v-btn>
                      </v-card-actions>
@@ -65,15 +65,18 @@
       
       <Footer />
     </v-main>
+    <BottomNavigation :hidden="!$vuetify.breakpoint.smAndDown"/>
   </v-app>
 </template>
 
 <script>
 import Navigation from "../include/Navigation.vue";
-import Footer from "../include/Footer";
+import BottomNavigation from "../include/BottomNavigation.vue";
+import Footer from "../include/Footer.vue";
 export default {
   components: {
     Navigation,
+    BottomNavigation,
     Footer,
   },
   data(){
@@ -105,7 +108,7 @@ export default {
             formData.append('current_password', this.form.current_password)
             formData.append('password', this.form.password)
             formData.append('password_confirmation', this.form.password_confirmation)
-
+            
             axios.post("/api/change-password", formData).then(response => {
                 this.$router.replace({name: 'Profile'})
                 this.$toasted.show(response.data, {

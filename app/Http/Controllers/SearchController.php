@@ -9,7 +9,7 @@ class SearchController extends Controller
 {
     public function search(Request $request)
     {
-        $search = Product::with('category')->withCount('favourite','favourited')->where('title', 'like', "%".$request->searchtext."%")->orWhere('description', 'like', "%".$request->searchtext."%")->orWhere('title', 'like', "%".$request->searchtext."%")->get();
+        $search = Product::with('category')->withCount('favourite','favourited')->Where('title', 'like', "%".$request->searchtext."%")->orwhere('description', 'like', "%".$request->searchtext."%")->orderBy('id', 'desc')->get();
         return response()->json($search,200);
     }
 }

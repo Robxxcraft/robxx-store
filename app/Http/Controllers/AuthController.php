@@ -46,6 +46,7 @@ class AuthController extends Controller
 
         $request->validate([
             'first_name' => 'required',
+            'phone_number' => 'numeric|digits:5|nullable'
         ]);
         
         $user = User::findOrFail(Auth::user()->id);
@@ -80,6 +81,7 @@ class AuthController extends Controller
                 $userDetail->save();
                 $request->photo->move($path, $imageName);
             }
+            
         } else {
             $userDetail->update([
                 'address' => $request->address,
@@ -99,7 +101,7 @@ class AuthController extends Controller
             }
         }
 
-        return response()->json('Profile Updated');
+        return response()->json('Profile Updated', 201);
     }
 
     public function reset(Request $request)
@@ -123,9 +125,7 @@ class AuthController extends Controller
         );
 
         if ($status == Password::PASSWORD_RESET) {
-            return response([
-                'message' => 'Password reset successfully'
-            ]);
+            return response('Password reset successfully', 201);
         }
 
         return response([
@@ -143,7 +143,7 @@ class AuthController extends Controller
             
         if (Hash::check($request->current_password, Auth::user()->password)) {
             Auth::user()->update(['password'=> Hash::make($request->password)]);
-            return response()->json('Your password has been updated');
+            return response()->json('Your password has been updated', 201);
         }
 
         throw ValidationException::withMessages([

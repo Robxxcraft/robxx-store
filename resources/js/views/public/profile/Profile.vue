@@ -57,7 +57,7 @@
                              <div class="my-4">
                              <v-row wrap>
                              <v-col md="6" sm="12">
-                                 <v-text-field :append-icon="form.first_name && form.first_name != 'null' ? 'mdi-check-circle-outline':''" type="text" label="First Name" filled rounded class="rounded-0" color="orange" v-model="form.first_name"></v-text-field>
+                                 <v-text-field :append-icon="form.first_name && form.first_name != 'null' ? 'mdi-check-circle-outline':''" type="text" label="First Name" :error-messages="errors.first_name" filled rounded class="rounded-0" color="orange" v-model="form.first_name"></v-text-field>
                              </v-col>
                              <v-col md="6" sm="12">
                                  <v-text-field :append-icon="form.last_name && form.last_name != 'null' ? 'mdi-check-circle-outline':''" type="text" label="Last Name" filled rounded class="rounded-0" color="orange" v-model="form.last_name"></v-text-field>
@@ -86,13 +86,13 @@
                             </v-row>
                             <v-row>
                                 <v-col md="12">
-                                 <v-text-field :append-icon="form.phone_number && form.phone_number != 'null' ? 'mdi-check-circle-outline':''" type="text" label="Phone Number" filled rounded class="rounded-0" color="orange" v-model="form.phone_number"></v-text-field>
+                                 <v-text-field :append-icon="form.phone_number && form.phone_number != 'null' ? 'mdi-check-circle-outline':''" type="text" label="Phone Number" :error-messages="errors.phone_number" filled rounded class="rounded-0" color="orange" v-model="form.phone_number"></v-text-field>
                              </v-col>
                             </v-row>
                          </div>
                         <v-card-actions>
                             <v-spacer></v-spacer>
-                            <v-btn depressed @click.prevent="submit" class="white--text orange darken-2" right>
+                            <v-btn depressed @click.prevent="submit" class="white--text orange darken-3" style="text-transform: none;" right>
                                 Save
                             </v-btn>
                         </v-card-actions>
@@ -106,15 +106,18 @@
       
       <Footer />
     </v-main>
+    <BottomNavigation :hidden="!$vuetify.breakpoint.smAndDown"/>
   </v-app>
 </template>
 
 <script>
 import Navigation from "../include/Navigation.vue";
-import Footer from "../include/Footer";
+import BottomNavigation from "../include/BottomNavigation.vue";
+import Footer from "../include/Footer.vue";
 export default {
   components: {
     Navigation,
+    BottomNavigation,
     Footer,
   },
   data(){
@@ -165,7 +168,7 @@ export default {
                     duration: '2000'
                 });
             }).catch(errors => {
-                errors.response.data.errors;
+                this.errors = errors.response.data.errors;
                 this.$toasted.show("Some Error Occured", {
                     type: 'danger',
                     duration: '2000'
