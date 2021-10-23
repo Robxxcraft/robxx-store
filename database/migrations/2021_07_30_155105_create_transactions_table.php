@@ -18,6 +18,7 @@ class CreateTransactionsTable extends Migration
             $table->string('order_token');
             $table->string('total_amount');
             $table->string('total_quantity');
+            $table->string('payment');
             $table->string('email');
             $table->string('username');
             $table->integer('phone_number');

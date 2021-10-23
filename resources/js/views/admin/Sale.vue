@@ -330,12 +330,11 @@ export default {
         .post(`/api/sale/${this.$route.params.id}`, formData)
         .then(response => {
           this.loading = false;
-          this.$router.replace({name : 'ManageProducts'})
           this.$toasted.show(response.data, {
             type: "success",
             duration: "2000",
           });
-          this.$router.replace({ name: "Categories" });
+          this.$router.replace({ name: "Products" });
         })
         .catch(errors => {
           this.loading = false;

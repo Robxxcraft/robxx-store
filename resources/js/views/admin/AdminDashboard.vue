@@ -6,23 +6,31 @@
           <v-app-bar-nav-icon class="hidden-lg-and-up" @click="openClose()"></v-app-bar-nav-icon>
           <v-spacer></v-spacer>
           
-          <v-menu rounded="lg" offset-y>
+          <v-menu rounded="lg" max-width="110" offset-x>
             <template v-slot:activator="{attrs, on}">
-              <v-btn fab text slot="activator" color="orange" depressed class="mr-2" v-bind="attrs" v-on="on">
-                <v-avatar size="40">
-                  <v-img max-width="100%" src="/assets/images/logo1.jpg"></v-img>
+              <v-btn text slot="activator" style="text-transform: none;" color="orange" depressed class="mr-2" v-bind="attrs" v-on="on">
+                <v-avatar width="55px" color="grey lighten-4"  height="55px">
+                  <template v-if="img">
+                    <v-img :src="img" contain></v-img>
+                  </template>
+                  <template v-else>
+                    <v-icon>mdi-account</v-icon>
+                  </template>
                 </v-avatar>
+                <span class="white--text mx-2 font-weight-bold">{{first_name}}</span>
               </v-btn>
+              
+              
             </template>
             <v-list flat>
               <template>
-                <v-list-item to="/" style="text-decoration: none;">
-                  <v-list-item-title class="grey--text text--darken-3">Public</v-list-item-title>
+                <v-list-item router :to="{name: 'Login'}" style="text-decoration: none;">  
+                  <v-chip class="rounded-0 white" style="cursor: pointer;"><v-list-item-title class="grey--text">Public</v-list-item-title></v-chip>
                 </v-list-item>
                 <v-list-item>
                   <v-dialog v-model="dialog" width="500">
                     <template v-slot:activator="{on, attrs}">
-                       <v-list-item-title class="red--text" v-bind="attrs" v-on="on" depressed>Logout</v-list-item-title>
+                       <v-chip class="rounded-0 white"><v-list-item-title class="red--text" v-bind="attrs" v-on="on" depressed>Logout</v-list-item-title></v-chip>
                     </template>
                     <v-card>
                       <v-card-title class="text-h5 font-weight-bold grey red--text lighten-3">Sign Out</v-card-title>
@@ -32,15 +40,15 @@
                       <v-divider></v-divider>
                       <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn class="grey--text" outlined @click.native="dialog = false" depressed>Cancel</v-btn>
-                        <v-btn class="white--text" color="red lighten-1" @click="logout" depressed>Logout</v-btn>
+                        <v-btn class="grey--text" outlined @click.native="dialog = false" depressed style="text-transform: none;">Cancel</v-btn>
+                        <v-btn class="white--text" color="red lighten-1" @click="logout" depressed style="text-transform: none;">Logout</v-btn>
                       </v-card-actions>
                     </v-card>
                   </v-dialog>
                   </v-list-item>
               </template>
             </v-list>
-          </v-menu>
+            </v-menu>
         </v-app-bar>
         <v-navigation-drawer v-model="drawer" dark app mini-variant mini-variant-width="120" color="orange darken-2">
         
@@ -102,6 +110,19 @@ export default {
         this.$store.dispatch("auth/logout").then(() => {
           location.reload()
         })
+    },
+  },
+  computed: {
+    first_name(){
+      return this.$store.state.auth.user.first_name;
+    },
+    img(){
+      const details =  this.$store.state.auth.user.details 
+      if (!details.photo) {
+        return;
+      }
+      
+      return `/user/photo/${details.photo}`;
     },
   }
 }

@@ -2,97 +2,42 @@
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
     <v-main>
       <Navigation />
-      <section class="mx-4">
-                 <v-card flat class="rounded-lg">
-                     <v-container>
-                            <v-card-title class="justify-center font-weight-medium">About</v-card-title>
-                            <v-card-subtitle></v-card-subtitle>
-                        <v-card-text>
-                            <section class="pb-8">
-        <v-container class="rounded-a-lg">
-          <v-card class="rounded-a-lg" flat>
-            <v-row align="center" justify="center">
-              <v-col cols="10">
-                <v-row justify="center">
-                  <v-col cols="12" sm="5">
-                    <h1 class="font-weight-light display-1">Contact</h1>
-                    <h3 class="grey--text font-weight-light mt-3">
-                      Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                      Reiciendis, ducimus nam. Illo laudantium dolores sunt
-                      architecto dolorem ipsam sed repudiandae sit aliquid iusto
-                      ad commodi, natus cumque impedit dolore libero.
-                    </h3>
-                    <h3 class="font-weight-light mt-3">
-                      Telephone: +62 xxx xxx xxx
-                    </h3>
-                    <h3 class="font-weight-light">Email: email@gmail.com</h3>
-                  </v-col>
-                  <v-col cols="12" sm="7">
-                    <v-form ref="form" v-model="valid">
-                      <v-text-field
-                        v-model="name"
-                        :rules="nameRules"
-                        label="Name"
-                        filled
-                        rounded
-                        color="orange"
-                        class="rounded-0"
-                        required
-                      ></v-text-field>
-                      <v-text-field
-                        v-model="email"
-                        :rules="emailRules"
-                        label="Email"
-                        filled
-                        rounded
-                        color="orange"
-                        class="rounded-0"
-                        required
-                      ></v-text-field>
-                      <ckeditor />
-                      <v-textarea
-                        v-model="textArea"
-                        :rules="textAreaRules"
-                        label="Message"
-                        filled
-                        rounded
-                        color="orange"
-                        required
-                      ></v-textarea>
-                      <v-btn
-                        class="mt-3 white--text"
-                        depressed
-                        :disabled="!valid"
-                        tile
-                        color="orange"
-                        block
-                        @click="submit"
-                        >Send</v-btn
-                      >
-                    </v-form>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-container>
-      </section>
-                        </v-card-text>
+      <section class="mx-4 my-5">
+                 <v-card flat class="rounded-lg mb-5">
+                   <v-row class="mt-3">
+                   <v-col cols="12" md="6" lg="6" xl="6" class="text-center">
+                     <v-img :src="'/assets/images/about.svg'" class="mx-5" contain max-height="400px"></v-img>
+                   </v-col>
+                   <v-col class="my-auto" cols="12" md="6" lg="6" xl="6">
+                     <v-subheader class="text-h4 mt-5">About Us</v-subheader>
+                     <v-container class="mb-5">
+                       <span class="subtitle-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                       Voluptatum, similique. Ipsum eos iure consequatur illum quas est, dolores, 
+                       omnis magni officiis unde necessitatibus. 
+                       Soluta modi dolor nesciunt nam perferendis voluptatem!</span><br>
+                       <span class="subtitle-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                       Voluptatum, similique. Ipsum eos iure consequatur illum quas est, dolores, 
+                       omnis magni officiis unde necessitatibus. 
+                       Soluta modi dolor nesciunt nam perferendis voluptatem!</span>
                      </v-container>
+                   </v-col>
+                 </v-row>
                  </v-card>
       </section>
       
       <Footer />
     </v-main>
+    <BottomNavigation :hidden="!$vuetify.breakpoint.smAndDown"/>
   </v-app>
 </template>
-
 <script>
 import Navigation from "./include/Navigation.vue";
+import BottomNavigation from "./include/BottomNavigation.vue";
 import Footer from "./include/Footer.vue";
 export default {
   components: {
     Navigation,
+    BottomNavigation,
     Footer,
   },
   data() {

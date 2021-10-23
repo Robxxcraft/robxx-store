@@ -22,12 +22,11 @@ import EditProduct from "../views/admin/product/EditProduct.vue";
 import ManageOrders from "../views/admin/order/ManageOrders.vue";
 import ShowOrder from "../views/admin/order/ShowOrder.vue";
 import Transactions from "../views/admin/order/Transactions.vue";
+import ShowTransaction from "../views/admin/order/ShowTransaction.vue";
 import ManageUsers from "../views/admin/order/ManageUsers.vue";
+import ShowUser from "../views/admin/order/ShowUser.vue";
 
-import AdminProfile from "../views/admin/AdminProfile.vue";
 import Settings from "../views/admin/Settings.vue";
-import ChangeBanner from "../views/admin/ChangeBanner.vue";
-import Sale from "../views/admin/Sale.vue";
 
 import PublicDashboard from "../views/public/PublicDashboard.vue";
 import ProductDetails from "../views/public/ProductDetails.vue";
@@ -67,6 +66,7 @@ const routes = [
         path: "/about",
         name: "About",
         component: About,
+        meta: { isAdmin: true },
     },
     {
       path: "/register",
@@ -96,12 +96,14 @@ const routes = [
         path: "/admin",
         name: "Admin",
         meta: { requiresAuth: true },
+        meta: { isAdmin: true },
         component: AdminDashboard,
         children: [
             {
                 path: "dashboard",
                 name: "DashboardAdmin",
                 meta: { requiresAuth: true },
+                meta: { isAdmin: true },
                 component: IndexDashboard,
             },
             {
@@ -109,85 +111,91 @@ const routes = [
                 name: "Categories",
                 component: ManageCategories,
                 meta: { requiresAuth: true },
-                props: true
+                meta: { isAdmin: true },
             },
             {
                 path: "category/create",
                 name: "CreateCategory",
                 component: CreateCategory,
                 meta: { requiresAuth: true },
+                meta: { isAdmin: true },
             },
             {
                 path: "category/:id/edit",
                 name: "EditCategory",
                 component: EditCategory,
                 meta: { requiresAuth: true },
+                meta: { isAdmin: true },
             },
             {
                 path: "product",
                 name: "Products",
                 component: ManageProducts,
                 meta: { requiresAuth: true },
+                meta: { isAdmin: true },
             },
             {
                 path: "product/create",
                 name: "CreateProduct",
                 component: CreateProduct,
                 meta: { requiresAuth: true },
+                meta: { isAdmin: true },
             },
             {
                 path: "product/:id/edit",
                 name: "EditProduct",
                 component: EditProduct,
                 meta: { requiresAuth: true },
+                meta: { isAdmin: true },
             },
             {
                 path: "orders",
                 name: "AdminOrders",
                 component: ManageOrders,
                 meta: { requiresAuth: true },
+                meta: { isAdmin: true },
             },
             {
                 path: "orders/:id",
                 name: "ShowOrder",
                 component: ShowOrder,
                 meta: { requiresAuth: true },
+                meta: { isAdmin: true },
             },
             {
                 path: "transactions",
                 name: "Transactions",
                 component: Transactions,
                 meta: { requiresAuth: true },
+                meta: { isAdmin: true },
+            },
+            {
+                path: "transaction/:id",
+                name: "ShowTransaction",
+                component: ShowTransaction,
+                meta: { requiresAuth: true },
+                meta: { isAdmin: true },
             },
             {
                 path: "users",
                 name: "ManageUsers",
                 component: ManageUsers,
                 meta: { requiresAuth: true },
+                meta: { isAdmin: true },
+            },
+            {
+                path: "user/:id",
+                name: "ShowUser",
+                component: ShowUser,
+                meta: { requiresAuth: true },
+                meta: { isAdmin: true },
             },
             {
                 path: "settings",
                 name: "Settings",
                 component: Settings,
                 meta: { requiresAuth: true },
-            },
-            {
-                path: "settings/banner/:id",
-                name: "ChangeBanner",
-                component: ChangeBanner,
-                meta: { requiresAuth: true },
-            },
-            {
-                path: "sale/:id",
-                name: "Sale",
-                component: Sale,
-                meta: { requiresAuth: true },
-            },
-            {
-                path: "profile",
-                name: "AdminProfile",
-                component: AdminProfile,
-                meta: { requiresAuth: true },
+                meta: { isAdmin: true },
             },
         ]
     },
@@ -315,7 +323,10 @@ const routes = [
 
 const router = new VueRouter({
     mode: "history",
-    routes
+    routes,
+    scrollBehavior(){
+        window.scrollTo(0,0);
+    }
 });
 
 
@@ -323,7 +334,13 @@ function loggedIn() {
   return store.getters['auth/authenticated']
 }
 
-
+function isAdmin() {
+    const role = store.getters["auth/role"];
+     if(role == 'Admin' || role == 'Superadmin' ){
+        return true;
+     }
+  }
+  
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)) {
         if (!loggedIn()) {
@@ -341,6 +358,14 @@ router.beforeEach((to, from, next) => {
             });
         } else {
             next();
+        }
+    } else if (to.matched.some(record => record.meta.isAdmin)) {
+        if (isAdmin()) {
+            next();
+        } else{
+            next({
+                path: "/",
+            })
         }
     } else {
         next(); //make sure to always call next()!

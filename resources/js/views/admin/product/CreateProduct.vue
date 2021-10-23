@@ -33,7 +33,7 @@
                             <v-file-input  accept="image/png, image/jpg, image/jpeg" v-model="image" prepend-icon="mdi-camera" color="orange" label="Photo" filled rounded class="rounded-0 point" hint="Enter Photo Product" :error-messages="errors.photo"></v-file-input>
                         </v-col>
                         <v-col cols="6">
-                            <v-img :src="img" max-height="auto" contain></v-img>
+                            <v-img :src="img" max-width="auto" contain height="150"></v-img>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -54,7 +54,7 @@
                     </v-row>
                     <v-card-actions class="my-5">
                         <v-spacer></v-spacer>
-                        <v-btn right type="submit" :disabled="loading == true" class="mx-2" dark depressed color="orange darken-3" large style="text-transform: none;">Save</v-btn>
+                        <v-btn right type="submit" :disabled="loading" class="mx-2" dark depressed color="orange darken-3" large style="text-transform: none;">Save</v-btn>
                         <template v-if="loading">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: none; display: block; shape-rendering: auto;" width="50px" height="50px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
                                         <rect x="19" y="19" width="20" height="20" fill="#f0f6f6">
@@ -162,6 +162,8 @@ export default {
                     type: 'error',
                     duration: '2000'
                 })
+            }).finnaly(()=>{
+                this.loading = false
             })
         }
     }

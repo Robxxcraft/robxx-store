@@ -5,6 +5,7 @@ export default {
   state: {
     product: [],
     products: [],
+    sale: [],
     allproducts: [],
     products_by_category: [],
     recentProducts: [],
@@ -20,9 +21,15 @@ export default {
     get_recent_products(state){
       return state.recentProducts;
     },
-    get_related_products(state){
-      return state.relatedProducts;
-    }
+    get_last_page_all_products(state){
+      return state.allproducts.last_page;
+    },
+    get_total_all_products(state){
+      return state.allproducts.total;
+    },
+    get_last_page_prodbycat(state){
+      return state.products_by_category.last_page;
+    },
   },
   mutations: {
     SET_PRODUCT(state, data){
@@ -30,6 +37,9 @@ export default {
     },
     SET_PRODUCTS(state, data){
       state.products = data
+    },
+    SET_SALE(state, data){
+      state.sale = data
     },
     SET_ALL_PRODUCTS(state, data){
       state.allproducts = data
@@ -60,8 +70,11 @@ export default {
       let index = state.products.findIndex(pro => pro.id == id)
       state.products.splice(index, 1)
     },
+    DELETE_ALL_PRODUCT(state){
+      state.products = []
+    },
     FAVOURITE_ALLPRODUCTS(state, id){
-      let product = state.allproducts.find(item => {
+      let product = state.allproducts.data.find(item => {
         return item.id === id
       });
 
@@ -71,7 +84,7 @@ export default {
       }
     },
     UNFAVOURITE_ALLPRODUCTS(state, id){
-      let product = state.allproducts.find(item => {
+      let product = state.allproducts.data.find(item => {
         return item.id === id
       });
 
@@ -81,7 +94,7 @@ export default {
       }
     },
     FAVOURITE_PRODUCTSBYCATEGORY(state, id){
-      let product = state.products_by_category.find(item => {
+      let product = state.products_by_category.data.find(item => {
         return item.id === id
       });
 
@@ -91,7 +104,7 @@ export default {
       }
     },
     UNFAVOURITE_PRODUCTSBYCATEGORY(state, id){
-      let product = state.products_by_category.find(item => {
+      let product = state.products_by_category.data.find(item => {
         return item.id === id
       });
 
@@ -99,7 +112,7 @@ export default {
         product.favourite_count--
         product.favourited_count = false
       }
-    }
+    },
   },
   actions: {
       getProduct({commit}, slug){
@@ -112,13 +125,18 @@ export default {
               commit('SET_PRODUCTS', res.data)
           }).catch(error => console.log(error))
       },
-      getAllProducts({commit}){
-          axios.get('/api/allproducts').then( res => {
+      getSale({commit}){
+          axios.get('/api/sale').then( res => {
+              commit('SET_SALE', res.data)
+          }).catch(error => console.log(error))
+      },
+      getAllProducts({commit}, page){
+          axios.get(`/api/allproducts?page=${page}`).then( res => {
               commit('SET_ALL_PRODUCTS', res.data)
           }).catch(error => console.log(error))
       },
-      getProductsByCategory({commit}, slug){
-        axios.get(`/api/products_by_category/${slug}`).then( res => {
+      getProductsByCategory({commit}, {slug, page}){
+        axios.get(`/api/products_by_category/${slug}/page?page=${page}`).then( res => {
             commit('SET_PRODUCTS_BY_CATEGORY', res.data)
         }).catch(error => console.log(error))
       },
@@ -136,6 +154,11 @@ export default {
       deleteProduct({commit}, id){
         axios.delete(`/api/product/${id}`).then(() =>{
           commit('DELETE_PRODUCT', id)
+        })
+      },
+      deleteAllProduct({commit}){
+        axios.get('/api/product/all').then(() =>{
+          commit('DELETE_ALL_PRODUCT')
         })
       }
   }

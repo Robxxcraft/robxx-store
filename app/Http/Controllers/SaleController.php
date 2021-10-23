@@ -10,7 +10,7 @@ class SaleController extends Controller
 {
     public function index()
     {
-        $sale = Sale::where('flash_start', Carbon::now())->get();
+        $sale = Sale::whereDate('flash_start', '<=',  Carbon::now())->whereDate('flash_end', '>=',  Carbon::now())->with('product')->get();
         return response()->json($sale, 200);
     }
 

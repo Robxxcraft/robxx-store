@@ -2,16 +2,16 @@
   <nav>
     <v-card flat :style="{ background: $vuetify.theme.themes.light.background }">
       <v-app-bar flat color="rgba(0,0,0,0)">
-        <v-avatar height="40" width="40">
-          <v-img contain max-width="auto" src="/assets/images/logo2.png"></v-img>
+        <v-avatar height="35" width="35">
+          <v-img contain max-width="auto" :src="logo"></v-img>
         </v-avatar>
-        <span class="font-weight-light ml-2">Robxx</span>
+        <span class="font-weight-light">Robxx</span>
         <span class="orange--text">Store</span>
         <v-spacer></v-spacer>
         <v-btn fab depressed color="grey lighten-3" class="mr-1" :to="{name: 'Favourited'}" style="text-decoration: none;">
            <v-icon>mdi-heart</v-icon>
         </v-btn>
-        <v-btn depressed color="grey lighten-3" class="mr-1" :to="{name: 'Cart'}" style="text-decoration: none;">
+        <v-btn depressed color="grey lighten-3" class="mr-1 hidden-sm-and-down" :to="{name: 'Cart'}" style="text-decoration: none;">
           <template v-if="authenticated">
             <v-badge :content="cartItemCount != 0 ? cartItemCount : '0'" color="orange darken-2">
             <v-icon>mdi-cart</v-icon>
@@ -64,7 +64,7 @@
           </v-menu>
       </v-app-bar>
       <v-card-text>
-        <v-tabs color="orange" class="rounded-lg" light>
+        <v-tabs color="orange" class="rounded-lg hidden-sm-and-down" light>
         <v-tab to="/" style="text-decoration: none; text-transform: none;"><v-icon>mdi-home</v-icon></v-tab>
         <v-tab router :to="{name: 'AllCategories'}" style="text-decoration: none; text-transform: none;">
           Categories
@@ -92,14 +92,24 @@ export default {
   data(){
     return {
       dialog: false,
+      log: null
     }
   },
   mounted() {
     if (this.$store.getters['auth/authenticated']) {
       this.$store.dispatch("cart/getCartItems");
     }
+    axios.get('/api/logo').then(res => {
+      this.log = res.data.image
+    })
   },
   computed: {
+    logo(){
+      if (!this.log) {
+        return '/assets/images/logo2.png';
+      }
+      return `/assets/images/${this.log}`
+    },
     cartItemCount() {
       return this.$store.getters["cart/cartItemCount"];
     },

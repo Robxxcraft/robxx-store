@@ -4,7 +4,7 @@
       <Navigation />
       <section class="mx-4 my-5">
         <v-row>
-            <v-col md="9">
+            <v-col cols="12" md="9" lg="9" xl="9">
                 <v-card class="rounded-lg" flat>
             <v-card-title class="pt-8">
               <p class="title ml-1">Searched</p>
@@ -15,40 +15,51 @@
                 </div>
             </v-card-subtitle>
             <v-card-text>
-               <v-row class="mx-4">
-        <v-col v-for="(product, index) in getSearches" :key="index" cols="6" md="4" lg="3" xl="3" sm="6">
-            <v-card :color="`${color[index % 10]} lighten-5`" class="rounded-t-lg" elevation="3">
+               <v-row>
+        <v-col v-for="(product, index) in getSearches.data" :key="index" cols="6" md="4" lg="4" xl="4">
+            <v-hover v-slot="{ hover }" open-delay="50">
+              <v-card :color="`${color[index % 10]} lighten-5`" class="rounded-t-lg" :elevation="hover ? 16 : 3">
                <div class="align-center">
-                 <v-img :src="product.photo ? '/images/'+product.photo : 'assets/images/blank.png'" class="rounded-t-lg" max-height="150" max-width="auto">
+                 <v-img  :src="product.photo ? '/images/'+product.photo : '/assets/images/blank.png'" class="rounded-t-lg" contain max-width="auto" :height="$vuetify.breakpoint.smAndDown ? '100px' : '200px'">
                   <v-app-bar flat color="rgba(0,0,0,0)" class="rounded-t-lg mb-3">
                     <v-spacer></v-spacer>
-                    <v-btn fab x-small color="white">
                         <template v-if="product.favourited_count == true">
-                          <v-icon color="red" @click="unFavourite(product.id)" :disabled="disable">mdi-heart</v-icon>
+                          <v-btn fab x-small @click="unFavourite(product.id)" :disabled="disable" color="white">
+                          <v-icon color="red">mdi-heart</v-icon>
+                          </v-btn>
                         </template>
                         <template v-else>
-                          <v-icon color="red" @click="addFavourite(product.id)" :disabled="disable">mdi-heart-outline</v-icon>
-                        </template>
-                      </v-btn>
+                          <v-btn fab x-small  @click="addFavourite(product.id)" :disabled="disable" color="white">
+                                <v-icon color="red">mdi-heart-outline</v-icon>
+                            </v-btn>
+                            </template>
+                            
                   </v-app-bar>
                  </v-img>
                </div>
-                <span class="mt-1">
-                  <router-link class="grey--text text--darken-3 mx-1" :to="{name: 'ProductDetails', params: {slug: product.slug}}" style="text-decoration: none;"><span class="subtitle-1">{{product.title | titlelength('...')}}</span> </router-link>   
-                </span>
-                <v-card-subtitle class="pb-1 mt-1 grey--text">{{product.category.name}}</v-card-subtitle>
-                   
+                <v-card-title>
+                  <router-link class="grey--text text--darken-3 mb-2" :to="{name: 'ProductDetails', params: {slug: product.slug}}" style="text-decoration: none;"><span class="subtitle-1">{{product.title | titlelength('...')}}</span> </router-link>   
+                </v-card-title>  
+                <template v-if="product.category">
+                  <v-card-subtitle class="pb-1 grey--text">{{product.category.name}}</v-card-subtitle>
+                </template>
                     <v-card-text>
                       <div><b>${{product.price}}</b></div>
                     </v-card-text>
                     <v-card-actions class="justify-end">
                       <v-spacer></v-spacer>
-                      <v-btn dark color="orange" class="caption white--text" depressed @click="addToCart(product)" style="text-transform: none;">Add To Cart</v-btn>
+                      <v-btn dark color="orange" class="caption white--text font-weight-bold" depressed @click="addToCart(product)" style="text-transform: none;">Add To Cart</v-btn>
                     </v-card-actions>
             </v-card>
+            </v-hover>
           </v-col>
                </v-row>
-               <template v-if="getSearches <= 0">
+               <v-card-actions class="my-5 align-center justify-center">
+            <template v-if="getTotalItems > 12">
+              <v-pagination class="my-8" circle next-icon="mdi-menu-right" prev-icon="mdi-menu-left" color="orange darken-2" v-model="currentPage" :length="lastPage" total-visible="7" @input="changePage"></v-pagination>
+            </template>
+      </v-card-actions>
+               <template v-if="getSearches.data <= 0">
                  <v-card height="420" flat>
                    <v-row align="center" justify="center">
                    <span class="text-h5 grey--text pa-5 mt-8">Not Found</span>
@@ -58,7 +69,7 @@
             </v-card-text>
                 </v-card>
             </v-col>
-            <v-col md="3">
+            <v-col cols="12" md="3" lg="3" xl="3">
                 <v-card class="rounded-lg" flat>
                     <v-card-title>
                         <v-text-field v-model="searchtext" label="Search" append-icon="mdi-magnify" filled rounded color="orange" @click:append="search(searchtext)" @keyup.enter="search(searchtext)"></v-text-field>
@@ -104,7 +115,8 @@ export default {
         "green",
         "indigo"
       ],
-      disable: false
+      disable: false,
+      currentPage: 1
     }
   },
   components: {
@@ -114,7 +126,7 @@ export default {
   },
   mounted() {
     this.$store.dispatch("tag/getTags");
-    this.search(this.$route.params.slug);
+    this.search(this.$route.params.slug, 1);
   },
   computed: {
     getSearches() {
@@ -123,13 +135,30 @@ export default {
     getTags(){
       return this.$store.state.tag.tags;
     },
+    lastPage(){
+      return this.$store.state.search.search.last_page;
+    },
+    getTotalItems(){
+      return this.$store.state.search.search.total;
+    }
   },
   methods: {
-    search(searchvalue){
+    changePage(page){
+      this.$store.dispatch("search/getSearches", {
+          searchText: this.searched,
+          page: page,
+        })
+      window.scrollTo(0,0);
+    },
+    search(searchvalue, page){
         let s = searchvalue.replace(/[-]/gi, ' ')
         let w = s.charAt(0).toUpperCase() + s.slice(1);
         this.searched = w;
-        this.$store.dispatch('search/getSearches', w)
+        this.$store.dispatch('search/getSearches', {
+          searchText: this.searched,
+          page: page,
+        })
+        window.scrollTo(0,0);
     },
     tagProducts(slug){
       this.$router.push({name: 'TagProducts', params: {slug : slug}})
@@ -153,7 +182,7 @@ export default {
 
       
       axios.post(`/api/favourite/${id}`).then(()=> {
-        this.$store.commit("product/FAVOURITE_ALLPRODUCTS", id)
+        this.$store.commit("search/FAVOURITE_SEARCH", id)
       }).finally(() => {
         this.disable = false
       })
@@ -167,7 +196,7 @@ export default {
 
       
       axios.delete(`/api/favourite/${id}`).then(()=> {
-        this.$store.commit("product/UNFAVOURITE_ALLPRODUCTS", id)
+        this.$store.commit("search/UNFAVOURITE_SEARCH", id)
       }).finally(() => {
         this.disable = false
       })

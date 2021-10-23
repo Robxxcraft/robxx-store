@@ -3,7 +3,7 @@
       <v-main>
      <v-container class="fill-height" fluid>
        <v-row align="center" justify="center" dense>
-         <v-col cols="12" sm="8" md="4" lg="4">
+         <v-col cols="12" md="4" lg="4" xl="4">
            <v-card elevation="0">
              <v-card-title class="justify-center text-center">
                <p class="title font-weight-bold">Sign Up</p>
@@ -43,9 +43,6 @@
            </v-card>
          </v-col>
        </v-row>
-       <v-snackbar v-model="snackbar" top right absolute :color="snackbarColor" :timeout="-1">
-          {{message}}
-        </v-snackbar>
      </v-container>
    </v-main>
   </v-app>
@@ -84,17 +81,18 @@ export default {
         axios
         .post("/api/register", this.form)
         .then(response => {
-          if (response.data.status) {
-            this.message = "Register Successfully"
-            this.snackbarColor = 'green accent-4'
-            this.snackbar = true
             this.$router.push({name: 'Login'})
-          }
+            this.$toasted.show(response.data, {
+                    type: 'success',
+                    duration: '2000'
+                });
         }).catch(errors => { 
           this.errors = errors.response.data.errors
-          this.message = "Some Error Occurred"
-          this.snackbarColor = 'red accent-2'
-        }).finally(()=>{ setTimeout(()=>{ this.snackbar = false  }, 3000)})
+          this.$toasted.show("Some Error Occured", {
+                    type: 'error',
+                    duration: '2000'
+                });
+        })
       })
     },
   },

@@ -9,6 +9,7 @@ use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
+use Image;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 
@@ -31,7 +32,7 @@ class AuthController extends Controller
             'role' => 'User'
         ]);
 
-        return response()->json(['status' => true, 'msg' => 'Register success']);
+        return response()->json('Account Registered Successfully', 201);
     }
 
     public function user_details()
@@ -46,7 +47,7 @@ class AuthController extends Controller
 
         $request->validate([
             'first_name' => 'required',
-            'phone_number' => 'numeric|digits:5|nullable'
+            'phone_number' => 'numeric|nullable'
         ]);
         
         $user = User::findOrFail(Auth::user()->id);
@@ -57,11 +58,6 @@ class AuthController extends Controller
         ]);
 
         $userDetail = UserDetail::where('user_id', Auth::user()->id)->first();
-        
-
-        if ($request->hasFile('photo') && isset($userDetail->photo)) {
-            unlink(public_path('user/photo/').$userDetail->photo);
-        }
 
         if ($userDetail == null) {
             $userDetail = UserDetail::create([
@@ -75,14 +71,18 @@ class AuthController extends Controller
 
             if ($request->hasFile('photo')) {
 
-                $imageName = time().'.'.$request->photo->extension();
-                $path = public_path('user/photo');
+                $imageName = time().'_'.Str::random(10).'.'.$request->photo->extension();
+                $image_resize = Image::make($request->photo)->resize(100, 100);
+                $image_resize->save(public_path('user/photo/').$imageName);
                 $userDetail->photo = $imageName;
                 $userDetail->save();
-                $request->photo->move($path, $imageName);
             }
             
         } else {
+            if ($request->hasFile('photo') && isset($userDetail->photo)) {
+                unlink(public_path('user/photo/').$userDetail->photo);
+            }
+
             $userDetail->update([
                 'address' => $request->address,
                 'city' => $request->city,
@@ -92,12 +92,11 @@ class AuthController extends Controller
             ]);
 
             if ($request->hasFile('photo')) {
-
-                $imageName = time().'.'.$request->photo->extension();
-                $path = public_path('user/photo');
+                $imageName = time().'_'.Str::random(5).'.'.$request->photo->extension();
+                $image_resize = Image::make($request->photo)->resize(100, 100);
+                $image_resize->save(public_path('user/photo/').$imageName);
                 $userDetail->photo = $imageName;
                 $userDetail->save();
-                $request->photo->move($path, $imageName);
             }
         }
 

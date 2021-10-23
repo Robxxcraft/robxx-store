@@ -8,6 +8,7 @@ import order from "./order";
 import tag from "./tag";
 import search from "./search";
 import user from "./user";
+import setting from "./setting";
 import transaction from "./transaction";
 import favourite from "./favourite";
 
@@ -23,6 +24,7 @@ export default new Vuex.Store({
         tag,
         search,
         user,
+        setting,
         transaction,
         favourite
     }

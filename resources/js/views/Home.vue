@@ -37,67 +37,99 @@
             </v-card>
           </v-col>
           <v-col cols="12" md="6">
-            <v-carousel :height="$vuetify.breakpoint.smAndDown ? 'auto' : '150px;'" continuous cycle :show-arrows="false" hide-delimiter-background delimiter-icon="mdi-minus" class="rounded-lg">
-          <v-carousel-item>
-            <v-img style=" width: 100%; max-height:auto;"  src="/assets/images/b-bg1.png"></v-img>
-          </v-carousel-item>
-          <v-carousel-item>
-            <v-img style=" width: 100%; max-height:auto;"  src="/assets/images/b-bg2.jpg"></v-img>
-          </v-carousel-item>
-          <v-carousel-item>
-            <v-img style=" width: 100%; max-height:auto;"  src="/assets/images/b-bg3.jpg"></v-img>
+            <v-carousel height="auto" continuous cycle :show-arrows="false" hide-delimiter-background delimiter-icon="mdi-minus" class="rounded-lg">
+          <v-carousel-item v-for="(banner, index) in banners" :key="index">
+            <v-img :src="`/assets/images/banner/${banner.image}`"></v-img>
           </v-carousel-item>
             </v-carousel>
-            <v-card class="rounded-lg mt-5" flat height="420">
-              <v-app-bar flat color="rgba(0,0,0,0)">
-                <v-row class="pa-3 mt-2">
-                    <span class="font-weight-medium ma-3">On Sale</span>
-                 <v-card color="blue darken-3 mx-1" elevation="3" class="pa-2">
-                  <span class="white--text font-weight-bold text-h6">{{days}}</span>
+            <v-card class="rounded-lg mt-5" flat height="430">
+                <v-app-bar flat color="rgba(0,0,0,0)">
+                     <v-row>                        <span class="font-weight-bold ma-3">New Year Sale</span>
+              <v-card color="blue darken-3 mx-1" elevation="3" class="pa-2">
+                  <span class="white--text font-weight-bold subtitle-1">{{days}}</span>
                   <span class="white--text font-weight-bold subtitle-2 ml-n1">d</span>
               </v-card>
-
               <v-card color="blue darken-3 mx-1" elevation="3" class="pa-2">
-                  <span class="white--text font-weight-bold text-h6">{{hours}}</span>
+                  <span class="white--text font-weight-bold subtitle-1">{{hours}}</span>
                   <span class="white--text font-weight-bold subtitle-2 ml-n1">h</span>
               </v-card>
               <v-card color="blue darken-3 mx-1" elevation="3" class="pa-2">
-                  <span class="white--text font-weight-bold text-h6">{{minutes}}</span>
+                  <span class="white--text font-weight-bold subtitle-1">{{minutes}}</span>
                   <span class="white--text font-weight-bold subtitle-2 ml-n1">m</span>
               </v-card>
               <v-card color="blue darken-3 mx-1" elevation="3" class="pa-2">
-                  <span class="white--text font-weight-bold text-h6">{{seconds}}</span>
+                  <span class="white--text font-weight-bold subtitle-1">{{seconds}}</span>
                   <span class="white--text font-weight-bold subtitle-2 ml-n1">s</span>
               </v-card>
-                </v-row>
-              </v-app-bar>
-              <v-card-text>
-                <v-list-item three-line>
-                  <v-list-item-avatar rounded size="120" color="grey lighten-4">
-                    <v-icon>mdi-account</v-icon>
+                     </v-row>
+                </v-app-bar>
+
+          <v-carousel hide-delimiters class="mt-5">
+      <v-carousel-item v-for="(product, index) in getSales" :key="index">
+              <v-list-item three-line>
+                      <v-list-item-avatar rounded size="120" color="grey lighten-4">
+                       <v-img :src="`/images/${product.photo}`"></v-img>
                   </v-list-item-avatar>
                   <v-list-item-content>
                     <v-hover>
 
                     <v-list-item-title class="text-h5">
-                      <router-link :to="{name : 'ProductDetails', params: {slug: 'oooo'}}" class="black--text" style="text-decoration: none;"><span>Caramel Capuchino</span></router-link>
+                      <router-link :to="{name : 'ProductDetails', params: {slug: {slug : product.slug}}}" class="black--text" style="text-decoration: none;"><span>{{product.title}}</span></router-link>
                     </v-list-item-title>
                     </v-hover>
-                    <v-list-item-subtitle class="mt-1">Caramel with syrupsawdbiwbkjbwfkbqw</v-list-item-subtitle>
-                    <div>Stock<span class="font-weight-bold ml-3">100</span></div>
-                    <div>Price<span class="font-weight-bold ml-3">$90.00</span></div>
+                    <v-list-item-subtitle class="mt-1 orange--text text--darken-2">{{product.category.name}}</v-list-item-subtitle>
+                    <div>Stock<span class="orange--text text--darken-2 font-weight-bold ml-3">{{product.stok}}</span></div>
+                    <div>Price<span class="orange--text text--darken-2 font-weight-bold ml-3">${{product.price}}</span></div>
                   </v-list-item-content>
-                </v-list-item>
+                    </v-list-item>
+            
+         
+              <v-card-text>
                 <v-card-actions>
                   <v-row>
                     <v-spacer></v-spacer>
                     <v-col class="text-right">
-                      <v-btn plain color="orange darken-3" depressed style="text-transform: none;">Add To Cart</v-btn>
+                      <v-btn plain color="orange darken-3" class="font-weight-bold" depressed style="text-transform: none;" @click.prevent="addToCart(product)">Add To Cart</v-btn>
                     </v-col>
                   </v-row>
                 </v-card-actions>
               </v-card-text>
+       
+      </v-carousel-item>
+          </v-carousel>
             </v-card>
+          </v-col>
+          <v-col cols="12" md="3" class="text-center align-center justify-center my-5" :hidden="!$vuetify.breakpoint.smAndDown">
+            <v-subheader class="text-h6 font-weight-bold">Categories</v-subheader>
+            <v-row wrap>
+              <v-col cols="3" v-for="(category, index) in getHomeCategories" :key="index">
+                <v-card color="orange"
+                class="my-1"
+                elevation="3"
+                :to="{name: 'ProductsByCategory', params: {slug: category.slug}}"
+                style="text-decoration: none;"
+                width="auto"
+                height="100">
+              <v-card-subtitle>
+                <v-icon class="white--text">mdi-format-list-text</v-icon></v-card-subtitle>    
+                        <v-card-actions class="align-center justify-center"><span class="white--text o">{{category.name}}</span></v-card-actions>
+                
+                </v-card>
+              </v-col>
+              <v-col cols="3">
+                <v-card color="orange"
+                class="my-1"
+                elevation="3"
+                :to="{name: 'AllCategories'}"
+                style="text-decoration: none;"
+                width="auto"
+                height="100">
+              <v-card-subtitle>
+                <v-icon class="white--text">mdi-dots-horizontal</v-icon></v-card-subtitle>    
+                        <v-card-actions class="align-center justify-center"><span class="white--text o">More</span></v-card-actions>
+                </v-card>
+              </v-col>
+            </v-row>
           </v-col>
           <v-col cols="12" md="3">
             <v-card class="rounded-lg" height="590" flat>
@@ -114,8 +146,8 @@
                   ></v-text-field>
               </v-card-title>
               <v-card-text>
-                <div class="text-h6"> 
-                  Tags
+                <div class="text-h6 grey--text text--darken-2"> 
+                  Tags 
                 </div>
                 <v-divider></v-divider>
                 <div class="caption">
@@ -139,61 +171,27 @@
       </div>
         </section>
 
-      <section class="pb-8">
-        <v-container>
-          <v-card class="rounded-lg" flat>
-            <v-row align="center" justify="center">
-              <v-col cols="10">
-                <v-row justify="center">
-                  <v-col cols="12" sm="5">
-                    <h2 class="font-weight-light display-1">Contact</h2>
-                    <h4 class="grey--text font-weight-light mt-3">
-                      Lorem, ipsum dolor sit amet consectetur adipisicing elit.
-                      Reiciendis, ducimus nam. Illo laudantium dolores sunt
-                      architecto dolorem ipsam sed repudiandae sit aliquid iusto
-                      ad commodi, natus cumque impedit dolore libero.
-                    </h4>
-                    <h4 class="font-weight-light mt-3">
-                      Telephone: +62 xxx xxx xxx
-                    </h4>
-                    <h4 class="font-weight-light">Email: email@gmail.com</h4>
-                  </v-col>
-                  <v-col cols="12" sm="7">
-                    <v-form ref="form" v-model="valid">
-                      <v-text-field
-                        v-model="name"
-                        :rules="nameRules"
-                        label="Name"
-                        required
-                      ></v-text-field>
-                      <v-text-field
-                        v-model="email"
-                        :rules="emailRules"
-                        label="Email"
-                        required
-                      ></v-text-field>
-                      <v-textarea
-                        v-model="textArea"
-                        :rules="textAreaRules"
-                        label="Message"
-                        required
-                      ></v-textarea>
-                      <v-btn
-                        class="mt-3"
-                        depressed
-                        :disabled="!valid"
-                        color="orange lighten-2 white--text"
-                        block
-                        @click="submit"
-                        >Send</v-btn
-                      >
-                    </v-form>
-                  </v-col>
-                </v-row>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-container>
+      <section class="mx-4 my-5">
+          <v-card flat class="rounded-lg mb-8">
+                   <v-row class="mt-3">
+                   <v-col cols="12" md="6" lg="6" xl="6" class="text-center">
+                     <v-img :src="'/assets/images/about.svg'" class="mx-5" contain max-height="400px"></v-img>
+                   </v-col>
+                   <v-col class="my-auto" cols="12" md="6" lg="6" xl="6">
+                     <v-subheader class="text-h4 mt-5">About Us</v-subheader>
+                     <v-container class="mb-5">
+                       <span class="subtitle-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                       Voluptatum, similique. Ipsum eos iure consequatur illum quas est, dolores, 
+                       omnis magni officiis unde necessitatibus. 
+                       Soluta modi dolor nesciunt nam perferendis voluptatem!</span><br>
+                       <span class="subtitle-1">Lorem ipsum dolor sit amet consectetur adipisicing elit. 
+                       Voluptatum, similique. Ipsum eos iure consequatur illum quas est, dolores, 
+                       omnis magni officiis unde necessitatibus. 
+                       Soluta modi dolor nesciunt nam perferendis voluptatem!</span>
+                     </v-container>
+                   </v-col>
+                 </v-row>
+                 </v-card>
       </section>
       <Footer />
     </v-main>
@@ -215,46 +213,42 @@ export default {
   data() {
     return {
       valid: true,
-      name: "",
-      nameRules: [
-        (v) => !!v || "Name required",
-        (v) => (v && v.length >= 6) || "Name min 6",
-      ],
-      email: "",
-      emailRules: [
-        (v) => !!v || "Email required",
-        (v) => /.+@.+\..+/.test(v) || "Email not valid",
-      ],
-      textArea: "",
-      textAreaRules: [
-        (v) => !!v || "Text required",
-        (v) => (v && v.length >= 10) || "Text min 10",
-      ],
-      lazy: false,
+      model: null,
       searchtext: null,
       days: '00',
       hours: '00',
       minutes: '00',
       seconds: '00',
+      banners: []
     };
   },
   mounted() {
+    this.$store.dispatch("category/getCategoriesHome");
     this.$store.dispatch("product/getRecentProducts");
+    this.$store.dispatch("product/getSale");
     this.$store.dispatch("tag/getTags");
+    axios.get('/api/banner').then(res => {
+      this.banners = res.data
+    })
   },
   created(){
-      setInterval(this.updateTimer, 1000)
+    setInterval(this.updateTimer, 1000)
   },
   computed: {
+    getHomeCategories() {
+      return this.$store.state.category.homecategories;
+    },
     getRecentProducts() {
       return this.$store.getters["product/get_recent_products"];
     },
     getTags(){
       return this.$store.state.tag.tags;
     },
+    getSales(){
+      return this.$store.state.product.sale;
+    },
   },
   methods: {
-    submit() {},
     search(){
       var title = this.searchtext
       var slug = title.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+/, '-').replace(/-+$/, '')
@@ -274,7 +268,7 @@ export default {
       this.$router.push({name: 'TagProducts', params: {slug : slug}})
     },
     updateTimer(){
-      let future = Date.parse("January 1, 2022 00:00:00");
+      let future = Date.parse('January 1 2022 00:00:00');
       let now = new Date();
       let diff = future - now;
       
@@ -296,3 +290,9 @@ export default {
   },
 };
 </script>
+
+<style>
+.o{
+  font-size: 9px;
+}
+</style>

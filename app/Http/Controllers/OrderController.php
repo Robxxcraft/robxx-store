@@ -19,6 +19,23 @@ class OrderController extends Controller
         return response()->json($orders, 200);
     }
 
+    public function show($id)
+    {
+        $order = Order::where('user_id', Auth::user()->id)->with('orderdetails.product', function($q){
+            $q->with('category');
+        })->find($id);
+        
+        return response()->json($order, 200);
+    }
+
+    public function adminShowOrder($id)
+    {
+        $order = Order::with(['orderdetails.product.category', 'user'])->find($id);
+
+        
+        return response()->json($order, 200);
+    }
+
     public function adminOrders()
     {
         $orders = Order::with('user')->get();

@@ -24,6 +24,7 @@
               type="submit"
               class="mx-4"
               tile
+              :disabled="loading"
               depressed
               dark
               color="orange darken-3" style="text-transform: none;">Update</v-btn>

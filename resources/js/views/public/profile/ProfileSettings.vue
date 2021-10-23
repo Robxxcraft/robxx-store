@@ -32,9 +32,9 @@
                  <v-card flat class="rounded-lg">
                      <v-app-bar class="mb-2" :hidden="!$vuetify.breakpoint.smAndDown" flat>
                          <v-tabs color="orange" light>
-                             <v-tab :to="{name: 'Profile'}" class="text-decoration-none">My Account</v-tab>
-                             <v-tab :to="{name: 'ChangePassword'}" class="text-decoration-none">Change Password</v-tab>
-                             <v-tab :to="{name: 'ProfileSettings'}" class="text-decoration-none">Profile Settings</v-tab>
+                             <v-tab :to="{name: 'Profile'}" class="text-decoration-none" style="text-transform: none;">My Account</v-tab>
+                             <v-tab :to="{name: 'ChangePassword'}" class="text-decoration-none" style="text-transform: none;">Change Password</v-tab>
+                             <v-tab :to="{name: 'ProfileSettings'}" class="text-decoration-none" style="text-transform: none;">Profile Settings</v-tab>
                          </v-tabs>
                      </v-app-bar>
                      <v-card-title>Profile Settings</v-card-title>

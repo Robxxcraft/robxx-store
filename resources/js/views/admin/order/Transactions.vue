@@ -1,5 +1,5 @@
 <template>
- <v-card>
+ <v-card flat>
     <v-card-title>
       Transactions
     </v-card-title>
@@ -14,7 +14,6 @@
         class="mx-2 rounded-0"
         color="orange"
       ></v-text-field>
-      <v-btn fab text><v-icon  class="mx-2">mdi-dots-vertical</v-icon></v-btn>
     </v-card-actions>
     <v-data-table
       :headers="headers"
@@ -25,8 +24,8 @@
       {{item.created_at | timeformat}}
     </template>
     <template v-slot:[`item.action`]="{item}">
-        <v-btn small depressed class="blue accent-2 white--text ma-1 text-decoration-none" title="Order Details" router :to="{name: 'EditCategory', params: {id: item.id}}"><v-icon>mdi-eye</v-icon></v-btn>
-        <v-btn small depressed class="red accent-2 white--text ma-1" @click.prevent="deleteTrasaction(item.id)" title="Delete"><v-icon>mdi-delete</v-icon></v-btn>
+      <v-btn small depressed class="blue accent-2 white--text ma-1 text-decoration-none" title="Transaction Details" :to="{name : 'ShowTransaction', params: {id : item.id}}"><v-icon>mdi-eye</v-icon></v-btn>
+      <v-btn small depressed class="red accent-2 white--text ma-1" @click.prevent="deleteTrasaction(item.id)" title="Delete"><v-icon>mdi-delete</v-icon></v-btn>
     </template>
     </v-data-table>
   </v-card>
@@ -42,10 +41,11 @@ export default {
           { text: 'Token', value: 'order_token' },
           { text: 'Total Quantity', value: 'total_quantity' },
           { text: 'Total Amount', value: 'total_amount' },
-          { text: 'Email', value: 'payment' },
-          { text: 'Username', value: 'user_id' },
-          { text: 'Phone number', value: 'phone_number'},
-          { text: 'Address', value: 'address'},
+          { text: 'Payment', value: 'payment' },
+          // { text: 'Email', value: 'email' },
+          // { text: 'Username', value: 'username' },
+          // { text: 'Phone number', value: 'phone_number'},
+          // { text: 'Address', value: 'address'},
           { text: 'Date', value: 'date' , sortable: false},
           { text: 'Actions', value: 'action', sortable: false},
         ]

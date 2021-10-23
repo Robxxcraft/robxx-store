@@ -7,9 +7,9 @@ use App\Models\Product;
 
 class SearchController extends Controller
 {
-    public function search(Request $request)
+    public function search($searchText)
     {
-        $search = Product::with('category')->withCount('favourite','favourited')->Where('title', 'like', "%".$request->searchtext."%")->orwhere('description', 'like', "%".$request->searchtext."%")->orderBy('id', 'desc')->get();
+        $search = Product::with('category')->withCount('favourite','favourited')->Where('title', 'like', "%".$searchText."%")->orWhere('description', 'like', "%".$searchText."%")->orderBy('created_at', 'DESC')->paginate(12);
         return response()->json($search,200);
     }
 }

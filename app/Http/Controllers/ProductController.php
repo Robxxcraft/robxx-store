@@ -8,6 +8,8 @@ use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
+use Image;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -29,16 +31,22 @@ class ProductController extends Controller
         return response()->json($products, 200);
     }
 
+    public function sale()
+    {
+        $products = Product::with('category')->take(5)->get();
+        return response()->json($products, 200);
+    }
+
     public function allproducts()
     {
-        $products = Product::with('category')->withCount('favourite','favourited')->get();
+        $products = Product::with('category')->withCount('favourite','favourited')->paginate(12);
         return response()->json($products, 200);
     }
 
     public function products_by_category($slug)
     {
         $category_id = Category::where('slug', $slug)->first(['id']);
-        $products = Product::with('category')->withCount('favourite','favourited')->where('category_id', $category_id->id)->get();
+        $products = Product::with('category')->withCount('favourite','favourited')->where('category_id', $category_id->id)->paginate(12);
        return response()->json($products, 200);
     }
 
@@ -65,11 +73,13 @@ class ProductController extends Controller
 
 
         if ($request->hasFile('photo')) {
-            $imageName = time().'.'.$request->photo->extension();
-            $path = public_path('images');
+            
+            $imageName = time().'_'.base64_encode(Str::random(5)).'.'.$request->photo->extension();
+            $image_resize = Image::make($request->photo)->resize(600, 400);
+            $image_resize->save(public_path('images/').$imageName);
             $product->photo = $imageName;
             $product->save();
-            $request->photo->move($path, $imageName);
+
         }
 
         $product_tag = Product::findOrFail($product->id);
@@ -166,6 +176,21 @@ class ProductController extends Controller
         }
 
         return response()->json('Product deleted sucessfullfy', 200);
+    }
+
+    public function deleteAll()
+    {
+        $products = Product::all();
+        
+        foreach ($products as $product) {
+            if (!empty($product->photo) && file_exists(public_path('images').'/'.$product->photo)) {
+                unlink(public_path('images').'/'.$product->photo);
+            }
+        }
+
+        DB::table('products')->delete();
+
+        return response()->json('All Product deleted sucessfullfy', 200);
     }
 
     public function deleteTags($id)

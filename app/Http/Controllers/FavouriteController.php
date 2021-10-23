@@ -9,8 +9,8 @@ class FavouriteController extends Controller
 {
     public function index()
     {
-        $favourite = Favourite::where('user_id', Auth::user()->id)->with('product', function($q){
-            $q->withCount('favourite','favourited');
+        $favourite = Favourite::orderBy('id', 'DESC')->where('user_id', Auth::user()->id)->with('product', function($q){
+            $q->withCount('favourite','favourited')->with('category');
         })->get()->pluck('product');
         return response()->json($favourite, 200);
     }

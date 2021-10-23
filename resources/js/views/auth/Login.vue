@@ -1,9 +1,10 @@
 <template>
   <v-app>
    <v-main>
-     <v-row align="center" justify="center">
-         <v-col cols="12" sm="12" md="4" lg="4">
-           <v-card elevation="0">
+     <v-container class="fill-height" fluid>
+     <v-row align="center" justify="center" dense>
+         <v-col cols="12"  md="4" lg="4" xl="4">
+           <v-card elevation="0" :loading="loading">
              <v-card-title class="justify-center text-center">
                <p class="title font-weight-bold">Sign In</p>
              </v-card-title>
@@ -34,6 +35,7 @@
            </v-card>
          </v-col>
        </v-row>
+     </v-container>
    </v-main>
   </v-app>
 </template>
@@ -48,7 +50,8 @@ export default {
         email: '',
         password: ''
       },
-      errors: {}
+      errors: {},
+      loading: false
     }
   },
   methods: {
@@ -56,10 +59,13 @@ export default {
       this.showPassword = !this.showPassword;
     },
     login(){
+      this.loading = true
       this.$store.dispatch('auth/login', this.form)
       .then(() => { 
+        this.loading = false
         location.reload();
       }).catch(errors => { 
+        this.loading = false
           this.errors = errors.response.data.errors
           this.$toasted.show("Some Error Ocured", {
             type: 'error',

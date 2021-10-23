@@ -5,7 +5,6 @@ export default {
   state: {
     cart: [],
     cart_page: [],
-    index: null,
     last_page: null,
     total_cart: null,
   },
@@ -50,23 +49,32 @@ export default {
     },
 
     INCREMENT_QTY(state, id){
-        let cartExitst = state.cart_page.find(item => {
+        let cartExitst = state.cart.find(item => {
+            return item.product.id === id;
+        });
+        let cartExitstPage = state.cart_page.find(item => {
             return item.product.id === id;
         });
 
-        if(cartExitst){
+        if(cartExitst && cartExitstPage){
             cartExitst.quantity++;
+            cartExitstPage.quantity++;
             return;
         }
     },
 
     DECREMENT_QTY(state, id){
-        let cartExitst = state.cart_page.find(item => {
+        let cartExitst = state.cart.find(item => {
             return item.product.id === id
         });
 
-        if(cartExitst.quantity > 1){
+        let cartExitstPage = state.cart_page.find(item => {
+            return item.product.id === id
+        });
+
+        if(cartExitst.quantity > 1 && cartExitstPage.quantity > 1){
             cartExitst.quantity--;
+            cartExitstPage.quantity--;
             return;
         }
     },
@@ -79,7 +87,6 @@ export default {
         state.cart_page = cart.cart.data;
         state.last_page = cart.cart.last_page;
         state.total_cart = cart.cart.total;
-        state.index = cart.index;
     },
     
     REMOVE_CART(state, product){

@@ -2,9 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Support\Str;
-use Illuminate\Http\Request;
 use App\Models\Tag;
+use App\Models\Product;
 
 class TagController extends Controller
 {
@@ -22,11 +21,11 @@ class TagController extends Controller
 
     public function tagProducts($slug)
     {
-        $tagProducts = Tag::where('slug', $slug)->with('product', function($q){
-            $q->withCount(['favourite','favourited']);
-        })->first();
-        $tag = $tagProducts->product;
-        return response()->json($tag, 200);
+        $product = Product::with('category')->withCount('favourite','favourited')->whereHas('tag', function($q)use($slug){
+            $q->where('slug', $slug);
+        })->orderBy('created_at', 'DESC')->paginate(12);
+
+        return response()->json($product, 200);
     }
 
     

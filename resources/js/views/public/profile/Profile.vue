@@ -32,20 +32,23 @@
                  <v-card flat class="rounded-lg">
                      <v-app-bar class="mb-2" :hidden="!$vuetify.breakpoint.smAndDown" flat>
                          <v-tabs color="orange" light>
-                             <v-tab :to="{name: 'Profile'}" class="text-decoration-none">My Account</v-tab>
-                             <v-tab :to="{name: 'ChangePassword'}" class="text-decoration-none">Change Password</v-tab>
-                             <v-tab :to="{name: 'ProfileSettings'}" class="text-decoration-none">Profile Settings</v-tab>
+                             <v-tab :to="{name: 'Profile'}" class="text-decoration-none" style="text-transform: none;">My Account</v-tab>
+                             <v-tab :to="{name: 'ChangePassword'}" class="text-decoration-none" style="text-transform: none;">Change Password</v-tab>
+                             <v-tab :to="{name: 'ProfileSettings'}" class="text-decoration-none" style="text-transform: none;">Profile Settings</v-tab>
                          </v-tabs>
                      </v-app-bar>
                      <v-card-title><span class="grey--text text--darken-1">
                 Edit Profile</span></v-card-title>
                      <v-card-text>
                          <div class="justify-center text-center my-5">
-                             <v-badge color="orange accent-2" bottom bordered>
-                                 <v-avatar width="100px" height="100px">
-                                    <img src="#" alt="" />
-                                 </v-avatar>
-                             </v-badge>
+                                 
+                                 
+                                     <v-avatar width="100px"  height="100px">
+                                        <v-img :src="img" contain></v-img>
+                                     </v-avatar>
+                                     <v-btn fab class="mt-16 ml-n5" style="position: absolute;" x-small dark color="orange">
+                                         <v-container><v-file-input hide-input class="mt-n3 mr-n2" v-model="form.photo" prepend-icon="mdi-pencil"></v-file-input></v-container>
+                                     </v-btn>
                              <div class="mt-6 mb-2 title font-weight-bold">
                                  {{email}}
                              </div>
@@ -56,15 +59,12 @@
                          <v-container>
                              <div class="my-4">
                              <v-row wrap>
-                             <v-col md="6" sm="12">
+                             <v-col md="6" lg="6" xl="6" cols="12">
                                  <v-text-field :append-icon="form.first_name && form.first_name != 'null' ? 'mdi-check-circle-outline':''" type="text" label="First Name" :error-messages="errors.first_name" filled rounded class="rounded-0" color="orange" v-model="form.first_name"></v-text-field>
                              </v-col>
-                             <v-col md="6" sm="12">
+                             <v-col md="6" lg="6" xl="6" cols="12">
                                  <v-text-field :append-icon="form.last_name && form.last_name != 'null' ? 'mdi-check-circle-outline':''" type="text" label="Last Name" filled rounded class="rounded-0" color="orange" v-model="form.last_name"></v-text-field>
                              </v-col>
-                             
-                            </v-row>
-                            <v-row>
                                 <v-col md="12">
                                  <v-textarea :append-icon="form.address && form.address != 'null' ? 'mdi-check-circle-outline':''" label="Address" filled rounded class="rounded-0" color="orange" v-model="form.address"></v-textarea>
                              </v-col>
@@ -123,6 +123,7 @@ export default {
   data(){
     return {
       email: this.$store.state.auth.user.email,
+      photo: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.photo : '',
       date: this.$store.state.auth.user.created_at,
       form: {
         first_name: this.$store.state.auth.user.first_name,
@@ -138,15 +139,25 @@ export default {
         zipcode: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.zipcode : '',
         
         phone_number: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.phone_number : '',
+        photo: null
       },
-      photo: null,
-      img: null,
-      errors: {}
+      errors: {},
     }
+  },
+  computed: {
+      img(){
+            if (this.form.photo != null) {
+                return URL.createObjectURL(this.form.photo);
+            }
+
+            return `/user/photo/${this.photo}`;
+            
+        }
   },
   methods: {
       submit(){
-        const config = {
+            this.errors = {}
+            const config = {
                 headers: { 'content-type' : 'multipart/form-data'}
             }
 
@@ -159,7 +170,7 @@ export default {
             formData.append('province', this.form.province)
             formData.append('zipcode', this.form.zipcode)
             formData.append('phone_number', this.form.phone_number)
-            formData.append('photo', this.photo)
+            formData.append('photo', this.form.photo)
 
             axios.post("/api/update-user", formData, config).then(response => {
                 this.$store.dispatch('auth/user');
@@ -170,7 +181,7 @@ export default {
             }).catch(errors => {
                 this.errors = errors.response.data.errors;
                 this.$toasted.show("Some Error Occured", {
-                    type: 'danger',
+                    type: 'error',
                     duration: '2000'
                 });
             })

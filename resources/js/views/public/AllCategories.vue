@@ -10,7 +10,7 @@
         <v-col sm="12" md="3">
           <v-card flat class="rounded-lg hidden-sm-and-down">
             <v-card-title>
-              <p class="subheading">Categories</p>
+              <span class="subheading">Categories</span>
             </v-card-title>
             <v-card-text>
               <v-list>
@@ -44,8 +44,6 @@
             <v-slide-item
               v-for="(category, index) in getCategories" :key="index"
             >
-            <v-hover>
-
               <v-card
                 color="orange"
                 outlined
@@ -68,7 +66,6 @@
                 </v-row>
                     
               </v-card>
-            </v-hover>
             </v-slide-item>
           </v-slide-group>
           </v-sheet>

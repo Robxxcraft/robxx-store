@@ -1,8 +1,9 @@
 <template>
   <v-app>
    <v-main>
-     <v-row align="center" justify="center">
-         <v-col cols="12" sm="12" md="4" lg="4">
+     <v-container class="fill-height" fluid>
+     <v-row align="center" justify="center" dense>
+         <v-col cols="12"  md="4" lg="4" xl="4">
            <v-card elevation="0">
              <v-card-title class="justify-center text-center">
                <p class="title font-weight-bold">Reset Password</p>
@@ -27,6 +28,7 @@
            </v-card>
          </v-col>
        </v-row>
+     </v-container>
    </v-main>
   </v-app>
 </template>

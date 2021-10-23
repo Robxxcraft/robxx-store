@@ -20,10 +20,5 @@ export default {
               commit('SET_USERS', res.data)
           }).catch(error => console.log(error))
       },
-      deleteUser({commit}, id){
-        axios.delete(`/api/user/${id}`).then(() =>{
-          commit('DELETE_USER', id)
-        })
-      }
   }
 }

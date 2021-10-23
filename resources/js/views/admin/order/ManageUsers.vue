@@ -5,13 +5,14 @@
     </v-card-title>
     <v-card-actions>
       <v-spacer></v-spacer>
-      <v-text-field
+      <v-text-field filled rounded
         v-model="search"
         append-icon="mdi-magnify"
         label="Search"
         single-line
         hide-details
-        class="mx-2"
+        class="mx-2 rounded-0"
+        color="orange"
       ></v-text-field>
     </v-card-actions>
     <v-data-table
@@ -23,7 +24,7 @@
       {{item.created_at | timeformat}}
     </template>
     <template v-slot:[`item.action`]="{item}">
-        <v-btn small depressed class="blue accent-2 white--text ma-1" router :to="{name: 'DetailUser', params: {id: item.id}}">Details</v-btn>
+        <v-btn small depressed class="blue accent-2 white--text ma-1" :to="{name: 'ShowUser', params: {id: item.id}}" style="text-decoration: none;" title="Edit User"><v-icon>mdi-pencil</v-icon></v-btn>
         <v-btn small depressed class="red accent-2 white--text ma-1" @click.prevent="deleteUser(item.id)" title="Delete"><v-icon>mdi-delete</v-icon></v-btn>
     </template>
     </v-data-table>
@@ -40,12 +41,6 @@ export default {
           { text: 'First Name', value: 'first_name' },
           { text: 'Last Name', value: 'last_name' },
           { text: 'Email', value: 'email' },
-          // { text: 'Address', value: 'details.address' },
-          // { text: 'City', value: 'details.city' },
-          // { text: 'Province', value: 'details.province' },
-          // { text: 'Zipcode', value: 'details.zipcode' },
-          // { text: 'Phone Number', value: 'details.phone_number' },
-          // { text: 'Photo', value: 'details.photo' },
           { text: 'Role', value: 'role' },
           { text: 'Action', value: 'action' },
         ]
@@ -61,7 +56,18 @@ export default {
   },
   methods: {
     deleteUser(id){
-      this.$store.dispatch('user/deleteUser', id)
+      axios.delete(`/api/user/${id}/delete`).then(res => {
+          this.$store.commit('user/DELETE_USER', id)
+          this.$toasted.show(res.data, {
+          type: 'success',
+          duration: '2000'
+        })
+        }).catch(()=>{
+          this.$toasted.show("Some Error Occured", {
+          type: 'error',
+          duration: '2000'
+        })
+        })
     }
   }
 }

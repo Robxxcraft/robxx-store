@@ -11,7 +11,6 @@ use App\Http\Controllers\SearchController;
 use App\Http\Controllers\ChartController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\SaleController;
 use App\Http\Controllers\SettingController;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Http\Request;
@@ -49,16 +48,23 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/category/{id}', [CategoryController::class, 'edit']);
     Route::put('/category/{id}', [CategoryController::class, 'update']);
     Route::delete('/category/{id}', [CategoryController::class, 'delete']);
+    Route::post('/category/delete-all', [CategoryController::class, 'deleteAll']);
 
     Route::get('/product', [ProductController::class, 'index']);
     Route::post('/product/add', [ProductController::class, 'create']);
     Route::get('/product/{id}/edit', [ProductController::class, 'edit']);
     Route::put('/product/{id}', [ProductController::class, 'update']);
     Route::delete('/product/{id}', [ProductController::class, 'delete']);
+    Route::get('/product/all', [ProductController::class, 'deleteAll']);
 
     Route::get('/adminorders', [OrderController::class, 'adminOrders']);
+    Route::get('/admin-show-order/{id}', [OrderController::class, 'adminShowOrder']);
     Route::get('/admintransactions', [TransactionController::class, 'index']);
+    Route::get('/transactions/{id}', [TransactionController::class, 'edit']);
     Route::get('/allusers', [UserController::class, 'index']);
+    Route::get('/admin-user-edit/{id}', [UserController::class, 'edit']);
+    Route::put('/admin-update-user/{id}', [UserController::class, 'update']);
+    Route::delete('/user/{id}/delete', [UserController::class, 'destroy']);
 
     Route::put('/update-user', [AuthController::class, 'update']);
     Route::put('/change-password', [AuthController::class, 'changePassword']);
@@ -70,11 +76,15 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/cart/incr/{id}', [CartController::class,'incrqty']);
     Route::post('/cart/dcr/{id}', [CartController::class,'dcrqty']);
     Route::delete('/cart-clear', [CartController::class,'cartClear']);
+
+    Route::put('/update-setting', [SettingController::class, 'updateSetting']);
+    Route::get('/count', [SettingController::class, 'count']);
 });
 
 Route::get('/recentproducts', [ProductController::class, 'recent']);
+Route::get('/homecategory', [CategoryController::class, 'homecategory']);
 Route::get('/relatedproducts/{id}', [ProductController::class, 'related']);
-Route::get('/products_by_category/{slug}', [ProductController::class, 'products_by_category']);
+Route::get('/products_by_category/{slug}/page', [ProductController::class, 'products_by_category']);
 Route::get('/allproducts', [ProductController::class, 'allproducts']);
 Route::get('/category', [CategoryController::class, 'index']);
 Route::get('/product/{slug}', [ProductController::class, 'show']);
@@ -84,6 +94,7 @@ Route::post('/favourite/{id}', [FavouriteController::class, 'add']);
 Route::delete('/favourite/{id}', [FavouriteController::class, 'remove']);
 
 Route::get('/orders', [OrderController::class, 'index']);
+Route::get('/order/{id}', [OrderController::class, 'show']);
 Route::get('/order-details/{id}', [OrderController::class, 'orderDetails']);
 Route::post('/orders/add', [OrderController::class, 'create']);
 Route::post('/orders/payment/{id}', [OrderController::class, 'payment']);
@@ -91,17 +102,14 @@ Route::put('/orders/{id}/add', [OrderController::class, 'update']);
 Route::post('/orders/{id}/cancel', [OrderController::class, 'cancel']);
 Route::get('/orders/{id}/delete', [OrderController::class, 'destroy']);
 
-Route::post('/search', [SearchController::class, 'search']);
+Route::get('/search/{searchText}/page', [SearchController::class, 'search']);
 Route::get('/tags', [TagController::class, 'hometag']);
-Route::get('/tag_products/{slug}', [TagController::class, 'tagProducts']);
-
+Route::get('/tag_products/{slug}/page', [TagController::class, 'tagProducts']);
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::get('/chart', [ChartController::class, 'index']);
 
-Route::get('/sale', [SaleController::class, 'index']);
-Route::put('/sale/{id}', [SaleController::class, 'create']);
-
-Route::put('/changebanner', [SettingController::class, 'changeBanner']);
-Route::get('/delete-banner', [SettingController::class, 'deleteBanner']);
-Route::put('/changelogo', [SettingController::class, 'changeLogo']);
+Route::get('/settings', [SettingController::class, 'index']);
+Route::get('/banner', [SettingController::class, 'banner']);
+Route::get('/logo', [SettingController::class, 'logo']);
+Route::get('/sale', [ProductController::class, 'sale']);

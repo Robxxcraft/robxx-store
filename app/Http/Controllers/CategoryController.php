@@ -5,12 +5,19 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class CategoryController extends Controller
 {
     public function index()
     {
         $categories = Category::with('product')->get();
+        return response()->json($categories, 200);
+    }
+
+    public function homecategory()
+    {
+        $categories = Category::take(7)->get();
         return response()->json($categories, 200);
     }
 
@@ -58,6 +65,13 @@ class CategoryController extends Controller
         $category->delete();
 
         return response()->json('Category deleted sucessfullfy', 200);
+    }
+
+    public function deleteAll()
+    {
+        DB::table('categories')->delete();
+
+        return response()->json('All Categories deleted', 200);
     }
     
 }

@@ -21,7 +21,7 @@
                 <v-list-item>
                   <v-dialog v-model="dialog" width="500">
                     <template v-slot:activator="{on, attrs}">
-                       <v-btn depressed class="red" text v-bind="attrs" v-on="on" style="text-transform: none;">Clear Cart</v-btn>
+                       <v-btn depressed class="red--text" text v-bind="attrs" v-on="on" style="text-transform: none;">Clear Cart</v-btn>
                     </template>
                     <v-card>
                       <v-card-title class="text-h5 font-weight-bold red--text">Clear Cart</v-card-title>
@@ -39,7 +39,7 @@
                   </v-list-item>
               </template>
             </v-list>
-          </v-menu>
+                </v-menu>
                 
               </v-app-bar>
               <v-card-text>
@@ -118,15 +118,17 @@
       
       <Footer />
     </v-main>
+    <BottomNavigation :hidden="!$vuetify.breakpoint.smAndDown"/>
   </v-app>
 </template>
-
 <script>
 import Navigation from "./include/Navigation.vue";
+import BottomNavigation from "./include/BottomNavigation.vue";
 import Footer from "./include/Footer.vue";
 export default {
   components: {
     Navigation,
+    BottomNavigation,
     Footer,
   },
   data(){
@@ -151,9 +153,6 @@ export default {
     },
     getCartTotal() {
       return this.$store.state.cart.total_cart;
-    },
-    indexCart() {
-      return this.$store.state.cart.index;
     },
     cartTotalPrice() {
       return this.$store.getters['cart/cartTotalPrice']

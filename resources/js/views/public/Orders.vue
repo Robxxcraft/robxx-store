@@ -35,7 +35,7 @@
                     <v-card-actions>
                       <v-row>
                         <v-col>
-                          <v-btn :to="{name: 'OrderDetails', params: {id: 1}}" class="subtitle-2" style="text-transform: none; text-decoration: none;" text><span class="font-weight-bold" color="grey darken-3">Details</span></v-btn>
+                          <v-btn :to="{name: 'OrderDetails', params: {id: order.id}}" class="subtitle-2" style="text-transform: none; text-decoration: none;" text><span class="font-weight-bold" color="grey darken-3">Details</span></v-btn>
                         </v-col>
                         <v-spacer></v-spacer>
                         <v-col class="text-right">
@@ -47,7 +47,7 @@
                           </template>
                           <template v-else>
                             <v-btn depressed dark color="red accent-2" style="text-transform: none;" @click="cancels(order.id)" plain>
-                            <v-icon class="mr-1">mdi-cross</v-icon>
+                            <v-icon class="mr-1">mdi-close-circle-outline</v-icon>
                             <span class="caption hidden-sm-and-down">Cancel Order</span>
                           </v-btn>
                           </template>
@@ -59,9 +59,9 @@
               </v-row>
               <template v-if="getOrders <= 0">
                  <v-card-text>
-                   <v-card height="320" flat>
+                   <v-card height="320" class="mb-5" flat>
                    <v-row align="center" justify="center">
-                   <span class="text-h5 grey--text pa-5 mt-8">Not Found</span>
+                   <span class="text-h5 grey--text pa-5 mt-8">No Order Items</span>
                  </v-row>
                  </v-card>
                  </v-card-text>
@@ -70,14 +70,17 @@
       </section>
       <Footer />
     </v-main>
+    <BottomNavigation :hidden="!$vuetify.breakpoint.smAndDown"/>
   </v-app>
 </template>
 <script>
 import Navigation from "./include/Navigation.vue";
+import BottomNavigation from "./include/BottomNavigation.vue";
 import Footer from "./include/Footer.vue";
 export default {
   components: {
     Navigation,
+    BottomNavigation,
     Footer,
   },
   data(){
@@ -129,7 +132,6 @@ export default {
                     })
     
               },
-
     deletes(id){
       this.$store.commit('order/DELETE_ORDER', id)
       axios.get(`/api/orders/${id}/delete`).then(res => {

@@ -32,7 +32,7 @@
                             <v-file-input  accept="image/png, image/jpg, image/jpeg"  prepend-icon="mdi-camera" color="orange" label="Photo" filled rounded class="rounded-0" @change="onImageUpload" hint="Enter Photo Product" :error-messages="errors.photo" style="cursor: pointer;"></v-file-input>
                         </v-col>
                         <v-col cols="6">
-                            <v-img :src="img" max-height="auto" contain></v-img>
+                            <v-img :src="img" max-width="auto" contain height="150"></v-img>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -53,7 +53,7 @@
                     </v-row>
                     <v-card-actions class="my-5">
                         <v-spacer></v-spacer>
-                        <v-btn right type="submit" :disabled="loading == true" class="mx-2" dark depressed color="orange darken-3" large style="text-transform: none;" @click="updateProduct">Update</v-btn>
+                        <v-btn right type="submit" :disabled="loading" class="mx-2" dark depressed color="orange darken-3" large style="text-transform: none;" @click="updateProduct">Update</v-btn>
                         <template v-if="loading">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: none; display: block; shape-rendering: auto;" width="50px" height="50px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
                                         <rect x="19" y="19" width="20" height="20" fill="#f0f6f6">
@@ -93,12 +93,12 @@ export default {
                 category_id: 0,
                 price: '',
                 stock: 1,
-                tags: []
+                tags: [],
             },
             errors: {},
             loading: false,
             image: null,
-            img: null,
+            prev: null,
             tag: '',
         }
     },
@@ -109,13 +109,21 @@ export default {
            this.form.description = res.data.description;
            this.form.category_id = res.data.category_id;
            this.form.price = res.data.price;
+           this.prev = res.data.photo
            this.getTag(res.data.tag)
        })
     },
     computed: {
         getCategories(){
         return this.$store.state.category.categories
-      }
+      },
+      img(){
+            if (!this.image) {
+                return `/images/${this.prev}`;
+            }
+
+            return URL.createObjectURL(this.image);
+        }
     },
     methods: {
         getTag(tags){
@@ -162,6 +170,7 @@ export default {
                     duration: '2000'
                 })
             }).catch(errors => {
+                this.loading = false
                 this.errors = errors.response.data.errors;
                 this.$toasted.show("Some Error Occured", {
                     type: 'error',

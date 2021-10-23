@@ -11,7 +11,7 @@
                     <v-text-field label="Name" color="orange" filled rounded class="rounded-0" flat v-model="form.name" type="text" :error-messages="errors.name" @keyup.enter="saveCategory"></v-text-field>
                     <v-card-actions>
                         <v-spacer></v-spacer>
-                        <v-btn right type="submit" class="mx-4" :disabled="loading == true" tile depressed dark color="orange darken-3" style="text-transform: none;">Save
+                        <v-btn right type="submit" class="mx-4" :disabled="loading" tile depressed dark color="orange darken-3" style="text-transform: none;">Save
                             
                         </v-btn>
                         <template v-if="loading">
@@ -34,7 +34,7 @@
                                         <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.5s" calcMode="discrete"></animate>
                                         </rect>
                                     </svg>
-                                </template>
+                        </template>
                     </v-card-actions>
                 </v-form>
             </v-card-text>
@@ -56,13 +56,14 @@ export default {
     },
     methods: {
         saveCategory(){
+            this.loading = true;
             axios.post('/api/category/add', this.form).then(response => {
+                this.$router.replace({name: 'Categories'})
                 this.loading = false
                 this.$toasted.show(response.data.success, {
                     type: 'success',
                     duration: '2000'
                 })
-                this.$router.replace({name: 'Categories'})
             }).catch(errors => { 
                 this.loading = false
                 this.errors = errors.response.data.errors

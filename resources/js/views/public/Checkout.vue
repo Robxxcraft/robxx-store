@@ -55,7 +55,7 @@
                     <div class="title">Payment With</div>
                   </template>
                   <v-row>
-                    <v-col cols="6">
+                    <v-col cols="12" md="6" lg="6" xl="6">
                       <v-sheet outlined class="mx-auto rounded-lg">
                         <v-container>
                           <v-radio value="COD" color="orange" v-slot:label>
@@ -64,7 +64,7 @@
                         </v-container>
                       </v-sheet>
                     </v-col>
-                    <v-col cols="6">
+                    <v-col cols="12" md="6" lg="6" xl="6">
                       <v-sheet outlined class="mx-auto rounded-lg">
                         <v-container>
                           <v-radio value="Midtrans" color="orange" v-slot:label>
@@ -81,10 +81,32 @@
                 <v-row class="text-right">
                   <v-spacer></v-spacer>
                   <v-col md="2" sm="9"> 
-                  <v-btn right router :to="{name: 'Checkout'}" class="mr-2 white--text" color="orange" @click.prevent="order" style="text-transform: none; text-decoration: none;" >
+                  <v-btn right router :to="{name: 'Checkout'}" class="mr-2 white--text" :disabled="loading" color="orange" @click.prevent="order" style="text-transform: none; text-decoration: none;" >
                     <v-icon class="white--text">mdi-cart</v-icon>
                     <div class="white--text">Order</div>
+                    <template v-if="loading">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: none; display: block; shape-rendering: auto;" width="50px" height="50px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                        <rect x="19" y="19" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0s" calcMode="discrete"></animate>
+                                        </rect><rect x="40" y="19" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.125s" calcMode="discrete"></animate>
+                                        </rect><rect x="61" y="19" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.25s" calcMode="discrete"></animate>
+                                        </rect><rect x="19" y="40" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.875s" calcMode="discrete"></animate>
+                                        </rect><rect x="61" y="40" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.375s" calcMode="discrete"></animate>
+                                        </rect><rect x="19" y="61" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.75s" calcMode="discrete"></animate>
+                                        </rect><rect x="40" y="61" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.625s" calcMode="discrete"></animate>
+                                        </rect><rect x="61" y="61" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.5s" calcMode="discrete"></animate>
+                                        </rect>
+                                    </svg>
+                        </template>
                   </v-btn>
+                  
                   </v-col>
                 </v-row>
               </v-card-actions>
@@ -106,19 +128,22 @@
       
       <Footer />
     </v-main>
+    <BottomNavigation :hidden="!$vuetify.breakpoint.smAndDown"/>
   </v-app>
 </template>
-
 <script>
 import Navigation from "./include/Navigation.vue";
+import BottomNavigation from "./include/BottomNavigation.vue";
 import Footer from "./include/Footer.vue";
 export default {
   components: {
     Navigation,
+    BottomNavigation,
     Footer,
   },
   data(){
     return {
+      loading: false,
       form: {
         address: this.$store.state.auth.user.details.address ? this.$store.state.auth.user.details.address : '',
 
@@ -152,6 +177,7 @@ export default {
   methods: {
     
     order(){
+      this.loading = true;
       let formData = new FormData();
             formData.append('address', this.form.address)
             formData.append('city', this.form.city)

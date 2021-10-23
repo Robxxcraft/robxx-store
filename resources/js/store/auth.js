@@ -12,6 +12,13 @@ export default {
         authenticated(state) {
             return state.authenticated;
         },
+        role(state) {
+            if (!state.user) {
+                return;
+            }
+            
+            return state.user.role;
+        },
 
         user(state) {
             return state.user;
