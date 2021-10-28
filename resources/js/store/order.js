@@ -38,6 +38,17 @@ export default {
       let index = state.orders.findIndex(ord => ord.id == id)
       state.orders.splice(index, 1)
     },
+    CANCEL_ADMIN_ORDER(state, id){
+      if(state.admin_order.id == id){
+        return state.admin_order.order_status = 'Cancelled'
+      }
+    },
+    
+    DELETE_ADMIN_ORDER(state, id){
+      let index = state.admin_orders.findIndex(ord => ord.id == id)
+      state.admin_orders.splice(index, 1)
+    },
+
     DELETE_ALL_ORDER(state){
       state.orders = []
     },

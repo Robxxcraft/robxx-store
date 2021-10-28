@@ -8,17 +8,16 @@
              <v-card-title class="justify-center text-center">
                <p class="title font-weight-bold">Forgot Password?</p>
              </v-card-title>
-             <a href="#" title="Register">
                <v-img src="/assets/admin/auth/Forgot.svg" alt="Register" contain height="200"></v-img>
-             </a>
              <v-card-text>
                <v-form @submit.prevent="forgot">
                  <v-text-field label="Enter your email" color="orange" v-model="form.email" prepend-inner-icon="mdi-email" type="email" class="rounded-0" :error-messages="errors.email" outlined></v-text-field>
-                 <v-btn type="submit" class="text-h6" tile color="orange darken-2" x-large block dark style="text-transform: none;">Send</v-btn>
+                 <v-btn type="submit" class="white--text text-h6 font-weight-bold" :disabled="loading" tile color="orange darken-3" x-large block style="text-transform: none;">Send</v-btn>
                </v-form>
              </v-card-text>
              <v-card-actions class="text--secondary pa-5 justify-center text-center">
-                Already have an account? <router-link :to="{name: 'Login'}" class="pl-2" style="color: #000000; text-decoration:none;"> Sign In</router-link>
+                <span style=" margin: 0; padding: 0;">Already have an account?</span>
+                <span><v-btn class="black--text subtitle-1" text :disabled="loading" style="text-transform: none; text-decoration: none;" :to="{name: 'Login'}">Sign In</v-btn></span>
              </v-card-actions>
              <v-card-actions class="mx-6 justify-center text-center">
                <p>By continuing, you agree to RobxxStore<br><b><a href="#" style="color: #000000;">Policy</a></b> and <b><a href="#" class="black--text">Term of use</a></b></p>
@@ -41,13 +40,16 @@ export default {
       },
       error: null,
       errors: {},
+      loading: false
       
     }
   },
   methods: {
     forgot(){
+      this.loading = true
       axios.post('/api/forgot-password', {email: this.form.email})
       .then(res => {  
+        this.loading = false
         if (res.data === "passwords.throttled"){
           this.errors = {}
           this.error = "Password Throttled"
@@ -62,6 +64,7 @@ export default {
             duration: '2000'
           })
       }).catch(errors => {
+        this.loading = false
        this.error = null
        this.errors = errors.response.data.errors
        this.$toasted.show("Some Error Occurred", {

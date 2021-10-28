@@ -15,7 +15,7 @@ class TagController extends Controller
 
     public function hometag()
     {
-        $tags = Tag::orderBy('created_at', 'DESC')->take(10)->get();
+        $tags = Tag::withCount('product')->orderBy('product_count', 'DESC')->take(10)->get();
         return response()->json($tags, 200);
     }
 

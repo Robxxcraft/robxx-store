@@ -49,6 +49,7 @@ import OrderDetails from "../views/public/OrderDetails.vue";
 import Finished from "../views/public/payment/Finished.vue";
 import Unfinished from "../views/public/payment/Unfinished.vue";
 import Errors from "../views/public/payment/Errors.vue";
+import NotFound from "../views/public/NotFound.vue";
 
 import Search from "../views/public/Search.vue";
 import TagProducts from "../views/public/Tag.vue";
@@ -66,7 +67,10 @@ const routes = [
         path: "/about",
         name: "About",
         component: About,
-        meta: { isAdmin: true },
+    },
+    {
+        path: "*",
+        component: NotFound,
     },
     {
       path: "/register",

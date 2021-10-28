@@ -15,12 +15,14 @@
                     </v-row>
                     <v-row>
                         <v-col>
-                            <v-textarea name="input-7-1" v-model="form.description" color="orange" :counter="500" label="Description" filled rounded class="rounded-0" hint="Enter Description Product" :error-messages="errors.description"></v-textarea>
+                            <span v-if="errors.description" class="red--text text-h6">{{errors.description[0]}}</span>
+                            <quill-editor ref="myQuillEditor" v-model="form.description" :options="editorOption"></quill-editor>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col>
-                            <v-select :items="getCategories" item-value="id" item-text="name" v-model="form.category_id" color="orange" label="Category" filled rounded class="rounded-0" hint="Enter Category Product" :error-messages="errors.category_id"></v-select>
+                            {{errors.category_id}}
+                            <v-select :items="getCategories" item-value="id" item-text="name"  v-model="form.category_id" color="orange" label="Category" filled rounded class="rounded-0" hint="Enter Category Product" :error-messages="errors.category_id"></v-select>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -86,13 +88,18 @@
 </template>
 
 <script>
+import "quill/dist/quill.snow.css";
+import { quillEditor } from "vue-quill-editor";
 export default {
+    components: {
+        quillEditor
+    },
     data(){
         return {
             form: {
                 title: '',
                 description: '',
-                category_id: 0,
+                category_id: null,
                 price: '',
                 stock: 1,
                 tags: []
@@ -101,6 +108,11 @@ export default {
             loading: false,
             image: null,
             tag: '',
+            editorOption: {
+                debug: 'info',
+                placeholder: 'Type your description...',
+                theme: 'snow',
+            }
         }
     },
     mounted(){
@@ -162,8 +174,6 @@ export default {
                     type: 'error',
                     duration: '2000'
                 })
-            }).finnaly(()=>{
-                this.loading = false
             })
         }
     }

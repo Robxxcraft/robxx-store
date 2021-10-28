@@ -63,7 +63,7 @@ class OrderController extends Controller
         }
         
         $order = Order::create([
-            'user_id' => Auth::user()->id,
+            'user_id' => auth('sanctum')->user()->id,
             'address' => $request->address,
             'city' => $request->city,
             'province' => $request->province,
@@ -75,7 +75,7 @@ class OrderController extends Controller
             'order_status' => $order_stts,
         ]);
 
-        $carts = Cart::where('user_id', Auth::user()->id)->get();
+        $carts = Cart::where('user_id', auth('sanctum')->user()->id)->get();
 
         if (isset($order)) {
             foreach ($carts as $cart) {

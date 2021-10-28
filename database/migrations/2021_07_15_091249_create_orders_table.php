@@ -20,7 +20,7 @@ class CreateOrdersTable extends Migration
             $table->string('city');
             $table->string('province');
             $table->string('zipcode');
-            $table->integer('phone_number');
+            $table->string('phone_number');
             $table->bigInteger('total_quantity');
             $table->bigInteger('total_amount');
             $table->enum('payment', ['COD','Midtrans']);

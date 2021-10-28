@@ -66,7 +66,22 @@
                     </v-list-item-content>
       </v-list-item>
       <v-divider></v-divider>
-      <v-list>
+        <v-list>
+                      <v-list-item three-line>
+                      <v-list-item-icon>
+                        <v-icon>mdi-account</v-icon>
+                      </v-list-item-icon>
+                      <v-list-item-content>
+                      <v-list-item-title>
+                        User Order
+                      </v-list-item-title>
+                      <v-list-item-subtitle>
+                        <template v-if="getOrder.user">
+                          {{getOrder.user.first_name}} {{getOrder.user.last_name}}
+                        </template>
+                      </v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
                     <v-list-item three-line>
                       <v-list-item-icon>
                         <v-icon>mdi-map-marker</v-icon>
@@ -114,16 +129,16 @@
     <v-card-actions class="text-right">
             <v-spacer></v-spacer>
             
-            <template v-if="getOrder.order_status == 'Cancelled'">
-                            <v-btn depressed large dark color="red accent-2" style="text-transform: none;" @click="deletes(getOrder.id)" plain>
+                          <template v-if="getOrder.order_status == 'Cancelled'">
+                            <v-btn depressed x-large dark color="red accent-2" style="text-transform: none;" @click="deletes(getOrder.id)" plain>
                             <v-icon class="mr-1">mdi-delete</v-icon>
-                            <span class="caption hidden-sm-and-down">Delete Order</span>
+                            <span>Delete Order</span>
                           </v-btn>
                           </template>
                           <template v-else>
-                            <v-btn depressed large dark color="red accent-2" style="text-transform: none;" @click="cancels(getOrder.id)" plain>
+                            <v-btn depressed x-large dark color="red accent-2" style="text-transform: none;" @click="cancels(getOrder.id)" plain>
                             <v-icon class="mr-1">mdi-close-circle-outline</v-icon>
-                            <span class="caption hidden-sm-and-down">Cancel Order</span>
+                            <span>Cancel Order</span>
                           </v-btn>
                           </template>
           </v-card-actions>
@@ -146,9 +161,24 @@ export default {
       }
   },
   methods: {
-      deletes(id){
-      axios.get(`/api/orders/${id}/delete`).then(res => {
-        this.$router.push({name: 'AdminOrders'});
+    cancels(id){
+    this.$store.commit('order/CANCEL_ADMIN_ORDER', id)
+    axios.post(`/api/orders/${id}/cancel`).then(res => {
+            this.$toasted.show(res.data, {
+                    type: 'success',
+                    duration: '2000'
+                });
+          }).catch(() => {
+          this.$toasted.show("Some Error Occured", {
+                              type: 'error',
+                              duration: '2000'
+                          });
+                    })
+    
+              },
+    deletes(id){
+    axios.get(`/api/orders/${id}/delete`).then(res => {
+        this.$router.replace({name: 'AdminOrders'});
         this.$toasted.show(res.data, {
                     type: 'success',
                     duration: '2000'
@@ -157,9 +187,9 @@ export default {
         this.$toasted.show("Some Error Occured", {
                     type: 'error',
                     duration: '2000'
-                })
-      });
-    },
+                });
+          })
+    }
     
   }
 }

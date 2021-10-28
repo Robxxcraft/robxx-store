@@ -26,15 +26,8 @@ export default {
     },
 
     actions: {
-        async login({ dispatch }, credentials) {
-            await axios.get("/sanctum/csrf-cookie");
-            await axios.post("/login", credentials).then(() => {
-                return dispatch("user");
-            })
-        },
-
-
         user({ commit }) {
+            axios.defaults.headers.common["Authorization"] = `Bearer ${localStorage.getItem('token')}`;
             return axios
                 .get("/api/user")
                 .then(response => {
@@ -47,9 +40,9 @@ export default {
                 });
         },
 
-        async logout({commit}){
-            await axios.get("/sanctum/csrf-cookie");
-            await axios.post("/logout").then(() => {
+        logout({commit}){
+            axios.post('/logout').then(() => {
+                localStorage.removeItem('token')
                 commit("SET_AUTHENTICATED", false);
                 commit("SET_USER", null);
             })

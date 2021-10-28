@@ -177,6 +177,8 @@ export default {
                     duration: '2000'
                 })
                 
+            }).finally(()=>{
+                this.loading = false
             })
         }
     }

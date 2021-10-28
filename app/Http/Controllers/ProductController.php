@@ -56,7 +56,7 @@ class ProductController extends Controller
         $request->validate([
             'title' => 'required|min:3|unique:products,title',
             'description' => 'min:3|max:500|nullable',
-            'category_id' => 'required',
+            'category_id' => 'numeric|required',
             'price' => 'required|numeric',
             'stok' => 'required|numeric',
         ]);
@@ -72,14 +72,12 @@ class ProductController extends Controller
         ]);
 
 
-        if ($request->hasFile('photo')) {
-            
-            $imageName = time().'_'.base64_encode(Str::random(5)).'.'.$request->photo->extension();
+        if ($request->hasFile('photo')) {            
+            $imageName = time().'_'.Str::random(5).'.'.$request->photo->extension();
             $image_resize = Image::make($request->photo)->resize(600, 400);
             $image_resize->save(public_path('images/').$imageName);
             $product->photo = $imageName;
             $product->save();
-
         }
 
         $product_tag = Product::findOrFail($product->id);
@@ -131,12 +129,11 @@ class ProductController extends Controller
             if (isset($product->photo) && file_exists(public_path('images/').$product->photo)) {
                 unlink(public_path('images/').$product->photo);
             }
-            
-            $imageName = time().'.'.$request->photo->extension();
-            $path = public_path('images');
+                      
+            $imageName = time().'_'.Str::random(5).'.'.$request->photo->extension();
+            $image_resize = Image::make($request->photo)->resize(600, 400);
+            $image_resize->save(public_path('images/').$imageName);
             $product->photo = $imageName;
-            $product->update();
-            $request->photo->move($path, $imageName);
         }
 
         $product->update([

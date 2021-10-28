@@ -20,6 +20,9 @@
       :items="getOrders"
       :search="search"
     >
+    <template v-slot:[`item.total_amount`]="{item}">
+    <span class="font-weight-bold">${{item.total_amount}}</span>
+    </template>
     <template v-slot:[`item.date`]="{item}">
       {{item.created_at | timeformat}}
     </template>
@@ -58,7 +61,18 @@ export default {
   },
   methods: {
     deleteOrder(id){
-      this.$store.dispatch('order/deleteOrder', id)
+      axios.get(`/api/orders/${id}/delete`).then(res => {
+        this.$store.commit("order/DELETE_ADMIN_ORDER", id);
+        this.$toasted.show(res.data, {
+                    type: 'success',
+                    duration: '2000'
+                });
+      }).catch(() => {
+        this.$toasted.show("Some Error Occured", {
+                    type: 'error',
+                    duration: '2000'
+                });
+          })
     }
   }
 }

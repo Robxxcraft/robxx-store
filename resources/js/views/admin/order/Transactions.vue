@@ -20,6 +20,9 @@
       :items="getTransactions"
       :search="search"
     >
+    <template v-slot:[`item.total_amount`]="{item}">
+    <span class="font-weight-bold">${{item.total_amount}}</span>
+    </template>
     <template v-slot:[`item.date`]="{item}">
       {{item.created_at | timeformat}}
     </template>

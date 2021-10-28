@@ -4,7 +4,7 @@
       <Navigation />
       <section class="mx-4 my-5">
         <v-row>
-        <v-col md="9">
+        <v-col cols="12" md="9" lg="9" xl="9">
             <v-card height="100%" class="rounded-lg" flat>
               <v-btn @click="$router.go(-1)" class="rounded-br-xl" depressed><v-icon>mdi-arrow-left-thick</v-icon></v-btn>
               <v-row>
@@ -15,7 +15,7 @@
          
                     </v-container>
                 </v-col>
-                <v-col cols="12" sm="8" class="px-10">
+                <v-col cols="12" md="8" lg="8" xl="8" class="px-5">
                   <v-card-text>
                     <v-app-bar class="justify-end" flat color="white">
                       <v-spacer></v-spacer>
@@ -31,23 +31,31 @@
                         </div>
                     </v-app-bar>
                     <h3>{{ getProduct.title }}</h3>
-                    <h5 class="subtitle-1 grey--text grey--darken-4" v-if="getProduct.category">{{getProduct.category.name}}</h5>
-                    <p class="grey--text my-5">
-                      {{ getProduct.description }}
-                    </p>
+                    <h5 class="subtitle-1 grey--text text--darken-3" v-if="getProduct.category">{{getProduct.category.name}}</h5>
+                    <v-card shaped class="orange lighten-5 my-6 grey--text text--darken-3" elevation="5">
+                      <v-card-title class="font-weight-bold">Description</v-card-title>
+                      <v-card-text>
+                        <template v-if="getProduct.description">
+                        <span class="caption" v-html="getProduct.description"></span>
+                      </template>
+                      <template v-else>
+                        <span class="caption font-italic">No Description</span>
+                      </template>
+                      </v-card-text>
+                    </v-card>
                   <v-row>
                     <v-col cols="6" md="4" lg="4" xl="4">
                       <div class="title">Price
-                      <p class="caption grey--text text--accent-4"><b>${{getProduct.price}}</b></p></div>
+                      <p class="orange--text text--darken-3"><b>${{getProduct.price}}</b></p></div>
                     </v-col>
                     <v-col cols="6" md="4" lg="4" xl="4">
                       <div class="title">Stock
-                      <template v-if="getProduct.stok >= 0"><p class="caption grey--text text--accent-4"><b>{{getProduct.stok}}</b></p></template>
+                      <template v-if="getProduct.stok >= 0"><p class="orange--text text--darken-3"><b>{{getProduct.stok}}</b></p></template>
                       <template v-else><p class="caption "><v-chip class="rounded-0 red--text" outlined>Out Of Stock</v-chip></p></template></div>
                     </v-col>
-                    <v-col cols="6" md="4" lg="4" xl="4">
+                    <v-col cols="12" md="4" lg="4" xl="4">
                       <div class="title">Date
-                      <p class="caption grey--text text--accent-4"><b>{{getProduct.created_at|timeformat}}</b></p></div>
+                      <p class="orange--text text--darken-3"><b>{{getProduct.created_at|timeformat}}</b></p></div>
                     </v-col>
                   </v-row>
                   <v-chip-group class="my-2">
@@ -72,7 +80,7 @@
               </v-row>
             </v-card>
         </v-col>
-        <v-col md="3">
+        <v-col cols="12" md="3" lg="3" xl="3">
            <v-card class="rounded-lg" flat>
               <v-list>
                 <template>

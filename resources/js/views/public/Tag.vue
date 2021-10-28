@@ -80,7 +80,7 @@
                         </div>
                         <v-divider></v-divider>
                         <div class="caption">
-                  <v-chip class="mx-1 my-1" outlined color="orange accent-2" v-for="(tag, index) in getTags" :key="index" @click="tagProducts(tag.slug)" v-text="tag.name"></v-chip>
+                  <v-chip class="mx-1 my-1" outlined color="orange accent-3" v-for="(tag, index) in getTags" :key="index" @click="tagProducts(tag.slug)" v-text="tag.name"></v-chip>
                 </div>
                     </v-card-text>
                 </v-card>

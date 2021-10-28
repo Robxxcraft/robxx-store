@@ -116,8 +116,7 @@
       </v-list>
             </v-card>
           </v-card-text>
-          <v-card-actions>
-            <v-spacer></v-spacer>
+          <v-card-actions class="text-right align-right jusitify-right">
             <v-btn depressed outlined large @click="$router.go(-1)" class="mx-2" style="text-transform: none;" large>Back</v-btn>
             <template v-if="getOrder.order_status == 'Pending' && getOrder.payment == 'Midtrans'">
                            <v-btn class="font-weight-bold" @click="payment(getOrder.id)" small dark color="blue darken-3" style="position: absolute; text-transform: none;">Pay</v-btn>
@@ -171,13 +170,15 @@ export default {
   methods: {
     payment(id){
       axios.post(`/api/orders/payment/${id}`).then(res => {
-        window.snap.pay(res.data)
+        window.snap.pay(res.data).then(()=>{
+          console.log(res.data)
+        })
       }).catch(errors => {
         console.log(errors)
       })
     },
     cancels(id){
-      this.$store.commit('order/CANCEL_ORDER_DETAIL', id)
+    this.$store.commit('order/CANCEL_ORDER_DETAIL', id)
     axios.post(`/api/orders/${id}/cancel`).then(res => {
       
             this.$toasted.show(res.data, {

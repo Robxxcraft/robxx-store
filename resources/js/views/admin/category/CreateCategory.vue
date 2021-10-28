@@ -60,13 +60,13 @@ export default {
             axios.post('/api/category/add', this.form).then(response => {
                 this.$router.replace({name: 'Categories'})
                 this.loading = false
-                this.$toasted.show(response.data.success, {
+                this.$toasted.show(response.data, {
                     type: 'success',
                     duration: '2000'
                 })
             }).catch(errors => { 
                 this.loading = false
-                this.errors = errors.response.data.errors
+                this.errors = errors.response.data
                 this.$toasted.show("Some Error Occurred", {
                     type: 'error',
                     duration: '2000'

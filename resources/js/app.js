@@ -10,7 +10,6 @@ import Vue from 'vue'
 import router from './router'
 import store from './store'
 import moment from "moment";
-import CKEditor from "ckeditor4-vue";
 
 import '@mdi/font/css/materialdesignicons.css';
 import Vuetify from 'vuetify';
@@ -20,7 +19,6 @@ import colors from 'vuetify/lib/util/colors';
 import Toasted from "vue-toasted";
 
 Vue.use(Vuetify);
-Vue.use(CKEditor);
 Vue.use(Toasted);
 
 const opts = {

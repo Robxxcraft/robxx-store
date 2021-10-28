@@ -24,7 +24,7 @@
             </template>
             <v-list flat>
               <template>
-                <v-list-item router :to="{name: 'Login'}" style="text-decoration: none;">  
+                <v-list-item router :to="{name: 'Home'}" style="text-decoration: none;">  
                   <v-chip class="rounded-0 white" style="cursor: pointer;"><v-list-item-title class="grey--text">Public</v-list-item-title></v-chip>
                 </v-list-item>
                 <v-list-item>
@@ -118,7 +118,7 @@ export default {
     },
     img(){
       const details =  this.$store.state.auth.user.details 
-      if (!details.photo) {
+      if (!details || !details.photo) {
         return;
       }
       

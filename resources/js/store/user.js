@@ -12,7 +12,15 @@ export default {
     DELETE_USER(state, id){
       let index = state.users.findIndex(usr => usr.id == id)
       state.users.splice(index, 1)
-    }
+    },
+    ADD_ADMIN(state, id){
+      let user = state.users.find(i => i.id == id);
+      user.role = 'Admin'
+    },
+    DELETE_ADMIN(state, id){
+      let user = state.users.find(i => i.id == id);
+      user.role = 'User'
+    },
   },
   actions: {
       getUsers({commit}){

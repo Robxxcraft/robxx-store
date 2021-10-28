@@ -53,7 +53,10 @@
     >
     
     <template v-slot:[`item.description`]="{item}" width="1000px;">
-        {{item.description | sortlength("...")}}
+        <span v-html="item.description" class="caption"></span>
+    </template>
+    <template v-slot:[`item.price`]="{item}">
+        <span class="font-weight-bold">${{item.price}}</span>
     </template>
     <template v-slot:[`item.photo`]="{item}">
         <v-img :src="item.photo ? `/images/${item.photo}` : '/assets/images/blank.png'" width="120px" contain height="80px"></v-img>
@@ -123,3 +126,9 @@
   }
   }
 </script>
+
+<style>
+.marker{
+  background-color: yellow;
+}
+</style>

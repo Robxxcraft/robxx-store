@@ -31,6 +31,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request)  {
     return $request->user()->load('details');
 });
 
+Route::post('/register', [AuthController::class, 'register']);
+Route::post('/login', [AuthController::class, 'login']);
+Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/forgot-password', function (Request $request)  {
    $request->validate(['email' => 'required|email']);
 
@@ -62,6 +65,8 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/admintransactions', [TransactionController::class, 'index']);
     Route::get('/transactions/{id}', [TransactionController::class, 'edit']);
     Route::get('/allusers', [UserController::class, 'index']);
+    Route::post('/add-admin/{id}', [UserController::class, 'addAdmin']);
+    Route::post('/delete-admin/{id}', [UserController::class, 'deleteAdmin']);
     Route::get('/admin-user-edit/{id}', [UserController::class, 'edit']);
     Route::put('/admin-update-user/{id}', [UserController::class, 'update']);
     Route::delete('/user/{id}/delete', [UserController::class, 'destroy']);
@@ -76,6 +81,14 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::post('/cart/incr/{id}', [CartController::class,'incrqty']);
     Route::post('/cart/dcr/{id}', [CartController::class,'dcrqty']);
     Route::delete('/cart-clear', [CartController::class,'cartClear']);
+
+    Route::get('/orders', [OrderController::class, 'index']);
+    Route::get('/order/{id}', [OrderController::class, 'show']);
+    Route::get('/order-details/{id}', [OrderController::class, 'orderDetails']);
+    Route::post('/orders/payment/{id}', [OrderController::class, 'payment']);
+    Route::put('/orders/{id}/add', [OrderController::class, 'update']);
+    Route::post('/orders/{id}/cancel', [OrderController::class, 'cancel']);
+    Route::get('/orders/{id}/delete', [OrderController::class, 'destroy']);
 
     Route::put('/update-setting', [SettingController::class, 'updateSetting']);
     Route::get('/count', [SettingController::class, 'count']);
@@ -93,23 +106,15 @@ Route::get('/favourited-list', [FavouriteController::class, 'index']);
 Route::post('/favourite/{id}', [FavouriteController::class, 'add']);
 Route::delete('/favourite/{id}', [FavouriteController::class, 'remove']);
 
-Route::get('/orders', [OrderController::class, 'index']);
-Route::get('/order/{id}', [OrderController::class, 'show']);
-Route::get('/order-details/{id}', [OrderController::class, 'orderDetails']);
-Route::post('/orders/add', [OrderController::class, 'create']);
-Route::post('/orders/payment/{id}', [OrderController::class, 'payment']);
-Route::put('/orders/{id}/add', [OrderController::class, 'update']);
-Route::post('/orders/{id}/cancel', [OrderController::class, 'cancel']);
-Route::get('/orders/{id}/delete', [OrderController::class, 'destroy']);
+Route::get('/orders/add', function(){
+    return response()->json('adnkjlwqhfq');
+});
 
 Route::get('/search/{searchText}/page', [SearchController::class, 'search']);
 Route::get('/tags', [TagController::class, 'hometag']);
 Route::get('/tag_products/{slug}/page', [TagController::class, 'tagProducts']);
 
-Route::post('/register', [AuthController::class, 'register']);
 Route::get('/chart', [ChartController::class, 'index']);
-
 Route::get('/settings', [SettingController::class, 'index']);
 Route::get('/banner', [SettingController::class, 'banner']);
-Route::get('/logo', [SettingController::class, 'logo']);
 Route::get('/sale', [ProductController::class, 'sale']);

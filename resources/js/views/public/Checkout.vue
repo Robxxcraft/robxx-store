@@ -189,12 +189,14 @@ export default {
             formData.append('payment', this.form.payment)
 
             axios.post('/api/orders/add', formData).then(res =>{
-              this.$router.replace({name: 'Orders'})
-              this.$toasted.show(res.data, {
-                    type: 'success',
-                    duration: '2000'
-                });
+            this.loading = false;
+                    this.$router.replace({name: 'Orders'})
+                    this.$toasted.show(res.data, {
+                          type: 'success',
+                          duration: '2000'
+                      });
             }).catch(errors => {
+      this.loading = false;
                 this.errors = errors.response.data.errors;
                 this.$toasted.show("Some Error Occured", {
                     type: 'error',

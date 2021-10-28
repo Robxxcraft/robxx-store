@@ -24,8 +24,23 @@ class UserController extends Controller
         if (Auth::user()->role == 'Superadmin') {
             $user = User::find($id);
             $user->role = 'Admin';
+            $user->update();
 
             return response()->json('Admin added successfully', 201);
+        } 
+        
+        return response()->json('Forbidden Access', 403);
+        
+    }
+
+    public function deleteAdmin($id)
+    {
+        if (Auth::user()->role == 'Superadmin') {
+            $user = User::find($id);
+            $user->role = 'User';
+            $user->update();
+
+            return response()->json('Admin deleted successfully', 201);
         } 
         
         return response()->json('Forbidden Access', 403);
