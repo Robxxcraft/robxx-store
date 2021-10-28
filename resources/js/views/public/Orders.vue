@@ -83,11 +83,6 @@ export default {
     BottomNavigation,
     Footer,
   },
-  data(){
-    return {
-      order_token: null
-    }
-  },
   mounted() {
     localStorage.removeItem('order_id');
     this.$store.dispatch("order/getOrders");
