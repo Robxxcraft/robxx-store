@@ -14,7 +14,7 @@ class OrderController extends Controller
 {
     public function index()
     {
-        $orders = Order::where('user_id', Auth::user()->id)->with('orderdetails.product')->get();
+        $orders = Order::where('user_id', Auth::user()->id)->with('orderdetails.product')->orderBy('id', 'DESC')->get();
         
         return response()->json($orders, 200);
     }
@@ -92,6 +92,21 @@ class OrderController extends Controller
                 $cart->delete();
             }
 
+            if ($order->payment == 'COD') {
+                $username = Auth::user()->first_name.' '.Auth::user()->last_name;
+                $address = $order->address.', '.$order->city.', '.$order->province;
+
+                Transaction::create([
+                    'order_token' => $order->id,
+                    'total_amount' => $order->total_amount,
+                    'total_quantity' => $order->total_quantity,
+                    'payment' => $order->payment,
+                    'email' => Auth::user()->email,
+                    'username' => $username,
+                    'phone_number' => $order->phone_number,
+                    'address' => $address,
+                ]);
+            }
 
             return response()->json('Order Created Successfully', 201);
         }
@@ -103,7 +118,6 @@ class OrderController extends Controller
     public function payment($id)
     {
             $order = Order::findOrFail($id);
-            $userDetails = UserDetail::where('user_id', Auth::user()->id)->first();
             \Midtrans\Config::$serverKey = env('MIDTRANS_SERVER_KEY');
             \Midtrans\Config::$isProduction = false;
             \Midtrans\Config::$isSanitized = true;
@@ -118,11 +132,13 @@ class OrderController extends Controller
                     'first_name' => Auth::user()->first_name,
                     'last_name' => Auth::user()->last_name,
                     'email' => Auth::user()->email,
-                    'phone' => $userDetails->phone_number,
+                    'phone' => $order->phone_number,
                 ],
             ];
 
             $snapToken = \Midtrans\Snap::getSnapToken($params);
+            $order->order_token = $snapToken;
+            $order->update();
             return response()->json($snapToken,201);
     }
 

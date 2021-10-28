@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Order;
 use App\Models\Transaction;
-use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class TransactionController extends Controller
 {
@@ -13,39 +14,34 @@ class TransactionController extends Controller
         return response()->json($transactions, 200);
     }
 
-    public function create(Request $request)
+    public function midtrans($id)
     {
+        $order = Order::findOrFail($id);
+        $username = Auth::user()->first_name.' '.Auth::user()->last_name;
+        $address = $order->address.', '.$order->city.', '.$order->province;
+
         Transaction::create([
-            'name' => $request->name,
-        ]);
-            
-        return response()->json(['success' => 'category added successfully', 201]);
-    }
-
-    public function edit($id)
-    {
-        $category = Transaction::findOrFail($id);
-
-        return response()->json($category, 200);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $category = Transaction::findOrFail($id);
-
-        $category->update([
-            'name' => $request->name,
+            'order_token' => $order->order_token,
+            'total_amount' => $order->total_amount,
+            'total_quantity' => $order->total_quantity,
+            'payment' => $order->payment,
+            'email' => $order->email,
+            'username' => $username,
+            'phone_number' => $order->phone_number,
+            'address' => $address,
         ]);
 
-        return response()->json(['success' => 'category updated successfully']);
+        $order->order_status = 'Accepted';
+        $order->update();
+
+        return response()->json('payment successfully', 201);
     }
 
-    public function delete($id)
+    public function destroy($id)
     {
-        $category = Transaction::findOrFail($id);
-        $category->delete();
+        $transaction = Transaction::findOrFail($id);
+        $transaction->delete();
 
-        return response()->json(['success' => 'category deleted sucessfullfy']);
-    }
-    
+        return response()->json('transaction deleted sucessfullfy', 200);
+    }    
 }

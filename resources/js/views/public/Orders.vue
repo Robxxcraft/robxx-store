@@ -85,12 +85,11 @@ export default {
   },
   data(){
     return {
-      pending: 'Pending',
-      shipped: 'Shipped',
-      accepted: 'Accepted',
+      order_token: null
     }
   },
   mounted() {
+    localStorage.removeItem('order_id');
     this.$store.dispatch("order/getOrders");
     const midtransScript = document.createElement('script');
     midtransScript.setAttribute(
@@ -110,10 +109,10 @@ export default {
   methods: {
     payment(id){
       axios.post(`/api/orders/payment/${id}`).then(res => {
+        localStorage.setItem('order_id', id);
         window.snap.pay(res.data)
       }).catch(errors => {
         console.log(errors)
-
       })
     },
     cancels(id){

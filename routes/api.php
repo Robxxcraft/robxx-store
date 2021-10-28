@@ -64,6 +64,7 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/admin-show-order/{id}', [OrderController::class, 'adminShowOrder']);
     Route::get('/admintransactions', [TransactionController::class, 'index']);
     Route::get('/transactions/{id}', [TransactionController::class, 'edit']);
+    Route::delete('/transactions/{id}', [TransactionController::class, 'destroy']);
     Route::get('/allusers', [UserController::class, 'index']);
     Route::post('/add-admin/{id}', [UserController::class, 'addAdmin']);
     Route::post('/delete-admin/{id}', [UserController::class, 'deleteAdmin']);
@@ -85,12 +86,15 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::get('/orders', [OrderController::class, 'index']);
     Route::get('/order/{id}', [OrderController::class, 'show']);
     Route::get('/order-details/{id}', [OrderController::class, 'orderDetails']);
+    Route::post('/orders/add', [OrderController::class, 'create']);
     Route::post('/orders/payment/{id}', [OrderController::class, 'payment']);
     Route::put('/orders/{id}/add', [OrderController::class, 'update']);
     Route::post('/orders/{id}/cancel', [OrderController::class, 'cancel']);
     Route::get('/orders/{id}/delete', [OrderController::class, 'destroy']);
+    Route::post('/midtrans/{id}', [TransactionController::class, 'midtrans']);
 
     Route::put('/update-setting', [SettingController::class, 'updateSetting']);
+    Route::get('/count', [SettingController::class, 'count']);
     Route::get('/count', [SettingController::class, 'count']);
 });
 
@@ -117,4 +121,5 @@ Route::get('/tag_products/{slug}/page', [TagController::class, 'tagProducts']);
 Route::get('/chart', [ChartController::class, 'index']);
 Route::get('/settings', [SettingController::class, 'index']);
 Route::get('/banner', [SettingController::class, 'banner']);
+Route::get('/logo', [SettingController::class, 'logo']);
 Route::get('/sale', [ProductController::class, 'sale']);

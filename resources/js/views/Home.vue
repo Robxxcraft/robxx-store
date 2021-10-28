@@ -21,7 +21,7 @@
                           params: { slug: recent.slug }
                         }" three-line>
                     <v-list-item-avatar color="#EFF4F1" size="70" rounded>
-                      <v-img :src="recent.photo ? `/images/${recent.photo}` : 'assets/images/blank.png'" style=" width: 100%; max-height:auto;"></v-img>
+                      <v-img :src="recent.photo ? `/images/${recent.photo}` : 'assets/images/blank.png'" contain></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
                       <v-list-item-title>
@@ -68,7 +68,7 @@
       <v-carousel-item v-for="(product, index) in getSales" :key="index">
               <v-list-item three-line>
                       <v-list-item-avatar rounded size="120" color="grey lighten-4">
-                       <v-img :src="`/images/${product.photo}`"></v-img>
+                       <v-img :src="product.photo ? `/images/${product.photo}` : 'assets/images/blank.png'" contain></v-img>
                   </v-list-item-avatar>
                   <v-list-item-content>
                     <v-hover>

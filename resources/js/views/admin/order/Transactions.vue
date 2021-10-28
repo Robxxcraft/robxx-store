@@ -64,7 +64,19 @@ export default {
   },
   methods: {
     deleteTrasaction(id){
-      this.$store.dispatch('transaction/deleteTrasaction', id)
+      axios.delete(`/api/transactions/${id}`).then(res => {
+        commit('DELETE_TRANSACTION', id)
+        this.$toasted.show(res.data, {
+          type: 'success',
+          duration: '2000'
+        });
+    }).catch(errors => {
+      console.log(errors)
+      this.$toasted.show("Some Error Occured", {
+        type: 'error',
+        duration: '2000'
+      });
+    })
     }
   }
 }

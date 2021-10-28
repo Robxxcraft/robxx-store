@@ -52,14 +52,15 @@
                 </v-row>
                 <v-radio-group v-model="form.payment" column>
                   <template v-slot:label>
-                    <div class="title">Payment With</div>
+                    <div class="title font-weight-bold">Payment With</div>
                   </template>
                   <v-row>
                     <v-col cols="12" md="6" lg="6" xl="6">
                       <v-sheet outlined class="mx-auto rounded-lg">
                         <v-container>
-                          <v-radio value="COD" color="orange" v-slot:label>
-                          <div><v-icon>mdi-cart</v-icon> COD</div>
+                          <v-radio value="COD" color="orange" v-slot:label class="font-weight-bold">
+                          <div><v-icon color="green darken-2" large>mdi-cash-usd</v-icon> 
+                          <span>COD</span></div>
                         </v-radio>
                         </v-container>
                       </v-sheet>
@@ -67,8 +68,9 @@
                     <v-col cols="12" md="6" lg="6" xl="6">
                       <v-sheet outlined class="mx-auto rounded-lg">
                         <v-container>
-                          <v-radio value="Midtrans" color="orange" v-slot:label>
-                          <div><v-icon>mdi-cart</v-icon> Midtrans</div>
+                          <v-radio value="Midtrans" color="orange" v-slot:label class="font-weight-bold">
+                          <div><v-icon color="blue darken-2" large>mdi-credit-card</v-icon> 
+                          <span>Midtrans</span></div>
                         </v-radio>
                         </v-container>
                       </v-sheet>
@@ -145,15 +147,15 @@ export default {
     return {
       loading: false,
       form: {
-        address: this.$store.state.auth.user.details.address ? this.$store.state.auth.user.details.address : '',
+        address: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.address : '',
 
-        city: this.$store.state.auth.user.details.city ? this.$store.state.auth.user.details.city : '',
+        city: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.city : '',
 
-        province: this.$store.state.auth.user.details.province ? this.$store.state.auth.user.details.province : '',
+        province: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.province : '',
 
-        zipcode: this.$store.state.auth.user.details.zipcode ? this.$store.state.auth.user.details.zipcode : '',
+        zipcode: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.zipcode : '',
         
-        phone_number: this.$store.state.auth.user.details.phone_number ? this.$store.state.auth.user.details.phone_number : '',
+        phone_number: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.phone_number : '',
 
         payment: 'COD',
       },
