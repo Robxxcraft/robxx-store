@@ -78,10 +78,10 @@ export default {
   mounted(){
     axios.get('/api/settings').then(res => {
       let data = res.data;
-      this.ban1 = data.find(i => i.type == 'banner-1') ? data.find(i => i.type == 'banner-1').image : ''
-      this.ban2 = data.find(i => i.type == 'banner-2') ? data.find(i => i.type == 'banner-2').image : ''
-      this.ban3 = data.find(i => i.type == 'banner-3') ? data.find(i => i.type == 'banner-3').image : ''
-      this.log = data.find(i => i.type == 'logo') ? data.find(i => i.type == 'logo').image : ''
+      this.ban1 = data.find(i => i.type == 'banner-1') ? data.find(i => i.type == 'banner-1').image : 'example/banner-1.jpg'
+      this.ban2 = data.find(i => i.type == 'banner-2') ? data.find(i => i.type == 'banner-2').image : 'example/banner-2.jpg'
+      this.ban3 = data.find(i => i.type == 'banner-3') ? data.find(i => i.type == 'banner-3').image : 'example/banner-3.png'
+      this.log = data.find(i => i.type == 'logo') ? data.find(i => i.type == 'logo').image : 'example/logo.png'
     })
   },
   computed:{

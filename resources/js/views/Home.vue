@@ -293,6 +293,6 @@ export default {
 
 <style>
 .o{
-  font-size: 9px;
+  font-size: 10px;
 }
 </style>

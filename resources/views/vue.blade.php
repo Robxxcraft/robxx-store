@@ -13,5 +13,8 @@
     <div id="app">
         <main-app></main-app>
     </div>
+    <script>
+        window.Laravel = {csrfToken: '{{ csrf_token() }}'}
+    </script>
 </body>
 </html>
