@@ -46,9 +46,9 @@ import Checkout from "../views/public/Checkout.vue";
 import Orders from "../views/public/Orders.vue";
 import OrderDetails from "../views/public/OrderDetails.vue";
 
-// import Finished from "../views/public/payment/Finished.vue";
-// import Unfinished from "../views/public/payment/Unfinished.vue";
-// import Errors from "../views/public/payment/Errors.vue";
+import Finished from "../views/public/payment/Finished.vue";
+import Unfinished from "../views/public/payment/Unfinished.vue";
+import Errors from "../views/public/payment/Errors.vue";
 import NotFound from "../views/public/NotFound.vue";
 
 import Search from "../views/public/Search.vue";
@@ -266,26 +266,26 @@ const routes = [
         meta: { requiresAuth: true },
     },
 
-    // {
-    //     path: "/orders/finished",
-    //     name: "Finished",
-    //     component: Finished,
-    //     meta: { requiresAuth: true },
-    // },
+    {
+        path: "/orders/finished",
+        name: "Finished",
+        component: Finished,
+        meta: { requiresAuth: true },
+    },
 
-    // {
-    //     path: "/orders/unfinished",
-    //     name: "Unfinished",
-    //     component: Unfinished,
-    //     meta: { requiresAuth: true },
-    // },
+    {
+        path: "/orders/unfinished",
+        name: "Unfinished",
+        component: Unfinished,
+        meta: { requiresAuth: true },
+    },
 
-    // {
-    //     path: "/orders/error",
-    //     name: "Errors",
-    //     component: Errors,
-    //     meta: { requiresAuth: true },
-    // },
+    {
+        path: "/orders/error",
+        name: "Errors",
+        component: Errors,
+        meta: { requiresAuth: true },
+    },
 
     {
         path: "/cart",
