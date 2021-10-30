@@ -99,14 +99,14 @@ class AuthController extends Controller
 
                 $imageName = time().'_'.Str::random(10).'.'.$request->photo->extension();
                 $image_resize = Image::make($request->photo)->resize(100, 100);
-                $image_resize->save(base_path('user/photo/').$imageName);
+                $image_resize->save(public_path('user/photo/').$imageName);
                 $userDetail->photo = $imageName;
                 $userDetail->save();
             }
             
         } else {
             if ($request->hasFile('photo') && isset($userDetail->photo)) {
-                unlink(base_path('user/photo/').$userDetail->photo);
+                unlink(public_path('user/photo/').$userDetail->photo);
             }
 
             $userDetail->update([
@@ -120,7 +120,7 @@ class AuthController extends Controller
             if ($request->hasFile('photo')) {
                 $imageName = time().'_'.Str::random(5).'.'.$request->photo->extension();
                 $image_resize = Image::make($request->photo)->resize(100, 100);
-                $image_resize->save(base_path('user/photo/').$imageName);
+                $image_resize->save(public_path('user/photo/').$imageName);
                 $userDetail->photo = $imageName;
                 $userDetail->save();
             }
