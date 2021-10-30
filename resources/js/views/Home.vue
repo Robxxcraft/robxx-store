@@ -102,17 +102,17 @@
           <v-col cols="12" md="3" class="text-center align-center justify-center my-5" :hidden="!$vuetify.breakpoint.smAndDown">
             <v-subheader class="text-h6 font-weight-bold">Categories</v-subheader>
             <v-row wrap>
-              <v-col cols="3" v-for="(category, index) in getHomeCategories" :key="index">
+              <v-col cols="3" v-for="(category, index) in getHomeCategories" :key="index" style="padding: 0; margin:0;">
                 <v-card color="orange"
                 class="my-1"
                 elevation="3"
                 :to="{name: 'ProductsByCategory', params: {slug: category.slug}}"
                 style="text-decoration: none;"
                 width="auto"
-                height="100">
+                height="120">
               <v-card-subtitle>
                 <v-icon class="white--text">mdi-format-list-text</v-icon></v-card-subtitle>    
-                        <v-card-actions class="align-center justify-center"><span class="white--text o">{{category.name}}</span></v-card-actions>
+                        <v-card-actions class="align-center justify-center"><span class="white--text o font-weight-bold">{{category.name}}</span></v-card-actions>
                 
                 </v-card>
               </v-col>

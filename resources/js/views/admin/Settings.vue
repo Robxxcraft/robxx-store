@@ -54,6 +54,27 @@
       <v-btn depressed dark color="orange darken-3" class="mb-2 mr-2" @click.prevent="updateSetting" style="text-transform: none;">
         Save
       </v-btn>
+      <template v-if="loading">
+                                    <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: none; display: block; shape-rendering: auto;" width="50px" height="50px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
+                                        <rect x="19" y="19" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0s" calcMode="discrete"></animate>
+                                        </rect><rect x="40" y="19" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.125s" calcMode="discrete"></animate>
+                                        </rect><rect x="61" y="19" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.25s" calcMode="discrete"></animate>
+                                        </rect><rect x="19" y="40" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.875s" calcMode="discrete"></animate>
+                                        </rect><rect x="61" y="40" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.375s" calcMode="discrete"></animate>
+                                        </rect><rect x="19" y="61" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.75s" calcMode="discrete"></animate>
+                                        </rect><rect x="40" y="61" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.625s" calcMode="discrete"></animate>
+                                        </rect><rect x="61" y="61" width="20" height="20" fill="#f0f6f6">
+                                        <animate attributeName="fill" values="#FF9800;#f0f6f6;#f0f6f6" keyTimes="0;0.125;1" dur="1s" repeatCount="indefinite" begin="0.5s" calcMode="discrete"></animate>
+                                        </rect>
+                                    </svg>
+                        </template>
     </v-card-actions>
   </v-card>
 </template>
