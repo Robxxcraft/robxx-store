@@ -16,12 +16,12 @@ class CreateTransactionsTable extends Migration
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
             $table->string('order_token');
-            $table->string('total_amount');
+            $table->bigInteger('total_amount');
             $table->string('total_quantity');
-            $table->string('payment');
+            $table->enum('payment', ['COD','Midtrans']);
             $table->string('email');
             $table->string('username');
-            $table->integer('phone_number');
+            $table->string('phone_number');
             $table->text('address');
             $table->timestamps();
         });

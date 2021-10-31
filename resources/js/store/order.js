@@ -22,6 +22,10 @@ export default {
     SET_ADMIN_ORDERS(state, data){
       state.admin_orders = data
     },
+    PAYMENT_ACCEPTED(state, id){
+      let order = state.admin_orders.find(i => i.id == id);
+      order.order_status = 'Accepted'
+    },
     CANCEL_ORDER(state, id){
       let order = state.orders.find(item => {
         return item.id === id

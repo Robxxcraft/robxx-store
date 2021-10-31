@@ -10,9 +10,7 @@
               <v-row>
                 <v-col cols="12" md="4" lg="4" xl="4">
                     <v-container>
-                 
-                      <v-img :src="getProduct.photo ? `/images/${getProduct.photo}` : '/assets/images/blank.png'" class="rounded-lg mx-auto my-5 fill-height" contain></v-img>
-         
+                      <v-img :src="getProduct.photo ? `/images/${getProduct.photo}` : '/assets/images/blank.png'" class="rounded-lg mx-auto my-5" contain></v-img>
                     </v-container>
                 </v-col>
                 <v-col cols="12" md="8" lg="8" xl="8" class="px-5">
@@ -51,7 +49,7 @@
                     <v-col cols="6" md="4" lg="4" xl="4">
                       <div class="title">Stock
                       <template v-if="getProduct.stok >= 0"><p class="orange--text text--darken-3"><b>{{getProduct.stok}}</b></p></template>
-                      <template v-else><p class="caption "><v-chip class="rounded-0 red--text" outlined>Out Of Stock</v-chip></p></template></div>
+                      <template v-else><p class="caption"><v-chip class="rounded-0 red--text" outlined>Out Of Stock</v-chip></p></template></div>
                     </v-col>
                     <v-col cols="12" md="4" lg="4" xl="4">
                       <div class="title">Date
@@ -93,7 +91,7 @@
                           params: { slug: recent.slug }
                         }" @click.prevent="dispat" three-line>
                     <v-list-item-avatar color="#EFF4F1" size="70" rounded>
-                      <v-img :src="recent.photo ? `/images/${recent.photo}` : '/assets/images/blank.png'" style=" width: 100%; max-height:auto;"></v-img>
+                      <v-img :src="recent.photo ? `/images/${recent.photo}` : '/assets/images/blank.png'" contain></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
                       <v-list-item-title>

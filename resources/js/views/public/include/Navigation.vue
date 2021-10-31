@@ -119,11 +119,13 @@ export default {
   },
   methods: {
     logout() {
-      axios.post('/api/logout').then(res => {
+      axios.post('/api/logout').then(() => {
+                localStorage.removeItem('token');
                 this.$store.commit("auth/SET_AUTHENTICATED", false);
                 this.$store.commit("auth/SET_USER", null)
-                localStorage.removeItem('token');
-        return console.log(res.data)
+                window.location.reload().then(()=>{
+                  this.$router.push({name: 'Home'})
+                })
             })
     },
   }

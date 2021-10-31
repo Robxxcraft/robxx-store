@@ -24,6 +24,7 @@ class CreateOrdersTable extends Migration
             $table->bigInteger('total_quantity');
             $table->bigInteger('total_amount');
             $table->enum('payment', ['COD','Midtrans']);
+            $table->string('order_token')->nullable();
             $table->enum('order_status', ['Pending','Accepted','Cancelled']);
             $table->timestamps();
         });

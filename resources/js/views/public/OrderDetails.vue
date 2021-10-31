@@ -118,8 +118,9 @@
           </v-card-text>
           <v-card-actions class="text-right align-right jusitify-right">
             <v-btn depressed outlined large @click="$router.go(-1)" class="mx-2" style="text-transform: none;" large>Back</v-btn>
+            <v-spacer></v-spacer>
             <template v-if="getOrder.order_status == 'Pending' && getOrder.payment == 'Midtrans'">
-                           <v-btn class="font-weight-bold" @click="payment(getOrder.id)" small dark color="blue darken-3" style="position: absolute; text-transform: none;">Pay</v-btn>
+                           <v-btn class="font-weight-bold" @click="payment(getOrder.id)" dark color="blue darken-3" style="text-transform: none;">Pay</v-btn>
                         </template>
             <template v-if="getOrder.order_status == 'Cancelled'">
                             <v-btn depressed dark color="red accent-2" style="text-transform: none;" @click="deletes(getOrder.id)" plain>
