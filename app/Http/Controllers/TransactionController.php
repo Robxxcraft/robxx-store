@@ -25,7 +25,7 @@ class TransactionController extends Controller
             'total_amount' => $order->total_amount,
             'total_quantity' => $order->total_quantity,
             'payment' => $order->payment,
-            'email' => $order->email,
+            'email' => Auth::user()->email,
             'username' => $username,
             'phone_number' => $order->phone_number,
             'address' => $address,

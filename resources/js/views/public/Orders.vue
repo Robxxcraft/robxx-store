@@ -18,9 +18,9 @@
                   </v-app-bar>
                    <v-row class="my-1 mx-4">
                       <v-col>
-                           <v-icon class="mr-1 my-1">mdi-cash-usd</v-icon>${{order.total_amount}} <br>
-                           <v-icon class="mr-1 my-1">mdi-credit-card</v-icon>{{order.payment}} <br>
-                           <v-icon class="mr-1 my-1">mdi-cart</v-icon>{{order.total_quantity}} 
+                           <v-icon class="green--text mr-1 my-1">mdi-cash-usd</v-icon><span class="font-weight-bold orange--text text--darken-2">${{order.total_amount}}</span> <br>
+                           <v-icon class="blue--text mr-1 my-1">mdi-credit-card</v-icon><span class="font-weight-bold">{{order.payment}}</span> <br>
+                           <v-icon class="brown--text mr-1 my-1">mdi-cart</v-icon><span class="font-weight-bold">{{order.total_quantity}}</span> 
                       </v-col>
                       <v-col class="text-right">
                         <template v-if="order.order_status == 'Pending' && order.payment == 'Midtrans'">

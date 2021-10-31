@@ -27,6 +27,7 @@
       {{item.created_at | timeformat}}
     </template>
     <template v-slot:[`item.action`]="{item}" style="width:800px;">
+        <v-btn small v-if="item.payment == 'Midtrans' && item.order_status == 'Pending'" depressed class="green accent-2 white--text ma-1 text-decoration-none" title="Accept Order" @click.prevent="accept(item.id)"><v-icon>mdi-check</v-icon></v-btn>
         <v-btn small depressed class="blue accent-2 white--text ma-1 text-decoration-none" title="Order Details" :to="{name : 'ShowOrder', params: {id : item.id}}"><v-icon>mdi-eye</v-icon></v-btn>
         <v-btn small depressed class="red accent-2 white--text ma-1" @click.prevent="deleteOrder(item.id)" title="Delete"><v-icon>mdi-delete</v-icon></v-btn>
     </template>
@@ -60,6 +61,20 @@ export default {
       },
   },
   methods: {
+    accept(id){
+      axios.post(`/api/midtrans/${id}`).then(() => {
+        this.$store.commit("order/PAYMENT_ACCEPTED", id);
+        this.$toasted.show("Order Accepted", {
+          type: 'success',
+          duration: '2000'
+        });
+      }).catch(() => {
+        this.$toasted.show("Some Error Occured", {
+                    type: 'error',
+                    duration: '2000'
+                });
+          })
+    },
     deleteOrder(id){
       axios.get(`/api/orders/${id}/delete`).then(res => {
         this.$store.commit("order/DELETE_ADMIN_ORDER", id);

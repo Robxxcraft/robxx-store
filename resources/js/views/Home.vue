@@ -104,7 +104,7 @@
             <v-row wrap>
               <v-col cols="3" v-for="(category, index) in getHomeCategories" :key="index" style="padding: 0; margin:0;">
                 <v-card color="orange"
-                class="my-1"
+                class="my-2 mx-2"
                 elevation="3"
                 :to="{name: 'ProductsByCategory', params: {slug: category.slug}}"
                 style="text-decoration: none;"
@@ -116,14 +116,14 @@
                 
                 </v-card>
               </v-col>
-              <v-col cols="3">
+              <v-col cols="3" style="padding: 0; margin:0;">
                 <v-card color="orange"
                 class="my-1"
                 elevation="3"
                 :to="{name: 'AllCategories'}"
                 style="text-decoration: none;"
                 width="auto"
-                height="100">
+                height="120">
               <v-card-subtitle>
                 <v-icon class="white--text">mdi-dots-horizontal</v-icon></v-card-subtitle>    
                         <v-card-actions class="align-center justify-center"><span class="white--text o">More</span></v-card-actions>
