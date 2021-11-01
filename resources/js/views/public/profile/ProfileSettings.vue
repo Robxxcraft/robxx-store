@@ -76,59 +76,5 @@ export default {
     BottomNavigation,
     Footer,
   },
-  data(){
-    return {
-      form: {
-        first_name: this.$store.state.auth.user.first_name,
-
-        last_name: this.$store.state.auth.user.last_name,
-
-        address: this.$store.state.auth.user.details.city,
-
-        city: this.$store.state.auth.user.details.city,
-
-        province: this.$store.state.auth.user.details.province,
-
-        zipcode: this.$store.state.auth.user.details.zipcode,
-        
-        phone_number: this.$store.state.auth.user.details.phone_number,
-      },
-      photo: null,
-      img: null,
-      errors: {}
-    }
-  },
-  methods: {
-      submit(){
-        const config = {
-                headers: { 'content-type' : 'multipart/form-data'}
-            }
-
-            let formData = new FormData();
-            formData.append('_method', 'PUT')
-            formData.append('first_name', this.form.first_name)
-            formData.append('last_name', this.form.last_name)
-            formData.append('address', this.form.address)
-            formData.append('city', this.form.city)
-            formData.append('province', this.form.province)
-            formData.append('zipcode', this.form.zipcode)
-            formData.append('phone_number', this.form.phone_number)
-            formData.append('photo', this.photo)
-
-            axios.post("/api/update-user", formData, config).then( () => {
-                this.$store.dispatch('auth/user');
-                this.$toasted.show(response.data, {
-                    type: 'success',
-                    duration: '2000'
-                });
-            }).catch(errors => {
-                errors.response.data.errors;
-                this.$toasted.show("Some Error Occured", {
-                    type: 'danger',
-                    duration: '2000'
-                });
-            })
-        }
-  }
 };
 </script>

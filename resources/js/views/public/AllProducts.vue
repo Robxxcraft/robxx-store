@@ -2,12 +2,13 @@
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
     <v-main>
       <Navigation />
-      <section class="mx-2 my-5">
+      <section :class="$vuetify.breakpoint.smAndDown ? 'my-5' : 'mx-4 my-5'">
         <v-card class="rounded-lg mb-10" flat>
             <v-card-title>
               <p class="title ml-1">All Products</p>
             </v-card-title>
-        <v-row class="mx-4">
+        <v-container>
+          <v-row>
         <v-col v-for="(product, index) in getProducts.data" :key="index" cols="6" md="4" lg="3" xl="3" sm="6">
             <v-hover v-slot="{ hover }" open-delay="50">
               <v-card :color="`${color[index % 10]} lighten-5`" class="rounded-t-lg" :elevation="hover ? 16 : 3">
@@ -30,10 +31,10 @@
                  </v-img>
                </div>
                 <v-card-title>
-                  <router-link class="grey--text text--darken-3 mb-2" :to="{name: 'ProductDetails', params: {slug: product.slug}}" style="text-decoration: none;"><span class="subtitle-1">{{product.title | titlelength('...')}}</span> </router-link>   
+                  <router-link class="caption font-weight-bold grey--text text--darken-3 mb-2" :to="{name: 'ProductDetails', params: {slug: product.slug}}" style="text-decoration: none;">{{product.title | titlelength('...')}}</router-link>   
                 </v-card-title>  
                 <template v-if="product.category">
-                  <v-card-subtitle class="pb-1 grey--text">{{product.category.name}}</v-card-subtitle>
+                  <v-card-subtitle class="pb-1 caption grey--text">{{product.category.name}}</v-card-subtitle>
                 </template>
                     <v-card-text>
                       <div><b>${{product.price}}</b></div>
@@ -46,6 +47,7 @@
             </v-hover>
           </v-col>
       </v-row>
+        </v-container>
       <v-card-actions class="my-5 align-center justify-center">
         <template v-if="getTotalItems > 12">
         <v-pagination class="my-8" circle next-icon="mdi-menu-right" prev-icon="mdi-menu-left" color="orange darken-2" v-model="currentPage" :length="lastPage" total-visible="7" @input="changePage"></v-pagination>

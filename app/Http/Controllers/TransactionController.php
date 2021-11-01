@@ -16,7 +16,7 @@ class TransactionController extends Controller
 
     public function midtrans($id)
     {
-        $order = Order::findOrFail($id);
+        $order = Order::with('user')->findOrFail($id);
         $username = Auth::user()->first_name.' '.Auth::user()->last_name;
         $address = $order->address.', '.$order->city.', '.$order->province;
 
@@ -25,7 +25,7 @@ class TransactionController extends Controller
             'total_amount' => $order->total_amount,
             'total_quantity' => $order->total_quantity,
             'payment' => $order->payment,
-            'email' => Auth::user()->email,
+            'email' => $order->user->email,
             'username' => $username,
             'phone_number' => $order->phone_number,
             'address' => $address,

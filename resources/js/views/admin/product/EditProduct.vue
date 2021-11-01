@@ -14,7 +14,8 @@
                     </v-row>
                     <v-row>
                         <v-col>
-                            <v-textarea name="input-7-1" v-model="form.description" color="orange" :counter="500" label="Description" filled rounded class="rounded-0" hint="Enter Description Product" :error-messages="errors.description"></v-textarea>
+                            <span v-if="errors.description" class="red--text text-h6">{{errors.description[0]}}</span>
+                            <quill-editor ref="myQuillEditor" v-model="form.description" :options="editorOption"></quill-editor>
                         </v-col>
                     </v-row>
                     <v-row>
