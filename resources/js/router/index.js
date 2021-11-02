@@ -28,7 +28,6 @@ import ShowUser from "../views/admin/order/ShowUser.vue";
 
 import Settings from "../views/admin/Settings.vue";
 
-import PublicDashboard from "../views/public/PublicDashboard.vue";
 import ProductDetails from "../views/public/ProductDetails.vue";
 import Products from "../views/public/AllProducts.vue";
 import Categories from "../views/public/AllCategories.vue";
@@ -202,11 +201,6 @@ const routes = [
                 meta: { isAdmin: true },
             },
         ]
-    },
-    {
-        path: "/dashboard",
-        name: "PublicDashboard",
-        component: PublicDashboard,
     },
     {
         path: "/product/:slug/details",

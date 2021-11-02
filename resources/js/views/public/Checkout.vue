@@ -4,7 +4,7 @@
       <Navigation />
       <section>
           <template v-if="getCart.length > 0">
-            <v-card class="mx-4 my-5 rounded-lg" flat>
+            <v-card :class="$vuetify.breakpoint.smAndDown ? 'mx-1 my-5 rounded-lg' : 'rounded-lg mx-4 my-5'" flat>
             <v-container>
               <v-card-title>
                 <h3 class="title">Checkout</h3>
@@ -85,7 +85,7 @@
                   <v-col md="2" sm="9"> 
                   <v-btn right router :to="{name: 'Checkout'}" class="mr-2 white--text" :disabled="loading" color="orange" @click.prevent="order" style="text-transform: none; text-decoration: none;" >
                     <v-icon class="white--text">mdi-cart</v-icon>
-                    <div class="white--text">Order</div>
+                    <div class="font-weight-bold white--text">Order</div>
                     <template v-if="loading">
                                     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" style="margin: auto; background: none; display: block; shape-rendering: auto;" width="50px" height="50px" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid">
                                         <rect x="19" y="19" width="20" height="20" fill="#f0f6f6">

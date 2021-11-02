@@ -2,7 +2,7 @@
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
     <v-main>
       <Navigation />
-      <section class="mx-4 my-5">
+      <section :class="$vuetify.breakpoint.smAndDown ? 'mx-1 my-5' : 'mx-4 my-5'">
           <v-card class="rounded-lg" flat>
               <v-app-bar flat color="rgba(0,0,0,0)">
                 <v-card-title>
@@ -106,7 +106,7 @@
                     </v-row>
                   <div class="mt-5">
                   <v-btn right router :to="{name: 'Checkout'}" style="text-decoration:none; text-transform: none;" color="orange darken-1">
-                  <span class="white--text ">Checkout</span>
+                  <span class="font-weight-bold white--text ">Checkout</span>
                   
                 </v-btn>
                 </div>
@@ -138,7 +138,6 @@ export default {
     }
   },
   mounted() {
-    this.$store.dispatch("cart/getCartItems");
     this.$store.dispatch("cart/getCartPageItems", 1);
   },
   computed: {

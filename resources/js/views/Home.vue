@@ -3,9 +3,6 @@
     <v-main>
       <Navigation />
 
-      <section class="mx-4">
-        
-      </section>
         <section>
           <v-row wrap class="mx-1 my-4">
           <v-col cols="12" md="3" :hidden="$vuetify.breakpoint.smAndDown">
@@ -25,9 +22,9 @@
                     </v-list-item-avatar>
                     <v-list-item-content>
                       <v-list-item-title>
-                          <h6 class="black--text">{{recent.title}}</h6>
+                          <h6 class="grey--text text--darken-2">{{recent.title}}</h6>
                       </v-list-item-title>
-                      <v-list-item-subtitle class="pb-2">{{recent.category.name}}</v-list-item-subtitle>
+                      <v-list-item-subtitle class="grey--text pb-2">{{recent.category.name}}</v-list-item-subtitle>
                       <div class="font-weight-bold">${{recent.price}}</div>
                     </v-list-item-content>
                   </v-list-item>
@@ -44,7 +41,8 @@
             </v-carousel>
             <v-card class="rounded-lg mt-5" flat height="430">
                 <v-app-bar flat color="rgba(0,0,0,0)">
-                     <v-row>                        <span class="font-weight-bold ma-3">New Year Sale</span>
+                     <v-row v-if="!$vuetify.breakpoint.smAndDown">                    
+                      <span class="font-weight-bold ma-3">New Year Sale</span>
               <v-card color="blue darken-3 mx-1" elevation="3" class="pa-2">
                   <span class="white--text font-weight-bold subtitle-1">{{days}}</span>
                   <span class="white--text font-weight-bold subtitle-2 ml-n1">d</span>
@@ -62,6 +60,31 @@
                   <span class="white--text font-weight-bold subtitle-2 ml-n1">s</span>
               </v-card>
                      </v-row>
+                     <v-row no-gutters v-else>
+                      <v-col cols="4">
+                      <span class="ml-n1 font-weight-bold">New Year Sale</span>
+                      </v-col>
+                      <v-col cols="2"><v-card color="blue darken-3 mx-1" width="47" elevation="3" class="pa-2">
+                  <span class="white--text font-weight-bold subtitle-1">{{days}}</span>
+                  <span class="white--text font-weight-bold subtitle-2 ml-n1">d</span>
+              </v-card></v-col>
+                      <v-col cols="2"><v-card color="blue darken-3 mx-1" width="47" elevation="3" class="pa-2">
+                  <span class="white--text font-weight-bold subtitle-1">{{hours}}</span>
+                  <span class="white--text font-weight-bold subtitle-2 ml-n1">h</span>
+              </v-card></v-col>
+                      <v-col cols="2">
+                        <v-card color="blue darken-3 mx-1" width="47" elevation="3" class="pa-2">
+                            <span class="white--text font-weight-bold subtitle-1">{{minutes}}</span>
+                            <span class="white--text font-weight-bold subtitle-2 ml-n1">m</span>
+                        </v-card>
+                      </v-col>
+                      <v-col cols="2">
+                        <v-card color="blue darken-3 mx-1" width="47" elevation="3" class="pa-2">
+                            <span class="white--text font-weight-bold subtitle-1">{{seconds}}</span>
+                            <span class="white--text font-weight-bold subtitle-2 ml-n1">s</span>
+                        </v-card>
+                      </v-col>
+                    </v-row> 
                 </v-app-bar>
 
           <v-carousel hide-delimiters class="mt-5">
@@ -74,7 +97,7 @@
                     <v-hover>
 
                     <v-list-item-title class="text-h5">
-                      <router-link :to="{name : 'ProductDetails', params: {slug: {slug : product.slug}}}" class="black--text" style="text-decoration: none;"><span>{{product.title}}</span></router-link>
+                      <router-link :to="{name : 'ProductDetails', params: {slug: product.slug}}" class="grey--text text--darken-2 font-weight-bold" style="text-decoration: none;"><span>{{product.title}}</span></router-link>
                     </v-list-item-title>
                     </v-hover>
                     <v-list-item-subtitle class="mt-1 orange--text text--darken-2">{{product.category.name}}</v-list-item-subtitle>
@@ -118,7 +141,7 @@
               </v-col>
               <v-col cols="3" style="padding: 0; margin:0;">
                 <v-card color="orange"
-                class="my-1"
+                class="my-2 mx-2"
                 elevation="3"
                 :to="{name: 'AllCategories'}"
                 style="text-decoration: none;"
@@ -126,7 +149,8 @@
                 height="120">
               <v-card-subtitle>
                 <v-icon class="white--text">mdi-dots-horizontal</v-icon></v-card-subtitle>    
-                        <v-card-actions class="align-center justify-center"><span class="white--text o">More</span></v-card-actions>
+                        <v-card-actions class="align-center justify-center"><span class="white--text o font-weight-bold">More</span></v-card-actions>
+                
                 </v-card>
               </v-col>
             </v-row>

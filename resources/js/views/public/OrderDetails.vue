@@ -2,7 +2,7 @@
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
     <v-main>
       <Navigation />
-      <section class="mx-4 my-5">
+      <section :class="$vuetify.breakpoint.smAndDown ? 'my-5' : 'mx-4 my-5'">
         <v-card class="rounded-lg" flat>
             <v-card-title>
               <span>Order Details</span>

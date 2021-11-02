@@ -36,23 +36,10 @@ Vue.filter('timeformat', (arg) => {
     return moment(arg).format('MMMM Do, YYYY');
 });
 
-Vue.filter('sortlength', (text, length, suffix) => {
-    if(text.length >= 50){
-        return text.substring(0, length)+suffix;
-    }
-    return text
-});
-
-Vue.filter('sortlength', (text, suffix) => {
-    if(text.length >= 50){
-        return text.substring(0, 50)+suffix;
-    }
-    return text
-});
 
 Vue.filter('titlelength', (text, suffix) => {
-    if(text.length >= 25){
-        return text.substring(0, 25)+suffix;
+    if(text.length > 20){
+        return text.substring(0, 20)+suffix;
     }
     return text
 });

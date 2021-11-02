@@ -2,7 +2,7 @@
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
     <v-main>
       <Navigation />
-      <section class="mx-4 my-5">
+      <section :class="$vuetify.breakpoint.smAndDown ? 'mx-1 my-5' : 'mx-4 my-5'">
          <v-row wrap>
              <v-col cols="3" class="hidden-sm-and-down">
                  <v-card class="rounded-lg" flat>

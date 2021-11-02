@@ -36,11 +36,6 @@
 
 <script>
 export default {
-  mounted(){
-    if (this.$store.getters['auth/authenticated']) {
-      this.$store.dispatch("cart/getCartItems");
-    }
-  },
     computed: {
       cartItemCount() {
         return this.$store.getters["cart/cartItemCount"];
@@ -49,8 +44,5 @@ export default {
         return this.$store.getters["auth/authenticated"];
       },
     },
-    methods: {
-
-    }
 }
 </script>

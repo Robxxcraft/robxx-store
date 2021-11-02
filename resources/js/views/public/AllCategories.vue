@@ -2,11 +2,8 @@
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
     <v-main>
       <Navigation />
-      <template>
-        
-      </template>
-      <section class="mx-4 my-5">
-        <v-row wrap>
+      <section :class="$vuetify.breakpoint.smAndDown ? 'my-5' : 'mx-4 my-5'">
+        <v-row :no-gutters="$vuetify.breakpoint.smAndDown ? true : false" wrap>
         <v-col sm="12" md="3">
           <v-card flat class="rounded-lg hidden-sm-and-down">
             <v-card-title>
@@ -44,28 +41,18 @@
             <v-slide-item
               v-for="(category, index) in getCategories" :key="index"
             >
-              <v-card
-                color="orange"
-                outlined
-                class="my-4 mx-2"
+               <v-card color="orange"
+                class="my-2 mx-2 text-center"
                 elevation="3"
-                router
                 :to="{name: 'ProductsByCategory', params: {slug: category.slug}}"
                 style="text-decoration: none;"
-                height="100"
-                width="100"
-                @click="getPBC"
-              >
-                <v-row>
-                  <v-col cols="12" class="text-center mt-3">
-                     <v-icon large class="white--text">mdi-format-list-text</v-icon>
-                  </v-col>
-                  <v-col cols="12" class="text-center mt-n3">
-                    <span class="subtitle-2 font-weight-bold white--text">{{category.name}}</span>
-                  </v-col>
-                </v-row>
-                    
-              </v-card>
+                width="auto"
+                height="120">
+              <v-card-subtitle>
+                <v-icon class="white--text">mdi-format-list-text</v-icon></v-card-subtitle>    
+                        <v-card-actions class="align-center justify-center"><span class="white--text o font-weight-bold">{{category.name}}</span></v-card-actions>
+                
+                </v-card>
             </v-slide-item>
           </v-slide-group>
           </v-sheet>
@@ -74,7 +61,7 @@
         <v-col sm="12" md="9" class="mt-3">
           <router-view ref="ProductsByCategory"></router-view>
         </v-col>
-      </v-row>
+        </v-row>
       </section>
       <Footer />
       <BottomNavigation :hidden="!$vuetify.breakpoint.smAndDown"/>

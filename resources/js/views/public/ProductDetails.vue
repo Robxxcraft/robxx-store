@@ -2,15 +2,15 @@
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
     <v-main>
       <Navigation />
-      <section class="mx-4 my-5">
+      <section :class="$vuetify.breakpoint.smAndDown ? 'my-5' : 'mx-4 my-5'">
         <v-row>
         <v-col cols="12" md="9" lg="9" xl="9">
             <v-card height="100%" class="rounded-lg" flat>
               <v-btn @click="$router.go(-1)" class="rounded-br-xl" depressed><v-icon>mdi-arrow-left-thick</v-icon></v-btn>
               <v-row>
                 <v-col cols="12" md="4" lg="4" xl="4">
-                    <v-container>
-                      <v-img :src="getProduct.photo ? `/images/${getProduct.photo}` : '/assets/images/blank.png'" class="rounded-lg mx-auto my-5" contain></v-img>
+                    <v-container fluid>
+                      <v-img :src="getProduct.photo ? `/images/${getProduct.photo}` : '/assets/images/blank.png'" class="rounded-lg mx-auto my-5" :height="$vuetify.breakpoint.smAndDown ? '150' : '300'" contain></v-img>
                     </v-container>
                 </v-col>
                 <v-col cols="12" md="8" lg="8" xl="8" class="px-5">

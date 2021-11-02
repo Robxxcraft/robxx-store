@@ -63,8 +63,8 @@
             </v-list>
           </v-menu>
       </v-app-bar>
-      <v-card-text>
-        <v-tabs color="orange" class="rounded-lg hidden-sm-and-down" light>
+      <v-card-text class="hidden-sm-and-down">
+        <v-tabs color="orange" class="rounded-lg" light>
         <v-tab to="/" style="text-decoration: none; text-transform: none;"><v-icon>mdi-home</v-icon></v-tab>
         <v-tab router :to="{name: 'AllCategories'}" style="text-decoration: none; text-transform: none;">
           Categories
