@@ -171,8 +171,9 @@ export default {
                     duration: '2000'
                 })
             }).catch(errors => {
-                this.loading = false
+                this.loading = false;
                 this.errors = errors.response.data.errors;
+                window.scrollTo(0,0);
                 this.$toasted.show("Some Error Occured", {
                     type: 'error',
                     duration: '2000'

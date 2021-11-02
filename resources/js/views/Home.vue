@@ -125,7 +125,7 @@
           <v-col cols="12" md="3" class="text-center align-center justify-center my-5" :hidden="!$vuetify.breakpoint.smAndDown">
             <v-subheader class="text-h6 font-weight-bold">Categories</v-subheader>
             <v-row wrap>
-              <v-col cols="3" v-for="(category, index) in getHomeCategories" :key="index" style="padding: 0; margin:0;">
+              <v-col cols="4" v-for="(category, index) in getHomeCategories" :key="index" style="padding: 0; margin:0;">
                 <v-card color="orange"
                 class="my-2 mx-2"
                 elevation="3"
@@ -139,7 +139,7 @@
                 
                 </v-card>
               </v-col>
-              <v-col cols="3" style="padding: 0; margin:0;">
+              <v-col cols="4" style="padding: 0; margin:0;">
                 <v-card color="orange"
                 class="my-2 mx-2"
                 elevation="3"

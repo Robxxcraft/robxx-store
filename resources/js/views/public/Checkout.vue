@@ -147,15 +147,15 @@ export default {
     return {
       loading: false,
       form: {
-        address: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.address : '',
+        address: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.address : null,
 
-        city: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.city : '',
+        city: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.city : null,
 
-        province: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.province : '',
+        province: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.province : null,
 
-        zipcode: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.zipcode : '',
+        zipcode: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.zipcode : null,
         
-        phone_number: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.phone_number : '',
+        phone_number: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.phone_number : null,
 
         payment: 'COD',
       },
@@ -198,8 +198,9 @@ export default {
                           duration: '2000'
                       });
             }).catch(errors => {
-      this.loading = false;
+                this.loading = false;
                 this.errors = errors.response.data.errors;
+                window.scrollTo(0,0);
                 this.$toasted.show("Some Error Occured", {
                     type: 'error',
                     duration: '2000'

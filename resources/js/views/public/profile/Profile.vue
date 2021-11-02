@@ -2,8 +2,8 @@
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
     <v-main>
       <Navigation />
-      <section :class="$vuetify.breakpoint.smAndDown ? 'mx-1 my-5' : 'mx-4 my-5'">
-         <v-row wrap>
+      <section :class="$vuetify.breakpoint.smAndDown ? 'my-5' : 'mx-4 my-5'">
+         <v-row :no-gutters="$vuetify.breakpoint.smAndDown ? true : false" wrap>
              <v-col cols="3" class="hidden-sm-and-down">
                  <v-card class="rounded-lg" flat>
                     <v-list style="margin: 0; padding: 0;">

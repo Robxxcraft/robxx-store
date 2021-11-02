@@ -2,14 +2,15 @@
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
     <v-main>
       <Navigation />
-      <section :class="$vuetify.breakpoint.smAndDown ? 'mx-1 my-5' : 'mx-4 my-5'">
+      <section :class="$vuetify.breakpoint.smAndDown ? 'my-5' : 'mx-4 my-5'">
         <v-card class="rounded-lg mb-10" flat>
             <v-card-title>
                 <v-icon large color="red" class="pa-3">mdi-heart</v-icon>
                 <div class="font-weight-medium">Favourited List</div>
             </v-card-title>
        
-       <v-row :class="$vuetify.breakpoint.smAndDown ? 'mx-1' : 'mx-4'">
+       <v-container>
+          <v-row>
         <v-col v-for="(product, index) in getFavourited" :key="index" cols="6" md="4" lg="3" xl="3" sm="6">
             <v-hover v-slot="{ hover }" open-delay="50">
               <v-card :color="`${color[index % 10]} lighten-5`" :height="$vuetify.breakpoint.smAndDown ? '275' : '375'" class="rounded-t-lg d-flex flex-column" :elevation="hover ? 16 : 3">
@@ -48,6 +49,7 @@
             </v-hover>
           </v-col>
       </v-row>
+        </v-container>
       </v-card>
       </section>
       <Footer />

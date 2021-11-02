@@ -4,7 +4,7 @@
       <Navigation />
       <section :class="$vuetify.breakpoint.smAndDown ? 'my-5' : 'mx-4 my-5'">
         <v-row :no-gutters="$vuetify.breakpoint.smAndDown ? true : false" wrap>
-        <v-col sm="12" md="3">
+        <v-col cols="12" md="3" lg="3" xl="3">
           <v-card flat class="rounded-lg hidden-sm-and-down">
             <v-card-title>
               <span class="subheading">Categories</span>
@@ -46,8 +46,9 @@
                 elevation="3"
                 :to="{name: 'ProductsByCategory', params: {slug: category.slug}}"
                 style="text-decoration: none;"
-                width="auto"
-                height="120">
+                width="100"
+                height="100"
+                @click="getPBC">
               <v-card-subtitle>
                 <v-icon class="white--text">mdi-format-list-text</v-icon></v-card-subtitle>    
                         <v-card-actions class="align-center justify-center"><span class="white--text o font-weight-bold">{{category.name}}</span></v-card-actions>
@@ -58,7 +59,7 @@
           </v-sheet>
           </template>
         </v-col>
-        <v-col sm="12" md="9" class="mt-3">
+        <v-col cols="12" md="9" lg="9" xl="9" class="mt-3">
           <router-view ref="ProductsByCategory"></router-view>
         </v-col>
         </v-row>
@@ -90,7 +91,10 @@ export default {
   computed: {
       getCategories(){
         return this.$store.state.category.categories
-      }
+      },
+      isProd(){
+        return this.$store.state.product.products_by_category
+      },
   },
   methods: {
     getPBC(){
