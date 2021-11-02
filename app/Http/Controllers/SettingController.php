@@ -47,13 +47,13 @@ class SettingController extends Controller
                     }
 
                     $bannerNm = 'banner-1'.'.'.$request->banner1->extension();
-                    $image_resize = Image::make($request->banner1)->resize(2800, 600);
+                    $image_resize = Image::make($request->banner1)->resize(2800, 600)->encode('png', 75);
                     $image_resize->save(public_path('/assets/images/banner/').$bannerNm);
                     $banner->image = $bannerNm;
                     $banner->update();
                 } else {
                     $bannerNm = 'banner-1'.'.'.$request->banner1->extension();
-                    $image_resize = Image::make($request->banner1)->resize(2800, 600);
+                    $image_resize = Image::make($request->banner1)->resize(2800, 600)->encode('png', 75);
                     $image_resize->save(public_path('/assets/images/banner/').$bannerNm);
                     
                     $n_banner = new Setting();
@@ -71,13 +71,13 @@ class SettingController extends Controller
                     }
 
                     $bannerNm2 = 'banner-2'.'.'.$request->banner2->extension();
-                    $image_resize2 = Image::make($request->banner2)->resize(2800, 600);
+                    $image_resize2 = Image::make($request->banner2)->resize(2800, 600)->encode('png', 75);
                     $image_resize2->save(public_path('/assets/images/banner/').$bannerNm2);
                     $banner2->image = $bannerNm2;
                     $banner2->update();
                 } else {
                     $bannerNm2 = 'banner-2'.'.'.$request->banner2->extension();
-                    $image_resize2 = Image::make($request->banner2)->resize(2800, 600);
+                    $image_resize2 = Image::make($request->banner2)->resize(2800, 600)->encode('png', 75);
                     $image_resize2->save(public_path('/assets/images/banner/').$bannerNm2);
                     
                     $n_banner2 = new Setting();
@@ -94,13 +94,13 @@ class SettingController extends Controller
                     }
 
                     $bannerNm3 = 'banner-3'.'.'.$request->banner3->extension();
-                    $image_resize3 = Image::make($request->banner3)->resize(2800, 600);
+                    $image_resize3 = Image::make($request->banner3)->resize(2800, 600)->encode('png', 75);
                     $image_resize3->save(public_path('/assets/images/banner/').$bannerNm3);
                     $banner3->image = $bannerNm3;
                     $banner3->update();
                 } else {
                     $bannerNm3 = 'banner-3'.'.'.$request->banner3->extension();
-                    $image_resize3 = Image::make($request->banner3)->resize(2800, 600);
+                    $image_resize3 = Image::make($request->banner3)->resize(2800, 600)->encode('png', 75);
                     $image_resize3->save(public_path('/assets/images/banner/').$bannerNm3);
                     
                     $n_banner3 = new Setting();
@@ -118,13 +118,13 @@ class SettingController extends Controller
                     }
 
                     $logoNm = 'logo'.'.'.$request->logo->extension();
-                    $image_resize4 = Image::make($request->logo)->resize(400, 400);
+                    $image_resize4 = Image::make($request->logo)->resize(400, 400)->encode('png', 75);
                     $image_resize4->save(public_path('/assets/images/').$logoNm);
                     $logo->image = $logoNm;
                     $logo->update();
                 } else {
                     $logoNm = 'logo'.'.'.$request->logo->extension();
-                    $image_resize4 = Image::make($request->logo)->resize(400, 400);
+                    $image_resize4 = Image::make($request->logo)->resize(400, 400)->encode('png', 75);
                     $image_resize4->save(public_path('/assets/images/').$logoNm);
                     
                     $n_logo = new Setting();

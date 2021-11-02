@@ -103,7 +103,7 @@ export default {
         phone_number: '',
         photo: null
       },
-      loading,
+      loading: false,
       errors: {},
     }
   },

@@ -130,15 +130,15 @@ export default {
 
         last_name: this.$store.state.auth.user.last_name,
 
-        address: this.$store.state.auth.user.details ?  this.$store.state.auth.user.details.address : '',
+        address: this.$store.state.auth.user.details ?  this.$store.state.auth.user.details.address : null,
 
-        city: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.city : '',
+        city: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.city : null,
 
-        province: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.province : '',
+        province: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.province : null,
 
-        zipcode: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.zipcode : '',
+        zipcode: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.zipcode : null,
         
-        phone_number: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.phone_number : '',
+        phone_number: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.phone_number : null,
         photo: null
       },
       errors: {},
@@ -150,8 +150,7 @@ export default {
                 return URL.createObjectURL(this.form.photo);
             }
 
-            return `/user/photo/${this.photo}`;
-            
+            return `user/photo/${this.photo}`;
         }
   },
   methods: {

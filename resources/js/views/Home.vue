@@ -91,8 +91,8 @@
       <v-carousel-item v-for="(product, index) in getSales" :key="index">
               <v-list-item three-line>
                       <v-list-item-avatar rounded size="120" color="grey lighten-4">
-                       <v-img :src="product.photo ? `/images/${product.photo}` : 'assets/images/blank.png'" contain></v-img>
-                  </v-list-item-avatar>
+                        <v-img :src="product.photo ? `/images/${product.photo}` : '/assets/images/blank.png'" height="120" contain></v-img>
+                      </v-list-item-avatar>
                   <v-list-item-content>
                     <v-hover>
 

@@ -3,7 +3,8 @@
     <v-main>
       <Navigation />
       <section :class="$vuetify.breakpoint.smAndDown ? 'my-5' : 'mx-4 my-5'">
-        <v-row>
+        <v-container fluid>
+          <v-row>
         <v-col cols="12" md="9" lg="9" xl="9">
             <v-card height="100%" class="rounded-lg" flat>
               <v-btn @click="$router.go(-1)" class="rounded-br-xl" depressed><v-icon>mdi-arrow-left-thick</v-icon></v-btn>
@@ -63,7 +64,7 @@
                   <v-card-actions>
                     <v-row>
                       <v-col cols="12" md="4" lg="4" xl="4">
-                        <v-text-field label="Quantity" :class="$vuetify.breakpoint.smAndDown" flat color="orange accent-2" :counter="getProduct.stok >= 0" filled rounded v-model="quantity"></v-text-field>
+                        <v-text-field label="Quantity" :class="$vuetify.breakpoint.smAndDown" flat color="orange" filled rounded v-model="quantity"></v-text-field>
                       </v-col>
                       <v-spacer class="hidden-sm-and-down"></v-spacer>
                       <v-col cols="12" md="3" lg="3" xl="3" class="text-right ma-3">
@@ -106,7 +107,8 @@
               </v-list>
             </v-card>
         </v-col>
-      </v-row>
+        </v-row>
+        </v-container>
       
       </section>
       <Footer />
