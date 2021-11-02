@@ -37,7 +37,7 @@
                 </v-list-item>
               </template>
               <template v-else>
-                <v-list-item router :to="{name: 'DashboardAdmin'}" style="text-decoration: none;">
+                <v-list-item router v-if="isAdmin" :to="{name: 'DashboardAdmin'}" style="text-decoration: none;">
                   <v-chip class="rounded-0 white" style="cursor: pointer;"><v-list-item-title class="grey--text" >Admin</v-list-item-title></v-chip>
                 </v-list-item>
                 <v-list-item>
@@ -116,6 +116,10 @@ export default {
     authenticated(){
       return this.$store.getters["auth/authenticated"];
     },
+    isAdmin(){
+      const role = this.$store.getters["auth/role"];
+      return role == 'Superadmin' || role == 'Admin' ? true : false ;
+    }
   },
   methods: {
     logout() {

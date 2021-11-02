@@ -96,7 +96,6 @@ class AuthController extends Controller
             ]);
 
             if ($request->hasFile('photo')) {
-
                 $imageName = time().'_'.Str::random(10).'.'.$request->photo->extension();
                 $image_resize = Image::make($request->photo)->resize(100, 100);
                 $image_resize->save(public_path('user/photo/').$imageName);
@@ -105,7 +104,7 @@ class AuthController extends Controller
             }
             
         } else {
-            if ($request->hasFile('photo') && isset($userDetail->photo)) {
+            if ($request->hasFile('photo') && file_exists(public_path('user/photo/').$userDetail->photo)) {
                 unlink(public_path('user/photo/').$userDetail->photo);
             }
 
