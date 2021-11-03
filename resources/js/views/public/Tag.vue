@@ -14,7 +14,7 @@
             </v-card-subtitle>
             <v-card-text class="justify-center">
               <v-row :class="$vuetify.breakpoint.smAndDown ? '' : 'mx-4'">
-        <v-col v-for="(product, index) in getTagProducts.data" :key="index" cols="6" md="4" lg="4" xl="4">
+        <v-col v-for="(product, index) in getTagProducts.data" :key="index" cols="6" md="3" lg="3" xl="3">
             <v-hover v-slot="{ hover }" open-delay="50">
               <v-card :color="`${color[index % 10]} lighten-5`" :height="$vuetify.breakpoint.smAndDown ? '275' : '375'" class="rounded-t-lg d-flex flex-column" :elevation="hover ? 16 : 3">
                <div class="align-center">

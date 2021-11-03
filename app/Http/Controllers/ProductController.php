@@ -74,7 +74,7 @@ class ProductController extends Controller
 
         if ($request->hasFile('photo')) {            
             $imageName = time().'_'.Str::random(5).'.'.$request->photo->extension();
-            $image_resize = Image::make($request->photo)->resize(600, 400)->encode('png', 75);
+            $image_resize = Image::make($request->photo)->resize(600, 400)->encode('png', 85);
             $image_resize->save(public_path('images/').$imageName);
             $product->photo = $imageName;
             $product->save();
@@ -131,7 +131,7 @@ class ProductController extends Controller
             }
                       
             $imageName = time().'_'.Str::random(5).'.'.$request->photo->extension();
-            $image_resize = Image::make($request->photo)->resize(600, 400)->encode('png', 75);
+            $image_resize = Image::make($request->photo)->resize(600, 400)->encode('png', 85);
             $image_resize->save(public_path('images/').$imageName);
             $product->photo = $imageName;
         }
