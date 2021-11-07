@@ -78,8 +78,8 @@ class ProductController extends Controller
                     'width' => 600,
                     'heigth' => 400,
                 ]
-            ])->getSecurePath();
-            $product->photo = $uploadImg;
+            ]);
+            $product->photo = $uploadImg->getSecurePath();
             $product->publicId = $uploadImg->getPublicId();
             $product->save();
         }
