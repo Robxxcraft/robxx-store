@@ -36,10 +36,7 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth:sanctum');
 Route::post('/forgot-password', function (Request $request)  {
    $request->validate(['email' => 'required|email']);
-
-   $status = Password::sendResetLink(
-       $request->only('email')
-   );
+   $status = Password::sendResetLink($request->only('email'));
 
    return response()->json($status, 201);
 })->middleware('guest');

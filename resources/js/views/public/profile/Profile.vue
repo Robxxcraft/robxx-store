@@ -123,7 +123,7 @@ export default {
   data(){
     return {
       email: this.$store.state.auth.user.email,
-      photo: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.photo : '',
+      photo: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.photo : null,
       date: this.$store.state.auth.user.created_at,
       form: {
         first_name: this.$store.state.auth.user.first_name,
@@ -150,7 +150,7 @@ export default {
                 return URL.createObjectURL(this.form.photo);
             }
 
-            return `user/photo/${this.photo}`;
+            return this.photo;
         }
   },
   methods: {

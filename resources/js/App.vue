@@ -1,7 +1,11 @@
 <template>
   <div>
-      <router-view v-if="!isLoading" />
-      <div v-else><loading-page></loading-page></div>
+    <template v-if="!isLoading">
+      <router-view  />
+    </template>
+    <template v-else>
+      <loading-page></loading-page>
+    </template>
   </div>
 </template>
 

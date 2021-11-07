@@ -48,7 +48,7 @@
                   <v-list three-line :style="{ background: $vuetify.theme.themes.light.background2 }">
                   <v-list-item>
                     <v-list-item-avatar color="grey" size="80" tile>
-                      <v-img contain height="auto" :src="'/images/'+cart.product.photo" />
+                      <v-img contain height="auto" :src="cart.product.photo" />
                     </v-list-item-avatar>
                     
                     <v-list-item-content>

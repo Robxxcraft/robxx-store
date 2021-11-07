@@ -21,7 +21,7 @@
                     <v-subheader class="text-h6">Product List</v-subheader>
                   <v-list-item v-for="(orderdetail, index) in getOrder.orderdetails" :key="index">
                     <v-list-item-avatar color="grey" size="90" tile>
-                      <v-img :src="`/assets/images/${orderdetail.product.photo}`" contain height="auto" width="auto" />
+                      <v-img :src="orderdetail.product.photo" contain height="auto" width="auto" />
                     </v-list-item-avatar>
                     
                     <v-list-item-content>

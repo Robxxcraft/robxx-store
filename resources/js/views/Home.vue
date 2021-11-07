@@ -18,7 +18,7 @@
                           params: { slug: recent.slug }
                         }" three-line>
                     <v-list-item-avatar color="#EFF4F1" size="70" rounded>
-                      <v-img :src="recent.photo ? `/images/${recent.photo}` : 'assets/images/blank.png'" contain></v-img>
+                      <v-img :src="recent.photo ? recent.photo : 'assets/images/blank.png'" contain></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
                       <v-list-item-title>
@@ -36,7 +36,7 @@
           <v-col cols="12" md="6">
             <v-carousel height="auto" continuous cycle :show-arrows="false" hide-delimiter-background delimiter-icon="mdi-minus" class="rounded-lg">
           <v-carousel-item v-for="(banner, index) in banners" :key="index">
-            <v-img :src="`/assets/images/banner/${banner.image}`"></v-img>
+            <v-img :src="banner.image"></v-img>
           </v-carousel-item>
             </v-carousel>
             <v-card class="rounded-lg mt-5" flat height="430">
@@ -91,7 +91,7 @@
       <v-carousel-item v-for="(product, index) in getSales" :key="index">
               <v-list-item three-line>
                       <v-list-item-avatar rounded size="120" color="grey lighten-4">
-                        <v-img :src="product.photo ? `/images/${product.photo}` : '/assets/images/blank.png'" height="120" contain></v-img>
+                        <v-img :src="product.photo ? product.photo : '/assets/images/blank.png'" height="120" contain></v-img>
                       </v-list-item-avatar>
                   <v-list-item-content>
                     <v-hover>

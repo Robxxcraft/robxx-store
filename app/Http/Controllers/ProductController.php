@@ -8,7 +8,7 @@ use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Image;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
@@ -21,7 +21,7 @@ class ProductController extends Controller
 
     public function recent()
     {
-        $products = Product::with('category')->orderBy('created_at', 'DESC')->take(5)->get();
+        $products = Product::with('category')->orderBy('created_at', 'DESC')->take(5)->get()->pluck;
         return response()->json($products, 200);
     }
 
@@ -47,12 +47,11 @@ class ProductController extends Controller
     {
         $category_id = Category::where('slug', $slug)->first(['id']);
         $products = Product::with('category')->withCount('favourite','favourited')->where('category_id', $category_id->id)->paginate(12);
-       return response()->json($products, 200);
+        return response()->json($products, 200);
     }
 
     public function create(Request $request)
     {
-
         $request->validate([
             'title' => 'required|min:3|unique:products,title',
             'description' => 'min:3|max:500|nullable',
@@ -73,10 +72,15 @@ class ProductController extends Controller
 
 
         if ($request->hasFile('photo')) {            
-            $imageName = time().'_'.Str::random(5).'.'.$request->photo->extension();
-            $image_resize = Image::make($request->photo)->resize(600, 400)->encode('png', 85);
-            $image_resize->save(public_path('images/').$imageName);
-            $product->photo = $imageName;
+            $uploadImg = Cloudinary::upload($request->file('photo')->getRealPath(), [
+                'folder' =>  'product',
+                'transformation' => [
+                    'width' => 600,
+                    'heigth' => 400,
+                ]
+            ]);
+            $product->photo = $uploadImg->getSecurePath();
+            $product->publicId = $uploadImg->getPublicId();
             $product->save();
         }
 
@@ -118,7 +122,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'title' => 'required|min:3|unique:products,title,'.$id,
-            'category_id' => 'required',
+            'category_id' => 'required|numeric',
             'price' => 'required|numeric',
             'stok' => 'required|numeric',
         ]);
@@ -126,14 +130,17 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
 
         if ($request->hasFile('photo')) {
-            if (isset($product->photo) && file_exists(public_path('images/').$product->photo)) {
-                unlink(public_path('images/').$product->photo);
-            }
+            Cloudinary::destroy($product->publicId);
                       
-            $imageName = time().'_'.Str::random(5).'.'.$request->photo->extension();
-            $image_resize = Image::make($request->photo)->resize(600, 400)->encode('png', 85);
-            $image_resize->save(public_path('images/').$imageName);
-            $product->photo = $imageName;
+            $uploadImg = Cloudinary::upload($request->file('photo')->getRealPath(), [
+                'folder' =>  'product',
+                'transformation' => [
+                    'width' => 600,
+                    'heigth' => 400,
+                ]
+            ]);
+            $product->photo = $uploadImg->getSecurePath();
+            $product->publicId = $uploadImg->getPublicId();
         }
 
         $product->update([
@@ -166,11 +173,10 @@ class ProductController extends Controller
     public function delete($id)
     {
         $product = Product::findOrFail($id);
-        $product->delete();
-
-        if (!empty($product->photo) && file_exists(public_path('images').'/'.$product->photo)) {
-            unlink(public_path('images').'/'.$product->photo);
+        if (isset($product->photo)) {
+           Cloudinary::destroy($product->publicId);
         }
+        $product->delete();
 
         return response()->json('Product deleted sucessfullfy', 200);
     }
@@ -180,9 +186,9 @@ class ProductController extends Controller
         $products = Product::all();
         
         foreach ($products as $product) {
-            if (!empty($product->photo) && file_exists(public_path('images').'/'.$product->photo)) {
-                unlink(public_path('images').'/'.$product->photo);
-            }
+            if (isset($product->photo)) {
+                Cloudinary::destroy($product->publicId);
+             }
         }
 
         DB::table('products')->delete();

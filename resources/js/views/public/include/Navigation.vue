@@ -24,7 +24,7 @@
           <v-menu rounded="lg" offset-y>
             <template v-slot:activator="{attrs, on}">
               <v-btn depressed slot="activator" color="grey lighten-3" v-bind="attrs" v-on="on">
-              <v-icon>mdi-dots-vertical</v-icon>
+              <v-icon>mdi-dots-grid</v-icon>
             </v-btn>
             </template>
             <v-list flat>
@@ -108,7 +108,7 @@ export default {
       if (!this.log) {
         return '/assets/images/logo2.png';
       }
-      return `/assets/images/${this.log}`
+      return this.log;
     },
     cartItemCount() {
       return this.$store.getters["cart/cartItemCount"];

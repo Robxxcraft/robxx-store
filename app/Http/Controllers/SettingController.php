@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Setting;
 use Illuminate\Http\Request;
-use Image;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Support\Str;
 use App\Models\Transaction;
 use App\Models\User;
@@ -43,22 +43,32 @@ class SettingController extends Controller
                 $banner = Setting::where('type', 'banner-1')->first();
                 if ($banner) {
                     if (isset($banner->image)) {
-                        unlink(public_path('/assets/images/banner/').$banner->image);
+                        Cloudinary::destroy($banner->publicId);
                     }
 
-                    $bannerNm = 'banner-1'.'.'.$request->banner1->extension();
-                    $image_resize = Image::make($request->banner1)->resize(2800, 600)->encode('png', 75);
-                    $image_resize->save(public_path('/assets/images/banner/').$bannerNm);
-                    $banner->image = $bannerNm;
+                    $bannerPath = Cloudinary::upload($request->file('banner1')->getRealPath(), [
+                        'folder' =>  'user',
+                        'transformation' => [
+                            'width' => 2800,
+                            'heigth' => 600,
+                        ]
+                    ]);
+                    $banner->image = $bannerPath->getSecurePath();
+                    $banner->publicId = $bannerPath->getPublicId();
                     $banner->update();
                 } else {
-                    $bannerNm = 'banner-1'.'.'.$request->banner1->extension();
-                    $image_resize = Image::make($request->banner1)->resize(2800, 600)->encode('png', 75);
-                    $image_resize->save(public_path('/assets/images/banner/').$bannerNm);
+                    $bannerPath = Cloudinary::upload($request->file('banner1')->getRealPath(), [
+                        'folder' =>  'user',
+                        'transformation' => [
+                            'width' => 2800,
+                            'heigth' => 600,
+                        ]
+                    ]);
                     
                     $n_banner = new Setting();
                     $n_banner->type = 'banner-1';
-                    $n_banner->image = $bannerNm;
+                    $n_banner->image = $bannerPath->getSecurePath();
+                    $n_banner->publicId = $bannerPath->getPublicId();
                     $n_banner->save();
 
                 }
@@ -67,45 +77,66 @@ class SettingController extends Controller
                 $banner2 = Setting::where('type', 'banner-2')->first();
                 if ($banner2) {
                     if (isset($banner2->image)) {
-                        unlink(public_path('/assets/images/banner/').$banner2->image);
-                    }
+                        Cloudinary::destroy($banner2->publicId);
+                     }
 
-                    $bannerNm2 = 'banner-2'.'.'.$request->banner2->extension();
-                    $image_resize2 = Image::make($request->banner2)->resize(2800, 600)->encode('png', 75);
-                    $image_resize2->save(public_path('/assets/images/banner/').$bannerNm2);
-                    $banner2->image = $bannerNm2;
+                    $banner2Path = Cloudinary::upload($request->file('banner2')->getRealPath(), [
+                        'folder' =>  'user',
+                        'transformation' => [
+                            'width' => 2800,
+                            'heigth' => 600,
+                        ]
+                    ]);
+                    $banner2->image = $banner2Path->getSecurePath();
+                    $banner2->publicId = $banner2Path->getPublicId();
                     $banner2->update();
                 } else {
-                    $bannerNm2 = 'banner-2'.'.'.$request->banner2->extension();
-                    $image_resize2 = Image::make($request->banner2)->resize(2800, 600)->encode('png', 75);
-                    $image_resize2->save(public_path('/assets/images/banner/').$bannerNm2);
+                    $banner2Path = Cloudinary::upload($request->file('banner2')->getRealPath(), [
+                        'folder' =>  'user',
+                        'transformation' => [
+                            'width' => 2800,
+                            'heigth' => 600,
+                        ]
+                    ]);
                     
                     $n_banner2 = new Setting();
                     $n_banner2->type = 'banner-2';
-                    $n_banner2->image = $bannerNm2;
+                    $n_banner2->image = $banner2Path->getSecurePath();
+                    $n_banner2->publicId = $banner2Path->getPublicId();
                     $n_banner2->save();
                 }
             } 
+            
             if ($request->hasFile('banner3')) {
                 $banner3 = Setting::where('type', 'banner-3')->first();
                 if ($banner3) {
                     if (isset($banner3->image)) {
-                        unlink(public_path('/assets/images/banner/').$banner3->image);
-                    }
+                        Cloudinary::destroy($banner3->publicId);
+                     }
 
-                    $bannerNm3 = 'banner-3'.'.'.$request->banner3->extension();
-                    $image_resize3 = Image::make($request->banner3)->resize(2800, 600)->encode('png', 75);
-                    $image_resize3->save(public_path('/assets/images/banner/').$bannerNm3);
-                    $banner3->image = $bannerNm3;
+                    $banner3Path = Cloudinary::upload($request->file('banner3')->getRealPath(), [
+                        'folder' =>  'user',
+                        'transformation' => [
+                            'width' => 2800,
+                            'heigth' => 600,
+                        ]
+                    ]);
+                    $banner3->image = $banner3Path->getSecurePath();
+                    $banner3->publicId = $banner3Path->getPublicId();
                     $banner3->update();
                 } else {
-                    $bannerNm3 = 'banner-3'.'.'.$request->banner3->extension();
-                    $image_resize3 = Image::make($request->banner3)->resize(2800, 600)->encode('png', 75);
-                    $image_resize3->save(public_path('/assets/images/banner/').$bannerNm3);
+                    $banner3Path = Cloudinary::upload($request->file('banner3')->getRealPath(), [
+                        'folder' =>  'user',
+                        'transformation' => [
+                            'width' => 2800,
+                            'heigth' => 600,
+                        ]
+                    ]);
                     
                     $n_banner3 = new Setting();
                     $n_banner3->type = 'banner-3';
-                    $n_banner3->image = $bannerNm3;
+                    $n_banner3->image = $banner3Path->getSecurePath();
+                    $n_banner3->publicId = $banner3Path->getPublicId();
                     $n_banner3->save();
                 }
             } 
@@ -114,22 +145,32 @@ class SettingController extends Controller
                 $logo = Setting::where('type', 'logo')->first();
                 if ($logo) {
                     if (isset($logo->image)) {
-                        unlink(public_path('/assets/images/').$logo->image);
-                    }
+                        Cloudinary::destroy($logo->publicId);
+                     }
 
-                    $logoNm = 'logo'.'.'.$request->logo->extension();
-                    $image_resize4 = Image::make($request->logo)->resize(400, 400)->encode('png', 75);
-                    $image_resize4->save(public_path('/assets/images/').$logoNm);
-                    $logo->image = $logoNm;
+                    $logoPath = Cloudinary::upload($request->file('logo')->getRealPath(), [
+                        'folder' =>  'user',
+                        'transformation' => [
+                            'width' => 300,
+                            'heigth' => 300,
+                        ]
+                    ]);
+                    $logo->image = $logoPath->getSecurePath();
+                    $logo->publicId = $logoPath->getPublicId();
                     $logo->update();
                 } else {
-                    $logoNm = 'logo'.'.'.$request->logo->extension();
-                    $image_resize4 = Image::make($request->logo)->resize(400, 400)->encode('png', 75);
-                    $image_resize4->save(public_path('/assets/images/').$logoNm);
+                    $logoPath = Cloudinary::upload($request->file('logo')->getRealPath(), [
+                        'folder' =>  'user',
+                        'transformation' => [
+                            'width' => 300,
+                            'heigth' => 300,
+                        ]
+                    ]);
                     
                     $n_logo = new Setting();
                     $n_logo->type = 'logo';
-                    $n_logo->image = $logoNm;
+                    $n_logo->image = $logoPath->getSecurePath();
+                    $n_logo->publicId = $logoPath->getPublicId();
                     $n_logo->save();
             }
         }

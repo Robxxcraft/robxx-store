@@ -15,7 +15,7 @@
             <v-hover v-slot="{ hover }" open-delay="50">
               <v-card :color="`${color[index % 10]} lighten-5`" :height="$vuetify.breakpoint.smAndDown ? '275' : '375'" class="rounded-t-lg d-flex flex-column" :elevation="hover ? 16 : 3">
                <div class="align-center">
-                 <v-img  :src="product.photo ? '/images/'+product.photo : '/assets/images/blank.png'" class="rounded-t-lg" contain max-width="auto" :height="$vuetify.breakpoint.smAndDown ? '100px' : '200px'">
+                 <v-img  :src="product.photo ? product.photo : '/assets/images/blank.png'" class="rounded-t-lg" contain max-width="auto" :height="$vuetify.breakpoint.smAndDown ? '100px' : '200px'">
                   <v-app-bar flat color="rgba(0,0,0,0)" class="rounded-t-lg mb-3">
                     <v-spacer></v-spacer>
                         <template v-if="product.favourited_count == true">

@@ -21,7 +21,6 @@
                     </v-row>
                     <v-row>
                         <v-col>
-                            {{errors.category_id}}
                             <v-select :items="getCategories" item-value="id" item-text="name"  v-model="form.category_id" color="orange" label="Category" filled rounded class="rounded-0" hint="Enter Category Product" :error-messages="errors.category_id"></v-select>
                         </v-col>
                     </v-row>

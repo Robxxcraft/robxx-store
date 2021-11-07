@@ -17,6 +17,7 @@ class CreateUserDetailsTable extends Migration
             $table->id();
             $table->foreignId('user_id')->index()->constrained()->onDelete('cascade');
             $table->text('photo')->nullable();
+            $table->text('publicId')->nullable();
             $table->text('address')->nullable();
             $table->string('city')->nullable();
             $table->string('province')->nullable();

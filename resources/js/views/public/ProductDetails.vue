@@ -11,7 +11,7 @@
               <v-row>
                 <v-col cols="12" md="4" lg="4" xl="4">
                     <v-container fluid>
-                      <v-img :src="getProduct.photo ? `/images/${getProduct.photo}` : '/assets/images/blank.png'" class="rounded-lg mx-auto my-5" :height="$vuetify.breakpoint.smAndDown ? '150' : '300'" contain></v-img>
+                      <v-img :src="getProduct.photo ? getProduct.photo : '/assets/images/blank.png'" class="rounded-lg mx-auto my-5" :height="$vuetify.breakpoint.smAndDown ? '150' : '300'" contain></v-img>
                     </v-container>
                 </v-col>
                 <v-col cols="12" md="8" lg="8" xl="8" class="px-5">
@@ -92,7 +92,7 @@
                           params: { slug: recent.slug }
                         }" @click.prevent="dispat" three-line>
                     <v-list-item-avatar color="#EFF4F1" size="70" rounded>
-                      <v-img :src="recent.photo ? `/images/${recent.photo}` : '/assets/images/blank.png'" contain></v-img>
+                      <v-img :src="recent.photo ? recent.photo : '/assets/images/blank.png'" contain></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
                       <v-list-item-title>
