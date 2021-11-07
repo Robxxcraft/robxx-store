@@ -20,11 +20,15 @@ class DatabaseSeeder extends Seeder
             'email' => 'superadmin@gmail.com',
             'email_verified_at' => now(),
             'password' => Hash::make('superadmin'), // password
-            'remember_token' => Str::random(10)],
+            'remember_token' => Str::random(10),
+            'role' => 'Superadmin'
+            ],
             ['first_name' => 'admin',
             'email' => 'admin@gmail.com',
             'email_verified_at' => now(),
             'password' => Hash::make('admin'), // password
-            'remember_token' => Str::random(10)]);
+            'remember_token' => Str::random(10),
+            'role' => 'Admin'
+            ]);
     }
 }
