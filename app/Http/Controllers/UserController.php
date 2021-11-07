@@ -6,8 +6,7 @@ use App\Models\User;
 use App\Models\UserDetail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Image;
-use Illuminate\Support\Str;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Validation\ValidationException;
 
 class UserController extends Controller
@@ -86,18 +85,23 @@ class UserController extends Controller
             ]);
 
             if ($request->hasFile('photo')) {
-                $imageName = time().'_'.Str::random(10).'.'.$request->photo->extension();
-                $image_resize = Image::make($request->photo)->resize(100, 100);
-                $image_resize->save(public_path('user/photo/').$imageName);
-                $userDetail->photo = $imageName;
+                if (isset($userDetail->photo)) {
+                    Cloudinary::destroy($userDetail->publicId);
+                }
+
+                $photoPath = Cloudinary::upload($request->file('photo')->getRealPath(), [
+                    'folder' =>  'user',
+                    'transformation' => [
+                        'width' => 400,
+                        'heigth' => 400,
+                    ]
+                ]);
+                $userDetail->photo = $photoPath->getSecurePath();
+                $userDetail->publicId = $photoPath->getPublicId();
                 $userDetail->save();
             }
             
         } else {
-            if ($request->hasFile('photo') && isset($userDetail->photo)) {
-                unlink(public_path('user/photo/').$userDetail->photo);
-            }
-            
             $userDetail->update([
                 'address' => $request->address,
                 'city' => $request->city,
@@ -107,11 +111,21 @@ class UserController extends Controller
             ]);
 
             if ($request->hasFile('photo')) {
-                $imageName = time().'_'.Str::random(5).'.'.$request->photo->extension();
-                $image_resize = Image::make($request->photo)->resize(100, 100);
-                $image_resize->save(public_path('user/photo/').$imageName);
-                $userDetail->photo = $imageName;
-                $userDetail->save();
+                if (isset($userDetail->photo)) {
+                    Cloudinary::destroy($userDetail->publicId);
+                }
+
+                $photoPath = Cloudinary::upload($request->file('photo')->getRealPath(), [
+                    'folder' =>  'user',
+                    'transformation' => [
+                        'width' => 400,
+                        'heigth' => 400,
+                    ]
+                ]);
+
+                $userDetail->photo = $photoPath->getSecurePath();
+                $userDetail->publicId = $photoPath->getPublicId();
+                $userDetail->update();
             }
         }
 
