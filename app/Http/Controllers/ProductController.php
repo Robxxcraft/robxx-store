@@ -87,7 +87,7 @@ class ProductController extends Controller
         $product_tag = Product::findOrFail($product->id);
 
         $tags = $request->tags;
-        return response()->json($tags);
+        
         
         if ($request->has('tags')) {
             foreach($tags as $tag){
@@ -97,6 +97,8 @@ class ProductController extends Controller
                 ]);
 
                 $tag_id = Tag::where('name', $tag)->get()->pluck('id');
+
+                return response()->json($tag_id);
                 
                 $product_tag->tag()->attach($tag_id);
             }
