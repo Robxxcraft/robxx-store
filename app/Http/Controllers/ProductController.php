@@ -91,16 +91,16 @@ class ProductController extends Controller
         
         if ($request->has('tags')) {
             foreach($tags as $tag){
-                Tag::firstOrCreate([
+                $tag = Tag::firstOrCreate([
                     'name' => strtolower($tag),
                     'slug' => Str::slug($tag)
                 ]);
 
-                $tag_id = Tag::where('name', $tag)->get()->pluck('id');
+                // $tag_id = Tag::where('name', $tag)->get()->pluck('id');
 
-                return response()->json($tag_id);
+                return response()->json($tag);
                 
-                $product_tag->tag()->attach($tag_id);
+                // $product_tag->tag()->attach($tag_id);
             }
         }
         
