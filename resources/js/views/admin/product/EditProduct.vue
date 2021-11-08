@@ -96,6 +96,11 @@ export default {
                 stock: 1,
                 tags: [],
             },
+            editorOption: {
+                debug: 'info',
+                placeholder: 'Type your description...',
+                theme: 'snow',
+            },
             errors: {},
             loading: false,
             image: null,

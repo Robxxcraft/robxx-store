@@ -87,6 +87,7 @@ class ProductController extends Controller
         $product_tag = Product::findOrFail($product->id);
 
         $tags = $request->tags;
+        return response()->json($tags);
         
         if ($request->has('tags')) {
             foreach($tags as $tag){
