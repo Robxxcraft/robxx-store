@@ -98,9 +98,7 @@ class ProductController extends Controller
 
                 // $tag_id = Tag::where('name', $tag)->get()->pluck('id');
 
-                return response()->json($tag);
-                
-                // $product_tag->tag()->attach($tag_id);
+                $product_tag->tag()->attach($tag->id);
             }
         }
         
