@@ -22,6 +22,7 @@ class CreateProductsTable extends Migration
             $table->string('price');
             $table->text('photo')->nullable();
             $table->integer('stok')->default(1);
+            $table->unsignedBigInteger('user_id');
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
