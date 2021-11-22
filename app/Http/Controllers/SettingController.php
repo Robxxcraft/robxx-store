@@ -43,22 +43,23 @@ class SettingController extends Controller
                 $banner = Setting::where('type', 'banner-1')->first();
                 if ($banner) {
                     if (isset($banner->image)) {
-                        Cloudinary::destroy($banner->publicId);
+                        Cloudinary::destroy($banner->type);
                     }
 
                     $bannerPath = Cloudinary::upload($request->file('banner1')->getRealPath(), [
                         'folder' =>  'user',
+                        'public_id' => 'banner-1',
                         'transformation' => [
                             'width' => 2800,
                             'heigth' => 600,
                         ]
                     ]);
                     $banner->image = $bannerPath->getSecurePath();
-                    $banner->publicId = $bannerPath->getPublicId();
                     $banner->update();
                 } else {
                     $bannerPath = Cloudinary::upload($request->file('banner1')->getRealPath(), [
                         'folder' =>  'user',
+                        'public_id' => 'banner-1',
                         'transformation' => [
                             'width' => 2800,
                             'heigth' => 600,
@@ -68,7 +69,6 @@ class SettingController extends Controller
                     $n_banner = new Setting();
                     $n_banner->type = 'banner-1';
                     $n_banner->image = $bannerPath->getSecurePath();
-                    $n_banner->publicId = $bannerPath->getPublicId();
                     $n_banner->save();
 
                 }
@@ -77,22 +77,23 @@ class SettingController extends Controller
                 $banner2 = Setting::where('type', 'banner-2')->first();
                 if ($banner2) {
                     if (isset($banner2->image)) {
-                        Cloudinary::destroy($banner2->publicId);
+                        Cloudinary::destroy($banner2->type);
                      }
 
                     $banner2Path = Cloudinary::upload($request->file('banner2')->getRealPath(), [
                         'folder' =>  'user',
+                        'public_id' => 'banner-2',
                         'transformation' => [
                             'width' => 2800,
                             'heigth' => 600,
                         ]
                     ]);
                     $banner2->image = $banner2Path->getSecurePath();
-                    $banner2->publicId = $banner2Path->getPublicId();
                     $banner2->update();
                 } else {
                     $banner2Path = Cloudinary::upload($request->file('banner2')->getRealPath(), [
                         'folder' =>  'user',
+                        'public_id' => 'banner-2',
                         'transformation' => [
                             'width' => 2800,
                             'heigth' => 600,
@@ -102,7 +103,6 @@ class SettingController extends Controller
                     $n_banner2 = new Setting();
                     $n_banner2->type = 'banner-2';
                     $n_banner2->image = $banner2Path->getSecurePath();
-                    $n_banner2->publicId = $banner2Path->getPublicId();
                     $n_banner2->save();
                 }
             } 
@@ -116,17 +116,18 @@ class SettingController extends Controller
 
                     $banner3Path = Cloudinary::upload($request->file('banner3')->getRealPath(), [
                         'folder' =>  'user',
+                        'public_id' => 'banner-3',
                         'transformation' => [
                             'width' => 2800,
                             'heigth' => 600,
                         ]
                     ]);
                     $banner3->image = $banner3Path->getSecurePath();
-                    $banner3->publicId = $banner3Path->getPublicId();
                     $banner3->update();
                 } else {
                     $banner3Path = Cloudinary::upload($request->file('banner3')->getRealPath(), [
                         'folder' =>  'user',
+                        'public_id' => 'banner-3',
                         'transformation' => [
                             'width' => 2800,
                             'heigth' => 600,
@@ -136,7 +137,6 @@ class SettingController extends Controller
                     $n_banner3 = new Setting();
                     $n_banner3->type = 'banner-3';
                     $n_banner3->image = $banner3Path->getSecurePath();
-                    $n_banner3->publicId = $banner3Path->getPublicId();
                     $n_banner3->save();
                 }
             } 
@@ -145,22 +145,23 @@ class SettingController extends Controller
                 $logo = Setting::where('type', 'logo')->first();
                 if ($logo) {
                     if (isset($logo->image)) {
-                        Cloudinary::destroy($logo->publicId);
+                        Cloudinary::destroy($logo->type);
                      }
 
                     $logoPath = Cloudinary::upload($request->file('logo')->getRealPath(), [
                         'folder' =>  'user',
+                        'public_id' => 'logo',
                         'transformation' => [
                             'width' => 300,
                             'heigth' => 300,
                         ]
                     ]);
                     $logo->image = $logoPath->getSecurePath();
-                    $logo->publicId = $logoPath->getPublicId();
                     $logo->update();
                 } else {
                     $logoPath = Cloudinary::upload($request->file('logo')->getRealPath(), [
                         'folder' =>  'user',
+                        'public_id' => 'logo',
                         'transformation' => [
                             'width' => 300,
                             'heigth' => 300,
@@ -170,24 +171,11 @@ class SettingController extends Controller
                     $n_logo = new Setting();
                     $n_logo->type = 'logo';
                     $n_logo->image = $logoPath->getSecurePath();
-                    $n_logo->publicId = $logoPath->getPublicId();
                     $n_logo->save();
             }
         }
 
         return response()->json('Settings Updated', 201);
-    }
-
-    public function changeLogo(Request $request, $id)
-    {
-        $category = Setting::findOrFail($id);
-
-        $category->update([
-            'name' => $request->name,
-            'slug' => Str::slug($request->name)
-        ]);
-
-        return response()->json(['success' => 'category updated successfully']);
     }
     
 }
