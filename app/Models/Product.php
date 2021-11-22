@@ -12,7 +12,7 @@ class Product extends Model
 
     protected $guarded = [];
 
-    protected $fillable = ['title', 'slug', 'description', 'category_id', 'price', 'stok', 'user_id', 'photo', 'publicId'];
+    protected $fillable = ['title', 'slug', 'description', 'category_id', 'price', 'stok', 'user_id', 'photo'];
 
     protected $casts = ['favourited_count' => 'boolean'];
     

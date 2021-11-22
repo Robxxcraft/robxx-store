@@ -17,7 +17,6 @@ class CreateSettingsTable extends Migration
             $table->id();
             $table->string('type');
             $table->text('image');
-            $table->text('publicId');
             $table->timestamps();
         });
     }

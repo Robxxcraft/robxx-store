@@ -87,7 +87,7 @@
                     </v-row> 
                 </v-app-bar>
 
-          <v-carousel hide-delimiters class="mt-5">
+          <v-carousel height="auto" hide-delimiters class="mt-5">
       <v-carousel-item v-for="(product, index) in getSales" :key="index">
               <v-list-item three-line>
                       <v-list-item-avatar rounded size="120" color="grey lighten-4">
@@ -106,7 +106,6 @@
                   </v-list-item-content>
                     </v-list-item>
             
-         
               <v-card-text>
                 <v-card-actions>
                   <v-row>
@@ -117,7 +116,6 @@
                   </v-row>
                 </v-card-actions>
               </v-card-text>
-       
       </v-carousel-item>
           </v-carousel>
             </v-card>

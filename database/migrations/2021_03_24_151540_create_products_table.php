@@ -21,11 +21,10 @@ class CreateProductsTable extends Migration
             $table->foreignId('category_id')->index()->constrained()->onDelete('cascade');
             $table->string('price');
             $table->text('photo')->nullable();
-            $table->text('publicId')->nullable();
             $table->integer('stok')->default(1);
             $table->timestamps();
 
-            $table->foreignId('user_id')->index()->constrained()->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 

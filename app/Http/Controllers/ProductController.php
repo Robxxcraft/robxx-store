@@ -21,7 +21,7 @@ class ProductController extends Controller
 
     public function recent()
     {
-        $products = Product::with('category')->orderBy('created_at', 'DESC')->take(5)->get()->pluck;
+        $products = Product::with('category')->orderBy('created_at', 'DESC')->take(5)->get();
         return response()->json($products, 200);
     }
 
@@ -74,13 +74,13 @@ class ProductController extends Controller
         if ($request->hasFile('photo')) {            
             $uploadImg = Cloudinary::upload($request->file('photo')->getRealPath(), [
                 'folder' =>  'product',
+                'public_id' => $product->id,
                 'transformation' => [
                     'width' => 600,
                     'heigth' => 400,
                 ]
             ]);
             $product->photo = $uploadImg->getSecurePath();
-            $product->publicId = $uploadImg->getPublicId();
             $product->save();
         }
 
@@ -95,8 +95,6 @@ class ProductController extends Controller
                     'name' => strtolower($tag),
                     'slug' => Str::slug($tag)
                 ]);
-
-                // $tag_id = Tag::where('name', $tag)->get()->pluck('id');
 
                 $product_tag->tag()->attach($tag->id);
             }
@@ -135,13 +133,13 @@ class ProductController extends Controller
                       
             $uploadImg = Cloudinary::upload($request->file('photo')->getRealPath(), [
                 'folder' =>  'product',
+                'public_id' => $product->id,
                 'transformation' => [
                     'width' => 600,
                     'heigth' => 400,
                 ]
             ]);
             $product->photo = $uploadImg->getSecurePath();
-            $product->publicId = $uploadImg->getPublicId();
         }
 
         $product->update([
@@ -158,13 +156,12 @@ class ProductController extends Controller
             $tags = $request->tags;
             $product->tag()->detach();
             foreach($tags as $tag){
-                Tag::firstOrCreate([
+                $tag = Tag::firstOrCreate([
                     'name' => strtolower($tag),
                     'slug' => Str::slug($tag)
                 ]);
 
-                $tag_id = Tag::where('name', $tag)->get()->pluck('id');
-                $product->tag()->attach($tag_id);
+                $product->tag()->attach($tag->id);
             }
         }
 
@@ -175,7 +172,7 @@ class ProductController extends Controller
     {
         $product = Product::findOrFail($id);
         if (isset($product->photo)) {
-           Cloudinary::destroy($product->publicId);
+           Cloudinary::destroy($product->id);
         }
         $product->delete();
 
@@ -188,7 +185,7 @@ class ProductController extends Controller
         
         foreach ($products as $product) {
             if (isset($product->photo)) {
-                Cloudinary::destroy($product->publicId);
+                Cloudinary::destroy($product->id);
              }
         }
 

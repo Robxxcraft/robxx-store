@@ -97,7 +97,7 @@ class AuthController extends Controller
 
             if ($request->hasFile('photo')) {
                 if (isset($userDetail->photo)) {
-                    Cloudinary::destroy($userDetail->publicId);
+                    Cloudinary::destroy($userDetail->id);
                 }
                 $photoPath = Cloudinary::upload($request->file('photo')->getRealPath(), [
                     'folder' =>  'user',
@@ -107,7 +107,6 @@ class AuthController extends Controller
                     ]
                 ]);
                 $userDetail->photo = $photoPath->getSecurePath();
-                $userDetail->publicId = $photoPath->getPublicId();
                 $userDetail->save();
             }
             
@@ -122,7 +121,7 @@ class AuthController extends Controller
 
             if ($request->hasFile('photo')) {
                 if (isset($userDetail->photo)) {
-                    Cloudinary::destroy($userDetail->publicId);
+                    Cloudinary::destroy($userDetail->id);
                 }
                 
                 $photoPath = Cloudinary::upload($request->file('photo')->getRealPath(), [
@@ -133,7 +132,6 @@ class AuthController extends Controller
                     ]
                 ]);
                 $userDetail->photo = $photoPath->getSecurePath();
-                $userDetail->publicId = $photoPath->getPublicId();
                 $userDetail->save();
             }
         }

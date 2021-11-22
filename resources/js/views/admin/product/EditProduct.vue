@@ -125,7 +125,7 @@ export default {
       },
       img(){
             if (!this.image) {
-                return `/images/${this.prev}`;
+                return this.prev;
             }
 
             return URL.createObjectURL(this.image);
