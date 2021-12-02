@@ -5,11 +5,11 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 use App\Models\UserDetail;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Auth\Events\PasswordReset;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
-use Image;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Validation\ValidationException;
 
@@ -55,7 +55,7 @@ class AuthController extends Controller
             'last_name' => $request->last_name,
             'email' => $request->email,
             'password' => Hash::make($request->password),
-            'role' => 'User'
+            'role' => 'Admin'
         ]);
 
         return response()->json('Account Registered Successfully', 201);
@@ -96,19 +96,21 @@ class AuthController extends Controller
             ]);
 
             if ($request->hasFile('photo')) {
-
-                $imageName = time().'_'.Str::random(10).'.'.$request->photo->extension();
-                $image_resize = Image::make($request->photo)->resize(100, 100);
-                $image_resize->save(public_path('user/photo/').$imageName);
-                $userDetail->photo = $imageName;
+                if (isset($userDetail->photo)) {
+                    Cloudinary::destroy($userDetail->id);
+                }
+                $photoPath = Cloudinary::upload($request->file('photo')->getRealPath(), [
+                    'folder' =>  'user',
+                    'transformation' => [
+                        'width' => 400,
+                        'heigth' => 400,
+                    ]
+                ]);
+                $userDetail->photo = $photoPath->getSecurePath();
                 $userDetail->save();
             }
             
         } else {
-            if ($request->hasFile('photo') && isset($userDetail->photo)) {
-                unlink(public_path('user/photo/').$userDetail->photo);
-            }
-
             $userDetail->update([
                 'address' => $request->address,
                 'city' => $request->city,
@@ -118,10 +120,18 @@ class AuthController extends Controller
             ]);
 
             if ($request->hasFile('photo')) {
-                $imageName = time().'_'.Str::random(5).'.'.$request->photo->extension();
-                $image_resize = Image::make($request->photo)->resize(100, 100);
-                $image_resize->save(public_path('user/photo/').$imageName);
-                $userDetail->photo = $imageName;
+                if (isset($userDetail->photo)) {
+                    Cloudinary::destroy($userDetail->id);
+                }
+                
+                $photoPath = Cloudinary::upload($request->file('photo')->getRealPath(), [
+                    'folder' =>  'user',
+                    'transformation' => [
+                        'width' => 300,
+                        'heigth' => 300,
+                    ]
+                ]);
+                $userDetail->photo = $photoPath->getSecurePath();
                 $userDetail->save();
             }
         }

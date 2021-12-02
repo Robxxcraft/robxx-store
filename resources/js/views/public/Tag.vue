@@ -2,8 +2,8 @@
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
     <v-main>
       <Navigation />
-      <section class="mx-4 my-5">
-        <v-row>
+      <section :class="$vuetify.breakpoint.smAndDown ? 'my-5' : 'mx-4 my-5'">
+        <v-row :no-gutters="$vuetify.breakpoint.smAndDown ? true : false">
             <v-col cols="12" md="9" lg="9" xl="9">
                 <v-card class="rounded-lg" flat>
             <v-card-title class="pt-8">
@@ -13,12 +13,12 @@
                 <div class="subtitle"></div>
             </v-card-subtitle>
             <v-card-text class="justify-center">
-              <v-row>
-        <v-col v-for="(product, index) in getTagProducts.data" :key="index" cols="6" md="4" lg="4" xl="4">
+              <v-row :class="$vuetify.breakpoint.smAndDown ? '' : 'mx-4'">
+        <v-col v-for="(product, index) in getTagProducts.data" :key="index" cols="6" md="3" lg="3" xl="3">
             <v-hover v-slot="{ hover }" open-delay="50">
-              <v-card :color="`${color[index % 10]} lighten-5`" class="rounded-t-lg" :elevation="hover ? 16 : 3">
+              <v-card :color="`${color[index % 10]} lighten-5`" :height="$vuetify.breakpoint.smAndDown ? '275' : '375'" class="rounded-t-lg d-flex flex-column" :elevation="hover ? 16 : 3">
                <div class="align-center">
-                 <v-img  :src="product.photo ? '/images/'+product.photo : '/assets/images/blank.png'" class="rounded-t-lg" contain max-width="auto" :height="$vuetify.breakpoint.smAndDown ? '100px' : '200px'">
+                 <v-img  :src="product.photo ? product.photo : '/assets/images/blank.png'" class="rounded-t-lg" contain max-width="auto" :height="$vuetify.breakpoint.smAndDown ? '100px' : '200px'">
                   <v-app-bar flat color="rgba(0,0,0,0)" class="rounded-t-lg mb-3">
                     <v-spacer></v-spacer>
                         <template v-if="product.favourited_count == true">
@@ -35,18 +35,18 @@
                   </v-app-bar>
                  </v-img>
                </div>
-                <v-card-title>
-                  <router-link class="grey--text text--darken-3 mb-2" :to="{name: 'ProductDetails', params: {slug: product.slug}}" style="text-decoration: none;"><span class="subtitle-1">{{product.title | titlelength('...')}}</span> </router-link>   
-                </v-card-title>  
+                  <v-card-title class="mb-n3">
+                    <router-link class="grey--text text--darken-3" :to="{name: 'ProductDetails', params: {slug: product.slug}}" style="text-decoration: none;"><span :class="$vuetify.breakpoint.smAndDown ? 'subtitle-2 font-weight-bold' : 'font-weight-bold'">{{product.title | titlelength('...')}}</span></router-link>   
+                  </v-card-title>
+                    <v-spacer></v-spacer>
                 <template v-if="product.category">
-                  <v-card-subtitle class="pb-1 grey--text">{{product.category.name}}</v-card-subtitle>
+                  <v-card-subtitle class="pb-1 mt-n5 caption grey--text text--darken-1"><span :class="$vuetify.breakpoint.smAndDown ? 'caption' : ''">{{product.category.name}}</span></v-card-subtitle>
                 </template>
-                    <v-card-text>
-                      <div><b>${{product.price}}</b></div>
-                    </v-card-text>
-                    <v-card-actions class="justify-end">
+                    <v-card-actions class="mt-4">
+                      <span>
+                      <div class="subtitle-2 ml-1 orange--text text--darken-2"><b>${{product.price}}</b></div></span>
                       <v-spacer></v-spacer>
-                      <v-btn dark color="orange" class="caption white--text font-weight-bold" depressed @click="addToCart(product)" style="text-transform: none;">Add To Cart</v-btn>
+                      <v-btn dark color="orange" class="caption white--text font-weight-bold" elevation="5" @click="addToCart(product)" style="text-transform: none;">Add To Cart</v-btn>
                     </v-card-actions>
             </v-card>
             </v-hover>
@@ -68,7 +68,6 @@
                 </v-card>
             </v-col>
             <v-col cols="12" md="3" lg="3" xl="3">
-              
                 <v-card class="rounded-lg" flat>
                     <v-card-title>
                         <v-text-field v-model="searchtext" label="Search" append-icon="mdi-magnify" filled rounded color="orange" @click:append="search" 

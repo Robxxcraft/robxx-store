@@ -3,13 +3,14 @@
       <v-app v-if="!isLoading">
       <nav>
         <v-app-bar color="orange darken-2" flat dark app class="line" height="60px">
-          <v-app-bar-nav-icon class="hidden-lg-and-up" @click="openClose()"></v-app-bar-nav-icon>
+          <v-icon   class="hidden-lg-and-up" @click="openClose()">mdi-view-grid</v-icon>
           <v-spacer></v-spacer>
-          
-          <v-menu rounded="lg" max-width="110" offset-x>
+          <v-menu rounded="lg" offset-y max-width="110">
             <template v-slot:activator="{attrs, on}">
-              <v-btn text slot="activator" style="text-transform: none;" color="orange" depressed class="mr-2" v-bind="attrs" v-on="on">
-                <v-avatar width="55px" color="grey lighten-4"  height="55px">
+              <v-btn text slot="activator" right style="text-transform: none; margin: 0; padding: 0;" color="orange" depressed v-bind="attrs" v-on="on">
+                
+                <span class="white--text mx-2 font-weight-bold">{{first_name}}</span>
+                <v-avatar size="48px" color="grey lighten-4">
                   <template v-if="img">
                     <v-img :src="img" contain></v-img>
                   </template>
@@ -17,7 +18,6 @@
                     <v-icon>mdi-account</v-icon>
                   </template>
                 </v-avatar>
-                <span class="white--text mx-2 font-weight-bold">{{first_name}}</span>
               </v-btn>
               
               
@@ -122,7 +122,7 @@ export default {
         return;
       }
       
-      return `/user/photo/${details.photo}`;
+      return details.photo;
     },
   }
 }

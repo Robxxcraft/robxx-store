@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <v-card flat :style="{ background: $vuetify.theme.themes.light.background }">
+    <v-card flat style="background-color: rgb(238, 238, 238)">
       <v-app-bar flat color="rgba(0,0,0,0)">
         <v-avatar height="35" width="35">
           <v-img contain max-width="auto" :src="logo"></v-img>
@@ -24,7 +24,7 @@
           <v-menu rounded="lg" offset-y>
             <template v-slot:activator="{attrs, on}">
               <v-btn depressed slot="activator" color="grey lighten-3" v-bind="attrs" v-on="on">
-              <v-icon>mdi-dots-vertical</v-icon>
+              <v-icon>mdi-cog</v-icon>
             </v-btn>
             </template>
             <v-list flat>
@@ -37,7 +37,7 @@
                 </v-list-item>
               </template>
               <template v-else>
-                <v-list-item router :to="{name: 'DashboardAdmin'}" style="text-decoration: none;">
+                <v-list-item router v-if="isAdmin" :to="{name: 'DashboardAdmin'}" style="text-decoration: none;">
                   <v-chip class="rounded-0 white" style="cursor: pointer;"><v-list-item-title class="grey--text" >Admin</v-list-item-title></v-chip>
                 </v-list-item>
                 <v-list-item>
@@ -63,8 +63,8 @@
             </v-list>
           </v-menu>
       </v-app-bar>
-      <v-card-text>
-        <v-tabs color="orange" class="rounded-lg hidden-sm-and-down" light>
+      <v-card-text class="hidden-sm-and-down">
+        <v-tabs color="orange" class="rounded-lg" light>
         <v-tab to="/" style="text-decoration: none; text-transform: none;"><v-icon>mdi-home</v-icon></v-tab>
         <v-tab router :to="{name: 'AllCategories'}" style="text-decoration: none; text-transform: none;">
           Categories
@@ -108,7 +108,7 @@ export default {
       if (!this.log) {
         return '/assets/images/logo2.png';
       }
-      return `/assets/images/${this.log}`
+      return this.log;
     },
     cartItemCount() {
       return this.$store.getters["cart/cartItemCount"];
@@ -116,6 +116,10 @@ export default {
     authenticated(){
       return this.$store.getters["auth/authenticated"];
     },
+    isAdmin(){
+      const role = this.$store.getters["auth/role"];
+      return role == 'Superadmin' || role == 'Admin' ? true : false ;
+    }
   },
   methods: {
     logout() {

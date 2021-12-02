@@ -9,12 +9,13 @@
                 <v-container>
                     <v-row>
                         <v-col>
-                            <v-text-field v-model="form.title" color="orange" :counter="25" label="Title"  filled rounded class="rounded-0" hint="Enter Title Product" :error-messages="errors.title" required></v-text-field>
+                            <v-text-field v-model="form.title" color="orange" label="Title"  filled rounded class="rounded-0" hint="Enter Title Product" :error-messages="errors.title" required></v-text-field>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col>
-                            <v-textarea name="input-7-1" v-model="form.description" color="orange" :counter="500" label="Description" filled rounded class="rounded-0" hint="Enter Description Product" :error-messages="errors.description"></v-textarea>
+                            <span v-if="errors.description" class="red--text text-h6">{{errors.description[0]}}</span>
+                            <quill-editor ref="myQuillEditor" v-model="form.description" :options="editorOption"></quill-editor>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -24,7 +25,7 @@
                     </v-row>
                     <v-row>
                         <v-col>
-                            <v-text-field  v-model="form.price" color="orange" :counter="10" label="Price" filled rounded class="rounded-0" hint="Enter Price Product" :error-messages="errors.price"></v-text-field>
+                            <v-text-field  v-model="form.price" color="orange" label="Price" filled rounded class="rounded-0" hint="Enter Price Product" :error-messages="errors.price"></v-text-field>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -37,13 +38,13 @@
                     </v-row>
                     <v-row>
                         <v-col>
-                            <v-text-field type="number" v-model="form.stock" color="orange" :counter="3" label="Stock" filled rounded class="rounded-0" hint="Enter Stock Product" :error-messages="errors.stock"></v-text-field>
+                            <v-text-field type="number" v-model="form.stock" color="orange" label="Stock" filled rounded class="rounded-0" hint="Enter Stock Product" :error-messages="errors.stock"></v-text-field>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col>
                             <template v-if="this.form.tags.length <= 4">
-                                <v-text-field v-model="tag" color="orange" :counter="25" label="Tag" filled rounded class="rounded-0" hint="Enter Tag Product" append-outer-icon="mdi-tag-plus" @click:append-outer="addTag"></v-text-field>
+                                <v-text-field v-model="tag" color="orange" label="Tag" filled rounded class="rounded-0" hint="Enter Tag Product" append-outer-icon="mdi-tag-plus" @click:append-outer="addTag"></v-text-field>
                             </template>
                             <template v-else>
                                 <h3><v-icon left>mdi-tag-multiple</v-icon> Tags</h3>
@@ -95,6 +96,11 @@ export default {
                 stock: 1,
                 tags: [],
             },
+            editorOption: {
+                debug: 'info',
+                placeholder: 'Type your description...',
+                theme: 'snow',
+            },
             errors: {},
             loading: false,
             image: null,
@@ -119,7 +125,7 @@ export default {
       },
       img(){
             if (!this.image) {
-                return `/images/${this.prev}`;
+                return this.prev;
             }
 
             return URL.createObjectURL(this.image);
@@ -170,8 +176,9 @@ export default {
                     duration: '2000'
                 })
             }).catch(errors => {
-                this.loading = false
+                this.loading = false;
                 this.errors = errors.response.data.errors;
+                window.scrollTo(0,0);
                 this.$toasted.show("Some Error Occured", {
                     type: 'error',
                     duration: '2000'

@@ -59,7 +59,7 @@
         <span class="font-weight-bold">${{item.price}}</span>
     </template>
     <template v-slot:[`item.photo`]="{item}">
-        <v-img :src="item.photo ? `/images/${item.photo}` : '/assets/images/blank.png'" width="120px" contain height="80px"></v-img>
+        <v-img :src="item.photo ? item.photo : '/assets/images/blank.png'" width="120px" contain height="80px"></v-img>
     </template>
     <template v-slot:[`item.tags`]="{item}" width="20px;">
         <v-chip small class="ma-1" v-for="(tg, index) in item.tag" :key="index">

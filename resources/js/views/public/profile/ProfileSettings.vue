@@ -2,8 +2,8 @@
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
     <v-main>
       <Navigation />
-      <section class="mx-4 my-5">
-         <v-row wrap>
+      <section :class="$vuetify.breakpoint.smAndDown ? 'my-5' : 'mx-4 my-5'">
+         <v-row :no-gutters="$vuetify.breakpoint.smAndDown ? true : false" wrap>
              <v-col cols="3" class="hidden-sm-and-down">
                  <v-card class="rounded-lg" flat>
                      <v-list style="margin: 0; padding: 0;">
@@ -76,59 +76,5 @@ export default {
     BottomNavigation,
     Footer,
   },
-  data(){
-    return {
-      form: {
-        first_name: this.$store.state.auth.user.first_name,
-
-        last_name: this.$store.state.auth.user.last_name,
-
-        address: this.$store.state.auth.user.details.city,
-
-        city: this.$store.state.auth.user.details.city,
-
-        province: this.$store.state.auth.user.details.province,
-
-        zipcode: this.$store.state.auth.user.details.zipcode,
-        
-        phone_number: this.$store.state.auth.user.details.phone_number,
-      },
-      photo: null,
-      img: null,
-      errors: {}
-    }
-  },
-  methods: {
-      submit(){
-        const config = {
-                headers: { 'content-type' : 'multipart/form-data'}
-            }
-
-            let formData = new FormData();
-            formData.append('_method', 'PUT')
-            formData.append('first_name', this.form.first_name)
-            formData.append('last_name', this.form.last_name)
-            formData.append('address', this.form.address)
-            formData.append('city', this.form.city)
-            formData.append('province', this.form.province)
-            formData.append('zipcode', this.form.zipcode)
-            formData.append('phone_number', this.form.phone_number)
-            formData.append('photo', this.photo)
-
-            axios.post("/api/update-user", formData, config).then( () => {
-                this.$store.dispatch('auth/user');
-                this.$toasted.show(response.data, {
-                    type: 'success',
-                    duration: '2000'
-                });
-            }).catch(errors => {
-                errors.response.data.errors;
-                this.$toasted.show("Some Error Occured", {
-                    type: 'danger',
-                    duration: '2000'
-                });
-            })
-        }
-  }
 };
 </script>

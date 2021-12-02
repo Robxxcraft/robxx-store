@@ -2,27 +2,33 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AdminProduct;
+use App\Http\Resources\ProductByCategory;
+use App\Http\Resources\ProductsResource;
+use App\Http\Resources\RecentProduct;
+use App\Http\Resources\SaleProduct;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Tag;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
-use Image;
+use CloudinaryLabs\CloudinaryLaravel\Facades\Cloudinary;
 use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
     public function index()
     {
+        // $prod = new ProductResource($products);
         $products = Product::with(['category', 'user', 'tag'])->get();
-        return response()->json($products, 200);
+        return AdminProduct::collection($products);
     }
 
     public function recent()
     {
         $products = Product::with('category')->orderBy('created_at', 'DESC')->take(5)->get();
-        return response()->json($products, 200);
+        return RecentProduct::collection($products);
     }
 
     public function related($id)
@@ -34,25 +40,28 @@ class ProductController extends Controller
     public function sale()
     {
         $products = Product::with('category')->take(5)->get();
-        return response()->json($products, 200);
+        return SaleProduct::collection($products);
     }
 
     public function allproducts()
     {
         $products = Product::with('category')->withCount('favourite','favourited')->paginate(12);
-        return response()->json($products, 200);
+        return ProductsResource::collection($products);
+        
     }
 
     public function products_by_category($slug)
     {
-        $category_id = Category::where('slug', $slug)->first(['id']);
-        $products = Product::with('category')->withCount('favourite','favourited')->where('category_id', $category_id->id)->paginate(12);
-       return response()->json($products, 200);
+        $products =  Product::with('category')->withCount('favourite','favourited')->whereHas('category', function($q)use($slug){
+            $q->where('slug', $slug);
+        })->paginate(12);
+        // $products = Product::with('category')->withCount('favourite','favourited')->where('category_id', $category_id->id)->paginate(12);
+        
+        return ProductByCategory::collection($products);
     }
 
     public function create(Request $request)
     {
-
         $request->validate([
             'title' => 'required|min:3|unique:products,title',
             'description' => 'min:3|max:500|nullable',
@@ -73,10 +82,15 @@ class ProductController extends Controller
 
 
         if ($request->hasFile('photo')) {            
-            $imageName = time().'_'.Str::random(5).'.'.$request->photo->extension();
-            $image_resize = Image::make($request->photo)->resize(600, 400);
-            $image_resize->save(public_path('images/').$imageName);
-            $product->photo = $imageName;
+            $uploadImg = Cloudinary::upload($request->file('photo')->getRealPath(), [
+                'folder' =>  'product',
+                'public_id' => $product->id,
+                'transformation' => [
+                    'width' => 600,
+                    'heigth' => 400,
+                ]
+            ]);
+            $product->photo = $uploadImg->getSecurePath();
             $product->save();
         }
 
@@ -84,16 +98,15 @@ class ProductController extends Controller
 
         $tags = $request->tags;
         
+        
         if ($request->has('tags')) {
             foreach($tags as $tag){
-                Tag::firstOrCreate([
+                $tag = Tag::firstOrCreate([
                     'name' => strtolower($tag),
                     'slug' => Str::slug($tag)
                 ]);
 
-                $tag_id = Tag::where('name', $tag)->get()->pluck('id');
-                
-                $product_tag->tag()->attach($tag_id);
+                $product_tag->tag()->attach($tag->id);
             }
         }
         
@@ -118,7 +131,7 @@ class ProductController extends Controller
     {
         $request->validate([
             'title' => 'required|min:3|unique:products,title,'.$id,
-            'category_id' => 'required',
+            'category_id' => 'required|numeric',
             'price' => 'required|numeric',
             'stok' => 'required|numeric',
         ]);
@@ -126,14 +139,17 @@ class ProductController extends Controller
         $product = Product::findOrFail($id);
 
         if ($request->hasFile('photo')) {
-            if (isset($product->photo) && file_exists(public_path('images/').$product->photo)) {
-                unlink(public_path('images/').$product->photo);
-            }
+            Cloudinary::destroy($product->publicId);
                       
-            $imageName = time().'_'.Str::random(5).'.'.$request->photo->extension();
-            $image_resize = Image::make($request->photo)->resize(600, 400);
-            $image_resize->save(public_path('images/').$imageName);
-            $product->photo = $imageName;
+            $uploadImg = Cloudinary::upload($request->file('photo')->getRealPath(), [
+                'folder' =>  'product',
+                'public_id' => $product->id,
+                'transformation' => [
+                    'width' => 600,
+                    'heigth' => 400,
+                ]
+            ]);
+            $product->photo = $uploadImg->getSecurePath();
         }
 
         $product->update([
@@ -150,13 +166,12 @@ class ProductController extends Controller
             $tags = $request->tags;
             $product->tag()->detach();
             foreach($tags as $tag){
-                Tag::firstOrCreate([
+                $tag = Tag::firstOrCreate([
                     'name' => strtolower($tag),
                     'slug' => Str::slug($tag)
                 ]);
 
-                $tag_id = Tag::where('name', $tag)->get()->pluck('id');
-                $product->tag()->attach($tag_id);
+                $product->tag()->attach($tag->id);
             }
         }
 
@@ -166,11 +181,10 @@ class ProductController extends Controller
     public function delete($id)
     {
         $product = Product::findOrFail($id);
-        $product->delete();
-
-        if (!empty($product->photo) && file_exists(public_path('images').'/'.$product->photo)) {
-            unlink(public_path('images').'/'.$product->photo);
+        if (isset($product->photo)) {
+           Cloudinary::destroy($product->id);
         }
+        $product->delete();
 
         return response()->json('Product deleted sucessfullfy', 200);
     }
@@ -180,9 +194,9 @@ class ProductController extends Controller
         $products = Product::all();
         
         foreach ($products as $product) {
-            if (!empty($product->photo) && file_exists(public_path('images').'/'.$product->photo)) {
-                unlink(public_path('images').'/'.$product->photo);
-            }
+            if (isset($product->photo)) {
+                Cloudinary::destroy($product->id);
+             }
         }
 
         DB::table('products')->delete();

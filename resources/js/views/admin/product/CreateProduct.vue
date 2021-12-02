@@ -10,7 +10,7 @@
                 <v-container>
                     <v-row>
                         <v-col>
-                            <v-text-field v-model="form.title" color="orange" :counter="25" label="Title"  filled rounded class="rounded-0" hint="Enter Title Product" :error-messages="errors.title" required></v-text-field>
+                            <v-text-field v-model="form.title" color="orange" label="Title"  filled rounded class="rounded-0" hint="Enter Title Product" :error-messages="errors.title" required></v-text-field>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -21,13 +21,12 @@
                     </v-row>
                     <v-row>
                         <v-col>
-                            {{errors.category_id}}
                             <v-select :items="getCategories" item-value="id" item-text="name"  v-model="form.category_id" color="orange" label="Category" filled rounded class="rounded-0" hint="Enter Category Product" :error-messages="errors.category_id"></v-select>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col>
-                            <v-text-field  v-model="form.price" color="orange" :counter="10" label="Price" filled rounded class="rounded-0" hint="Enter Price Product" :error-messages="errors.price"></v-text-field>
+                            <v-text-field  v-model="form.price" color="orange" label="Price" filled rounded class="rounded-0" hint="Enter Price Product" :error-messages="errors.price"></v-text-field>
                         </v-col>
                     </v-row>
                     <v-row>
@@ -40,13 +39,13 @@
                     </v-row>
                     <v-row>
                         <v-col>
-                            <v-text-field type="number" v-model="form.stock" color="orange" :counter="3" label="Stock" filled rounded class="rounded-0" hint="Enter Stock Product" :error-messages="errors.stock"></v-text-field>
+                            <v-text-field type="number" v-model="form.stock" color="orange" label="Stock" filled rounded class="rounded-0" hint="Enter Stock Product" :error-messages="errors.stock"></v-text-field>
                         </v-col>
                     </v-row>
                     <v-row>
                         <v-col>
                             <template v-if="this.form.tags.length <= 4">
-                                <v-text-field v-model="tag" color="orange" :counter="25" label="Tag" filled rounded class="rounded-0" hint="Enter Tag Product" append-outer-icon="mdi-tag-plus" @click:append-outer="addTag"></v-text-field>
+                                <v-text-field v-model="tag" color="orange" label="Tag" filled rounded class="rounded-0" hint="Enter Tag Product" append-outer-icon="mdi-tag-plus" @click:append-outer="addTag"></v-text-field>
                             </template>
                             <template v-else>
                                 <h3><v-icon left>mdi-tag-multiple</v-icon> Tags</h3>
@@ -168,8 +167,9 @@ export default {
                     duration: '2000'
                 })
             }).catch(errors => {
-                this.loading = false
+                this.loading = false;
                 this.errors = errors.response.data.errors;
+                window.scrollTo(0,0);
                 this.$toasted.show("Some Error Occured", {
                     type: 'error',
                     duration: '2000'

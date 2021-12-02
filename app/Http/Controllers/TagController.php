@@ -7,15 +7,9 @@ use App\Models\Product;
 
 class TagController extends Controller
 {
-    public function index($tag)
-    {
-        $tags = Tag::where()->get();
-        return response()->json($tags, 200);
-    }
-
     public function hometag()
     {
-        $tags = Tag::withCount('product')->orderBy('product_count', 'DESC')->take(10)->get();
+        $tags = Tag::has('product')->withCount('product')->orderBy('product_count', 'DESC')->take(10)->get();
         return response()->json($tags, 200);
     }
 

@@ -17,7 +17,7 @@ class CategoryController extends Controller
 
     public function homecategory()
     {
-        $categories = Category::take(7)->get();
+        $categories = Category::take(8)->get();
         return response()->json($categories, 200);
     }
 

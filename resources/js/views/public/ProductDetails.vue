@@ -2,16 +2,18 @@
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
     <v-main>
       <Navigation />
-      <section class="mx-4 my-5">
-        <v-row>
+      <section :class="$vuetify.breakpoint.smAndDown ? 'my-5' : 'mx-4 my-5'">
+        <v-container fluid>
+          <v-row>
         <v-col cols="12" md="9" lg="9" xl="9">
             <v-card height="100%" class="rounded-lg" flat>
-              <v-btn @click="$router.go(-1)" class="rounded-br-xl" depressed><v-icon>mdi-arrow-left-thick</v-icon></v-btn>
-              <v-row>
-                <v-col cols="12" md="4" lg="4" xl="4">
-                    <v-container>
-                      <v-img :src="getProduct.photo ? `/images/${getProduct.photo}` : '/assets/images/blank.png'" class="rounded-lg mx-auto my-5" contain></v-img>
-                    </v-container>
+              <v-row style="margin: 0; padding: 0;">
+                <v-col md="4">
+                      <template class="hidden-sm-and-down">
+                        <v-img :src="getProduct.photo ? getProduct.photo : '/assets/images/blank.png'" class="rounded-lg mx-auto mb-5" height="300" contain>
+                        <v-btn @click="$router.go(-1)" class="rounded-br-xl" depressed><v-icon>mdi-arrow-left-thick</v-icon></v-btn>
+                        </v-img>
+                      </template>
                 </v-col>
                 <v-col cols="12" md="8" lg="8" xl="8" class="px-5">
                   <v-card-text>
@@ -63,7 +65,7 @@
                   <v-card-actions>
                     <v-row>
                       <v-col cols="12" md="4" lg="4" xl="4">
-                        <v-text-field label="Quantity" :class="$vuetify.breakpoint.smAndDown" flat color="orange accent-2" :counter="getProduct.stok >= 0" filled rounded v-model="quantity"></v-text-field>
+                        <v-text-field label="Quantity" :class="$vuetify.breakpoint.smAndDown" flat color="orange" filled rounded v-model="quantity"></v-text-field>
                       </v-col>
                       <v-spacer class="hidden-sm-and-down"></v-spacer>
                       <v-col cols="12" md="3" lg="3" xl="3" class="text-right ma-3">
@@ -91,7 +93,7 @@
                           params: { slug: recent.slug }
                         }" @click.prevent="dispat" three-line>
                     <v-list-item-avatar color="#EFF4F1" size="70" rounded>
-                      <v-img :src="recent.photo ? `/images/${recent.photo}` : '/assets/images/blank.png'" contain></v-img>
+                      <v-img :src="recent.photo ? recent.photo : '/assets/images/blank.png'" contain></v-img>
                     </v-list-item-avatar>
                     <v-list-item-content>
                       <v-list-item-title>
@@ -106,12 +108,13 @@
               </v-list>
             </v-card>
         </v-col>
-      </v-row>
+        </v-row>
+        </v-container>
       
       </section>
       <Footer />
     </v-main>
-      <BottomNavigation :hidden="!$vuetify.breakpoint.smAndDown"/>
+      <BottomNavigation class="hidden-sm-and-down"/>
   </v-app>
 </template>
 <script>

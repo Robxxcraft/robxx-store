@@ -2,8 +2,8 @@
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
     <v-main>
       <Navigation />
-      <section class="mx-4 my-5">
-         <v-row wrap>
+      <section :class="$vuetify.breakpoint.smAndDown ? 'my-5' : 'mx-4 my-5'">
+         <v-row :no-gutters="$vuetify.breakpoint.smAndDown ? true : false" wrap>
              <v-col cols="3" class="hidden-sm-and-down">
                  <v-card class="rounded-lg" flat>
                     <v-list style="margin: 0; padding: 0;">
@@ -123,22 +123,22 @@ export default {
   data(){
     return {
       email: this.$store.state.auth.user.email,
-      photo: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.photo : '',
+      photo: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.photo : null,
       date: this.$store.state.auth.user.created_at,
       form: {
         first_name: this.$store.state.auth.user.first_name,
 
         last_name: this.$store.state.auth.user.last_name,
 
-        address: this.$store.state.auth.user.details ?  this.$store.state.auth.user.details.address : '',
+        address: this.$store.state.auth.user.details ?  this.$store.state.auth.user.details.address : null,
 
-        city: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.city : '',
+        city: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.city : null,
 
-        province: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.province : '',
+        province: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.province : null,
 
-        zipcode: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.zipcode : '',
+        zipcode: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.zipcode : null,
         
-        phone_number: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.phone_number : '',
+        phone_number: this.$store.state.auth.user.details ? this.$store.state.auth.user.details.phone_number : null,
         photo: null
       },
       errors: {},
@@ -150,8 +150,7 @@ export default {
                 return URL.createObjectURL(this.form.photo);
             }
 
-            return `/user/photo/${this.photo}`;
-            
+            return this.photo;
         }
   },
   methods: {

@@ -2,7 +2,7 @@
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
     <v-main>
       <Navigation />
-      <section class="mx-4 my-5">
+      <section :class="$vuetify.breakpoint.smAndDown ? 'my-5' : 'mx-4 my-5'">
         <v-card class="rounded-lg" flat>
             <v-card-title>
               <span>Order Details</span>
@@ -21,7 +21,7 @@
                     <v-subheader class="text-h6">Product List</v-subheader>
                   <v-list-item v-for="(orderdetail, index) in getOrder.orderdetails" :key="index">
                     <v-list-item-avatar color="grey" size="90" tile>
-                      <v-img :src="`/assets/images/${orderdetail.product.photo}`" contain height="auto" width="auto" />
+                      <v-img :src="orderdetail.product.photo" contain height="auto" width="auto" />
                     </v-list-item-avatar>
                     
                     <v-list-item-content>

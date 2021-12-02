@@ -1,7 +1,7 @@
 <template>
   <div class="loading-wrap">
     <div class="loading">
-      <div class="title grey--text font-weight-bold">Loading...</div>
+      <div class="title grey--text" style="font-weight: 900; font-size: 2em;">Loading...</div>
       <div class="loading-dots">
         <span class="dot"></span>
         <span class="dot"></span>

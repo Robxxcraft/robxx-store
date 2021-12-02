@@ -2,11 +2,10 @@
   <v-app :style="{ background: $vuetify.theme.themes.light.background }">
     <v-main>
       <Navigation />
-      <section class="mx-4 my-5">
+      <section :class="$vuetify.breakpoint.smAndDown ? 'mx-1 my-5' : 'mx-4 my-5'">
           <v-card class="rounded-lg" flat>
               <v-card-title>
-                <span class="grey--text text--darken-1">
-                Order List</span>
+                <p class="title ml-1">Order List</p>
               </v-card-title>
               <v-row wrap class="mx-4">
               <v-col cols="12" md="4" lg="3" xl="3" v-for="(order, index) in getOrders" :key="index" class="my-4">

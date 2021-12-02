@@ -27,7 +27,7 @@
       {{item.created_at | timeformat}}
     </template>
     <template v-slot:[`item.action`]="{item}" style="width:800px;">
-        <v-btn small v-if="item.payment == 'Midtrans' && item.order_status == 'Pending'" depressed class="green accent-2 white--text ma-1 text-decoration-none" title="Accept Order" @click.prevent="accept(item.id)"><v-icon>mdi-check</v-icon></v-btn>
+        <v-btn small v-if="item.payment == 'Midtrans' && item.order_status == 'Pending' && item.order_token" depressed class="green accent-2 white--text ma-1 text-decoration-none" title="Accept Order" @click.prevent="accept(item.id)"><v-icon>mdi-check</v-icon></v-btn>
         <v-btn small depressed class="blue accent-2 white--text ma-1 text-decoration-none" title="Order Details" :to="{name : 'ShowOrder', params: {id : item.id}}"><v-icon>mdi-eye</v-icon></v-btn>
         <v-btn small depressed class="red accent-2 white--text ma-1" @click.prevent="deleteOrder(item.id)" title="Delete"><v-icon>mdi-delete</v-icon></v-btn>
     </template>
@@ -59,6 +59,7 @@ export default {
       getOrders(){
         return this.$store.state.order.admin_orders
       },
+      
   },
   methods: {
     accept(id){

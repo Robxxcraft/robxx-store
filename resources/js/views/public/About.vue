@@ -40,31 +40,5 @@ export default {
     BottomNavigation,
     Footer,
   },
-  data() {
-    return {
-      valid: true,
-      name: "",
-      nameRules: [
-        (v) => !!v || "Name required",
-        (v) => (v && v.length >= 3) || "Name min 6 characters",
-      ],
-      email: "",
-      emailRules: [
-        (v) => !!v || "Email required",
-        (v) => /.+@.+\..+/.test(v) || "Email must be valid",
-      ],
-      textArea: "",
-      textAreaRules: [
-        (v) => !!v || "Text required",
-        (v) => (v && v.length >= 10) || "Text min 10 characters",
-      ],
-      lazy: false,
-    };
-  },
-  methods: {
-      submit(){
-
-      }
-  }
 };
 </script>
