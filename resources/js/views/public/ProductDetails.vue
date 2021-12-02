@@ -7,12 +7,13 @@
           <v-row>
         <v-col cols="12" md="9" lg="9" xl="9">
             <v-card height="100%" class="rounded-lg" flat>
-              <v-btn @click="$router.go(-1)" class="rounded-br-xl" depressed><v-icon>mdi-arrow-left-thick</v-icon></v-btn>
-              <v-row>
-                <v-col cols="12" md="4" lg="4" xl="4">
-                    <v-container fluid>
-                      <v-img :src="getProduct.photo ? getProduct.photo : '/assets/images/blank.png'" class="rounded-lg mx-auto my-5" :height="$vuetify.breakpoint.smAndDown ? '150' : '300'" contain></v-img>
-                    </v-container>
+              <v-row style="margin: 0; padding: 0;">
+                <v-col md="4">
+                      <template class="hidden-sm-and-down">
+                        <v-img :src="getProduct.photo ? getProduct.photo : '/assets/images/blank.png'" class="rounded-lg mx-auto mb-5" height="300" contain>
+                        <v-btn @click="$router.go(-1)" class="rounded-br-xl" depressed><v-icon>mdi-arrow-left-thick</v-icon></v-btn>
+                        </v-img>
+                      </template>
                 </v-col>
                 <v-col cols="12" md="8" lg="8" xl="8" class="px-5">
                   <v-card-text>
@@ -113,7 +114,7 @@
       </section>
       <Footer />
     </v-main>
-      <BottomNavigation :hidden="!$vuetify.breakpoint.smAndDown"/>
+      <BottomNavigation class="hidden-sm-and-down"/>
   </v-app>
 </template>
 <script>

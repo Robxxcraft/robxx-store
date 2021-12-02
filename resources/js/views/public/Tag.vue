@@ -68,7 +68,6 @@
                 </v-card>
             </v-col>
             <v-col cols="12" md="3" lg="3" xl="3">
-              
                 <v-card class="rounded-lg" flat>
                     <v-card-title>
                         <v-text-field v-model="searchtext" label="Search" append-icon="mdi-magnify" filled rounded color="orange" @click:append="search" 

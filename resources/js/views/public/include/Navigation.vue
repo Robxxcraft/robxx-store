@@ -1,6 +1,6 @@
 <template>
   <nav>
-    <v-card flat :style="{ background: $vuetify.theme.themes.light.background }">
+    <v-card flat style="background-color: rgb(238, 238, 238)">
       <v-app-bar flat color="rgba(0,0,0,0)">
         <v-avatar height="35" width="35">
           <v-img contain max-width="auto" :src="logo"></v-img>
@@ -24,7 +24,7 @@
           <v-menu rounded="lg" offset-y>
             <template v-slot:activator="{attrs, on}">
               <v-btn depressed slot="activator" color="grey lighten-3" v-bind="attrs" v-on="on">
-              <v-icon>mdi-dots-grid</v-icon>
+              <v-icon>mdi-cog</v-icon>
             </v-btn>
             </template>
             <v-list flat>

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8eb4e36a454bd8000b55981213581106",
+    "content-hash": "ace6b5b48825525660e749260f1b5e5a",
     "packages": [
         {
             "name": "asm89/stack-cors",
@@ -1151,154 +1151,6 @@
                 }
             ],
             "time": "2021-10-06T17:43:30+00:00"
-        },
-        {
-            "name": "intervention/image",
-            "version": "2.7.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/Intervention/image.git",
-                "reference": "9a8cc99d30415ec0b3f7649e1647d03a55698545"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/Intervention/image/zipball/9a8cc99d30415ec0b3f7649e1647d03a55698545",
-                "reference": "9a8cc99d30415ec0b3f7649e1647d03a55698545",
-                "shasum": ""
-            },
-            "require": {
-                "ext-fileinfo": "*",
-                "guzzlehttp/psr7": "~1.1 || ^2.0",
-                "php": ">=5.4.0"
-            },
-            "require-dev": {
-                "mockery/mockery": "~0.9.2",
-                "phpunit/phpunit": "^4.8 || ^5.7 || ^7.5.15"
-            },
-            "suggest": {
-                "ext-gd": "to use GD library based image processing.",
-                "ext-imagick": "to use Imagick based image processing.",
-                "intervention/imagecache": "Caching extension for the Intervention Image library"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "2.4-dev"
-                },
-                "laravel": {
-                    "providers": [
-                        "Intervention\\Image\\ImageServiceProvider"
-                    ],
-                    "aliases": {
-                        "Image": "Intervention\\Image\\Facades\\Image"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Intervention\\Image\\": "src/Intervention/Image"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Oliver Vogel",
-                    "email": "oliver@olivervogel.com",
-                    "homepage": "http://olivervogel.com/"
-                }
-            ],
-            "description": "Image handling and manipulation library with support for Laravel integration",
-            "homepage": "http://image.intervention.io/",
-            "keywords": [
-                "gd",
-                "image",
-                "imagick",
-                "laravel",
-                "thumbnail",
-                "watermark"
-            ],
-            "support": {
-                "issues": "https://github.com/Intervention/image/issues",
-                "source": "https://github.com/Intervention/image/tree/2.7.0"
-            },
-            "funding": [
-                {
-                    "url": "https://www.paypal.me/interventionphp",
-                    "type": "custom"
-                },
-                {
-                    "url": "https://github.com/Intervention",
-                    "type": "github"
-                }
-            ],
-            "time": "2021-10-03T14:17:12+00:00"
-        },
-        {
-            "name": "kavist/rajaongkir",
-            "version": "v1.1.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/kavist/rajaongkir.git",
-                "reference": "c1ab72000d05b1cb6b0a1a1364d6200b78976377"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/kavist/rajaongkir/zipball/c1ab72000d05b1cb6b0a1a1364d6200b78976377",
-                "reference": "c1ab72000d05b1cb6b0a1a1364d6200b78976377",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.0"
-            },
-            "require-dev": {
-                "codedungeon/phpunit-result-printer": "^0.26.2",
-                "fzaninotto/faker": "^1.8",
-                "mockery/mockery": "^1.2",
-                "orchestra/testbench": "^4.1",
-                "phpunit/phpunit": "^8.0",
-                "spatie/phpunit-watcher": "^1.12"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Kavist\\RajaOngkir\\Providers\\LaravelServiceProvider"
-                    ],
-                    "aliases": {
-                        "RajaOngkir": "Kavist\\RajaOngkir\\Facades\\RajaOngkir"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Kavist\\RajaOngkir\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Ian Mustafa",
-                    "email": "mail@ianmustafa.com",
-                    "role": "Maintainer"
-                }
-            ],
-            "description": "Klien API PHP untuk RajaOngkir",
-            "homepage": "https://github.com/kavist/rajaongkir",
-            "keywords": [
-                "laravel",
-                "rajaongkir"
-            ],
-            "support": {
-                "issues": "https://github.com/kavist/rajaongkir/issues",
-                "source": "https://github.com/kavist/rajaongkir/tree/v1.1.0"
-            },
-            "time": "2019-10-11T01:21:56+00:00"
         },
         {
             "name": "laravel/framework",
@@ -8511,8 +8363,7 @@
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
-        "php": "^7.3|^8.0",
-        "ext-gd": "^7.4"
+        "php": "^7.3|^8.0"
     },
     "platform-dev": [],
     "plugin-api-version": "2.0.0"

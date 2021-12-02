@@ -18,14 +18,14 @@
   },
   "devDependencies": {
     "axios": "^0.21.1",
-    "bootstrap": "^4.0.0",
+    "deepmerge": "^4.2.2",
     "jquery": "^3.2",
     "laravel-mix": "^6.0.27",
     "popper.js": "^1.12",
     "postcss": "^8.1.14",
     "resolve-url-loader": "^4.0.0",
-    "sass": "^1.20.1",
-    "sass-loader": "^8.0.0",
+    "sass": "^1.43.5",
+    "sass-loader": "^8.0.2",
     "vue": "^2.6.14",
     "vue-loader": "^15.9.8",
     "vue-template-compiler": "^2.6.14"
@@ -33,6 +33,7 @@
   "dependencies": {
     "@mdi/font": "^5.9.55",
     "moment": "^2.29.1",
+    "swiper": "^6.8.4",
     "vue-quill-editor": "^3.0.6",
     "vue-router": "^3.5.1",
     "vue-toasted": "^1.1.28",

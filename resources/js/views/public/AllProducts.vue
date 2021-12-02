@@ -16,7 +16,7 @@
                  <v-img  :src="product.photo ? product.photo : '/assets/images/blank.png'" class="rounded-t-lg" contain max-width="auto" :height="$vuetify.breakpoint.smAndDown ? '100px' : '200px'">
                   <v-app-bar flat color="rgba(0,0,0,0)" class="rounded-t-lg mb-3">
                     <v-spacer></v-spacer>
-                        <template v-if="product.favourited_count == true">
+                        <template v-if="product.favourited">
                           <v-btn fab x-small @click="unFavourite(product.id)" :disabled="disable" color="white">
                           <v-icon color="red">mdi-heart</v-icon>
                           </v-btn>
@@ -34,9 +34,7 @@
                     <router-link class="grey--text text--darken-3" :to="{name: 'ProductDetails', params: {slug: product.slug}}" style="text-decoration: none;"><span :class="$vuetify.breakpoint.smAndDown ? 'subtitle-2 font-weight-bold' : 'font-weight-bold'">{{product.title | titlelength('...')}}</span></router-link>   
                   </v-card-title>
                     <v-spacer></v-spacer>
-                <template v-if="product.category">
-                  <v-card-subtitle class="pb-1 mt-n5 caption grey--text text--darken-1"><span :class="$vuetify.breakpoint.smAndDown ? 'caption' : ''">{{product.category.name}}</span></v-card-subtitle>
-                </template>
+                  <v-card-subtitle class="pb-1 mt-n5 caption grey--text text--darken-1"><span :class="'hidden-sm-and-down' ? 'caption' : ''">{{product.category}}</span></v-card-subtitle>
                     <v-card-actions class="mt-4">
                       <span>
                       <div class="subtitle-2 ml-1 orange--text text--darken-2"><b>${{product.price}}</b></div></span>

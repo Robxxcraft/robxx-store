@@ -1,11 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
 
-import Home from "../views/Home.vue";
-
-import Login from "../views/auth/Login.vue";
-import Register from "../views/auth/Register.vue";
-import ForgotPassword from "../views/auth/ForgotPassword.vue";
 import ResetPassword from "../views/auth/ResetPassword.vue";
 
 import AdminDashboard from "../views/admin/AdminDashboard.vue";
@@ -37,8 +32,6 @@ import Profile from "../views/public/profile/Profile.vue";
 import ChangePassword from "../views/public/profile/ChangePassword.vue";
 import ProfileSettings from "../views/public/profile/ProfileSettings.vue";
 
-import About from "../views/public/About.vue";
-
 import Cart from "../views/public/cart.vue";
 import Favourited from "../views/public/Favourited.vue";
 import Checkout from "../views/public/Checkout.vue";
@@ -48,7 +41,6 @@ import OrderDetails from "../views/public/OrderDetails.vue";
 import Finished from "../views/public/payment/Finished.vue";
 import Unfinished from "../views/public/payment/Unfinished.vue";
 import Errors from "../views/public/payment/Errors.vue";
-import NotFound from "../views/public/NotFound.vue";
 
 import Search from "../views/public/Search.vue";
 import TagProducts from "../views/public/Tag.vue";
@@ -60,34 +52,34 @@ const routes = [
     {
         path: "/",
         name: "Home",
-        component: Home
+        component: () => import('../views/Home.vue')
     },
     {
         path: "/about",
         name: "About",
-        component: About,
+        component: () => import('../views/public/About.vue')
     },
     {
         path: "*",
-        component: NotFound,
+        component: () => import('../views/public/NotFound.vue'),
     },
     {
-      path: "/register",
-      name: "Register",
-      component: Register,
-      meta: { guest: true },
+        path: "/register",
+        name: "Register",
+        component: () => import('../views/auth/Register.vue'),
+        meta: { guest: true },
     },
     {
         path: "/login",
         name: "Login",
-        component: Login,
-        meta: { guest: true },
+        component: () => import('../views/auth/Login.vue'),
+        meta: { guest: true }
     },
     {
         path: "/forgot",
         name: "ForgotPassword",
-        component: ForgotPassword,
-        meta: { guest: true },
+        component: () => import('../views/auth/ForgotPassword.vue'),
+        meta: { guest: true }
     },
     {
         path: "/reset-password/:token",

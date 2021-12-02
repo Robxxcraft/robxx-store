@@ -2,6 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\AdminProduct;
+use App\Http\Resources\ProductByCategory;
+use App\Http\Resources\ProductsResource;
+use App\Http\Resources\RecentProduct;
+use App\Http\Resources\SaleProduct;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Tag;
@@ -15,14 +20,15 @@ class ProductController extends Controller
 {
     public function index()
     {
+        // $prod = new ProductResource($products);
         $products = Product::with(['category', 'user', 'tag'])->get();
-        return response()->json($products, 200);
+        return AdminProduct::collection($products);
     }
 
     public function recent()
     {
         $products = Product::with('category')->orderBy('created_at', 'DESC')->take(5)->get();
-        return response()->json($products, 200);
+        return RecentProduct::collection($products);
     }
 
     public function related($id)
@@ -34,20 +40,24 @@ class ProductController extends Controller
     public function sale()
     {
         $products = Product::with('category')->take(5)->get();
-        return response()->json($products, 200);
+        return SaleProduct::collection($products);
     }
 
     public function allproducts()
     {
         $products = Product::with('category')->withCount('favourite','favourited')->paginate(12);
-        return response()->json($products, 200);
+        return ProductsResource::collection($products);
+        
     }
 
     public function products_by_category($slug)
     {
-        $category_id = Category::where('slug', $slug)->first(['id']);
-        $products = Product::with('category')->withCount('favourite','favourited')->where('category_id', $category_id->id)->paginate(12);
-        return response()->json($products, 200);
+        $products =  Product::with('category')->withCount('favourite','favourited')->whereHas('category', function($q)use($slug){
+            $q->where('slug', $slug);
+        })->paginate(12);
+        // $products = Product::with('category')->withCount('favourite','favourited')->where('category_id', $category_id->id)->paginate(12);
+        
+        return ProductByCategory::collection($products);
     }
 
     public function create(Request $request)
